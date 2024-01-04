@@ -72,7 +72,12 @@ func (n *Nginx) SetMappings(mappings []internal.Mapping) error {
 	return n.reloadConfig()
 }
 
-func (n *Nginx) Wait() error {
+func (n *Nginx) Stop() error {
+	n.logger.Info("Stopping nginx")
+	err := n.cmd.Process.Signal(syscall.SIGTERM)
+	if err != nil {
+		return err
+	}
 	return n.cmd.Wait()
 }
 

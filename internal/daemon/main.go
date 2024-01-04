@@ -60,6 +60,10 @@ func Start(logger *zap.Logger) error {
 	if err != nil {
 		return err
 	}
+	err = dotlocal.Stop()
+	if err != nil {
+		return err
+	}
 
 	return t.Wait()
 }

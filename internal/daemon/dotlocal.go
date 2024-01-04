@@ -99,10 +99,10 @@ func (d *DotLocal) UpdateMappings() error {
 	return nil
 }
 
-func (d *DotLocal) Wait() error {
+func (d *DotLocal) Stop() error {
 	var t tomb.Tomb
 	t.Go(func() error {
-		return d.nginx.Wait()
+		return d.nginx.Stop()
 	})
 	return t.Wait()
 }
