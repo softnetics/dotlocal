@@ -79,6 +79,17 @@ func (d *DotLocal) Start() error {
 	return nil
 }
 
+func (d *DotLocal) Stop() error {
+	var t tomb.Tomb
+	t.Go(func() error {
+		return d.nginx.Stop()
+	})
+	t.Go(func() error {
+		return d.dnsProxy.Stop()
+	})
+	return t.Wait()
+}
+
 func (d *DotLocal) GetMappings() []internal.Mapping {
 	return lo.MapToSlice(d.mappings, func(key internal.MappingKey, state *internal.MappingState) internal.Mapping {
 		return internal.NewMapping(key, state)

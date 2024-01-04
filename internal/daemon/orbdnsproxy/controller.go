@@ -78,6 +78,20 @@ func (p *OrbstackDNSProxy) Start(port int) error {
 	return nil
 }
 
+func (p *OrbstackDNSProxy) Stop() error {
+	p.logger.Info("Stopping")
+	var t tomb.Tomb
+	for _, container := range p.containers {
+		t.Go(func() error {
+			return container.Remove()
+		})
+	}
+	t.Go(func() error {
+		return os.Remove(p.nginxConfigFile)
+	})
+	return t.Wait()
+}
+
 func (p *OrbstackDNSProxy) SetHosts(hosts map[string]struct{}) error {
 	p.logger.Debug("Setting hosts", zap.Any("hosts", hosts))
 

@@ -34,10 +34,12 @@ func Start(logger *zap.Logger) error {
 	<-ctx.Done()
 	logger.Info("Shutting down")
 
-	err = apiServer.Stop()
-	if err != nil {
-		return err
-	}
+	t.Go(func() error {
+		return apiServer.Stop()
+	})
+	t.Go(func() error {
+		return dotlocal.Stop()
+	})
 
 	return t.Wait()
 }
