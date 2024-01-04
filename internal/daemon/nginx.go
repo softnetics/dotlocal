@@ -105,38 +105,59 @@ func (n *Nginx) writeConfig() error {
 		return m.Host
 	})
 	for host, hostMappings := range hosts {
-		var locations []gonginx.IDirective
-		for _, mapping := range hostMappings {
-			locations = append(locations, &gonginx.Directive{
+		directives := []gonginx.IDirective{
+			&gonginx.Directive{
+				Name:       "listen",
+				Parameters: []string{strconv.Itoa(n.port)},
+			},
+			&gonginx.Directive{
+				Name:       "server_name",
+				Parameters: []string{host},
+			},
+		}
+		locations := lo.SliceToMap(hostMappings, func(mapping internal.Mapping) (string, []gonginx.IDirective) {
+			return mapping.PathPrefix, []gonginx.IDirective{
+				&gonginx.Directive{
+					Name:       "proxy_pass",
+					Parameters: []string{mapping.Target},
+				},
+				&gonginx.Directive{
+					Name:       "proxy_http_version",
+					Parameters: []string{"1.1"},
+				},
+				&gonginx.Directive{
+					Name:       "proxy_set_header",
+					Parameters: []string{"Upgrade", "$http_upgrade"},
+				},
+				&gonginx.Directive{
+					Name:       "proxy_set_header",
+					Parameters: []string{"Connection", "\"Upgrade\""},
+				},
+				&gonginx.Directive{
+					Name:       "proxy_set_header",
+					Parameters: []string{"Host", "$host"},
+				},
+				&gonginx.Directive{
+					Name:       "proxy_set_header",
+					Parameters: []string{"X-Forwarded-For", "$remote_addr"},
+				},
+			}
+		})
+		_, hasRoot := locations["/"]
+		if !hasRoot {
+			locations["/"] = []gonginx.IDirective{
+				&gonginx.Directive{
+					Name:       "return",
+					Parameters: []string{"404"},
+				},
+			}
+		}
+		for pathPrefix, locationDirectives := range locations {
+			directives = append(directives, &gonginx.Directive{
 				Name:       "location",
-				Parameters: []string{mapping.PathPrefix},
+				Parameters: []string{pathPrefix},
 				Block: &gonginx.LuaBlock{
-					Directives: []gonginx.IDirective{
-						&gonginx.Directive{
-							Name:       "proxy_pass",
-							Parameters: []string{mapping.Target},
-						},
-						&gonginx.Directive{
-							Name:       "proxy_http_version",
-							Parameters: []string{"1.1"},
-						},
-						&gonginx.Directive{
-							Name:       "proxy_set_header",
-							Parameters: []string{"Upgrade", "$http_upgrade"},
-						},
-						&gonginx.Directive{
-							Name:       "proxy_set_header",
-							Parameters: []string{"Connection", "\"Upgrade\""},
-						},
-						&gonginx.Directive{
-							Name:       "proxy_set_header",
-							Parameters: []string{"Host", "$host"},
-						},
-						&gonginx.Directive{
-							Name:       "proxy_set_header",
-							Parameters: []string{"X-Forwarded-For", "$remote_addr"},
-						},
-					},
+					Directives: locationDirectives,
 				},
 			})
 		}
@@ -144,16 +165,7 @@ func (n *Nginx) writeConfig() error {
 			Name:       "server",
 			Parameters: []string{},
 			Block: &gonginx.LuaBlock{
-				Directives: append([]gonginx.IDirective{
-					&gonginx.Directive{
-						Name:       "listen",
-						Parameters: []string{strconv.Itoa(n.port)},
-					},
-					&gonginx.Directive{
-						Name:       "server_name",
-						Parameters: []string{host},
-					},
-				}, locations...),
+				Directives: directives,
 			},
 		})
 	}
