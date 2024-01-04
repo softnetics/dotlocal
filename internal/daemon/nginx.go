@@ -117,6 +117,18 @@ func (n *Nginx) writeConfig() error {
 							Parameters: []string{mapping.Target},
 						},
 						&gonginx.Directive{
+							Name:       "proxy_http_version",
+							Parameters: []string{"1.1"},
+						},
+						&gonginx.Directive{
+							Name:       "proxy_set_header",
+							Parameters: []string{"Upgrade", "$http_upgrade"},
+						},
+						&gonginx.Directive{
+							Name:       "proxy_set_header",
+							Parameters: []string{"Connection", "\"Upgrade\""},
+						},
+						&gonginx.Directive{
 							Name:       "proxy_set_header",
 							Parameters: []string{"Host", "$host"},
 						},
