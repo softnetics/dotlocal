@@ -32,6 +32,7 @@ func NewDotLocal(logger *zap.Logger) (*DotLocal, error) {
 		logger:   logger,
 		nginx:    nginx,
 		dnsProxy: dnsProxy,
+		mappings: make(map[string]internal.Mapping),
 	}, nil
 }
 
@@ -62,6 +63,9 @@ func (d *DotLocal) GetMappings() []internal.Mapping {
 
 func (d *DotLocal) CreateMapping(opts internal.MappingOptions) (internal.Mapping, error) {
 	id := uniuri.NewLen(6)
+	if opts.PathPrefix == "" {
+		opts.PathPrefix = "/"
+	}
 	mapping := internal.Mapping{
 		ID:         id,
 		Host:       opts.Host,

@@ -1,7 +1,6 @@
 package daemon
 
 import (
-	"io"
 	"log"
 	"net"
 
@@ -21,7 +20,8 @@ type APIServer struct {
 
 func NewAPIServer(logger *zap.Logger, dotlocal *DotLocal) (*APIServer, error) {
 	return &APIServer{
-		logger: logger,
+		logger:   logger,
+		dotlocal: dotlocal,
 	}, nil
 }
 
@@ -41,7 +41,7 @@ func (s *APIServer) Start() error {
 }
 
 func (s *APIServer) Stop() error {
-	s.grpcServer.GracefulStop()
+	s.grpcServer.Stop()
 	return nil
 }
 
@@ -54,23 +54,20 @@ type dotLocalServer struct {
 
 func newDotLocalServer(logger *zap.Logger, dotlocal *DotLocal) *dotLocalServer {
 	return &dotLocalServer{
-		logger: logger,
+		logger:   logger,
+		dotlocal: dotlocal,
 	}
 }
 
 func (s *dotLocalServer) CreateMappingWhileConnected(stream api.DotLocal_CreateMappingWhileConnectedServer) error {
 	var createdMappings []internal.Mapping
-	defer func() {
-		s.dotlocal.RemoveMapping(lo.Map(createdMappings, func(mapping internal.Mapping, _ int) string {
-			return mapping.ID
-		})...)
-	}()
 
 	for {
 		req, err := stream.Recv()
-		if err == io.EOF {
-			break
-		} else if err != nil {
+		if err != nil {
+			if err != stream.Context().Err() {
+				break
+			}
 			return err
 		}
 
@@ -86,5 +83,7 @@ func (s *dotLocalServer) CreateMappingWhileConnected(stream api.DotLocal_CreateM
 		createdMappings = append(createdMappings, mapping)
 	}
 
-	return nil
+	return s.dotlocal.RemoveMapping(lo.Map(createdMappings, func(mapping internal.Mapping, _ int) string {
+		return mapping.ID
+	})...)
 }
