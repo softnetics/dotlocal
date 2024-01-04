@@ -17,7 +17,7 @@ type DotLocal struct {
 	logger   *zap.Logger
 	nginx    *Nginx
 	dnsProxy dnsproxy.DNSProxy
-	mappings map[internal.Mapping]*internal.MappingState
+	mappings map[internal.MappingKey]*internal.MappingState
 	ctx      context.Context
 	cancel   context.CancelFunc
 }
@@ -37,7 +37,7 @@ func NewDotLocal(logger *zap.Logger) (*DotLocal, error) {
 		logger:   logger,
 		nginx:    nginx,
 		dnsProxy: dnsProxy,
-		mappings: make(map[internal.Mapping]*internal.MappingState),
+		mappings: make(map[internal.MappingKey]*internal.MappingState),
 	}, nil
 }
 
@@ -80,8 +80,8 @@ func (d *DotLocal) Start() error {
 }
 
 func (d *DotLocal) GetMappings() []internal.Mapping {
-	return lo.MapToSlice(d.mappings, func(mapping internal.Mapping, _ *internal.MappingState) internal.Mapping {
-		return mapping
+	return lo.MapToSlice(d.mappings, func(key internal.MappingKey, state *internal.MappingState) internal.Mapping {
+		return internal.NewMapping(key, state)
 	})
 }
 
@@ -89,31 +89,38 @@ func (d *DotLocal) CreateMapping(opts internal.MappingOptions) (internal.Mapping
 	if opts.PathPrefix == "" {
 		opts.PathPrefix = "/"
 	}
-	mapping := internal.Mapping{
+	key := internal.MappingKey{
 		Host:       opts.Host,
 		PathPrefix: opts.PathPrefix,
-		Target:     opts.Target,
 	}
 	expiresAt := time.Now().Add(2 * time.Minute)
 
-	state, ok := d.mappings[mapping]
+	state, ok := d.mappings[key]
 	if ok {
 		state.ExpiresAt = expiresAt
-		return mapping, nil
+	} else {
+		state = &internal.MappingState{
+			ID:        uniuri.NewLen(6),
+			Target:    "",
+			ExpiresAt: expiresAt,
+		}
+		d.mappings[key] = state
 	}
+	previousMapping := internal.NewMapping(key, state)
+	state.Target = opts.Target
 
-	id := uniuri.NewLen(6)
-	d.mappings[mapping] = &internal.MappingState{
-		ID:        id,
-		ExpiresAt: expiresAt,
+	mapping := internal.NewMapping(key, state)
+
+	if previousMapping == mapping {
+		return mapping, nil
 	}
 	d.logger.Info("Created mapping", zap.Any("mapping", mapping))
 	return mapping, d.UpdateMappings()
 }
 
-func (d *DotLocal) RemoveMapping(mappings ...internal.Mapping) error {
-	for _, mapping := range mappings {
-		delete(d.mappings, mapping)
+func (d *DotLocal) RemoveMapping(keys ...internal.MappingKey) error {
+	for _, key := range keys {
+		delete(d.mappings, key)
 	}
 	return d.UpdateMappings()
 }
@@ -134,10 +141,10 @@ func (d *DotLocal) UpdateMappings() error {
 }
 
 func (d *DotLocal) removeExpiredMappings() error {
-	var expiredMappings []internal.Mapping
-	for mapping, state := range d.mappings {
+	var expiredMappings []internal.MappingKey
+	for key, state := range d.mappings {
 		if state.ExpiresAt.Before(time.Now()) {
-			expiredMappings = append(expiredMappings, mapping)
+			expiredMappings = append(expiredMappings, key)
 		}
 	}
 	if len(expiredMappings) == 0 {
