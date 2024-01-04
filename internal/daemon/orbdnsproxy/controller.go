@@ -135,6 +135,14 @@ func (p *OrbstackDNSProxy) writeNginxConfig() error {
 										Name:       "proxy_pass",
 										Parameters: []string{fmt.Sprintf("http://host.docker.internal:%d", p.port)},
 									},
+									&gonginx.Directive{
+										Name:       "proxy_set_header",
+										Parameters: []string{"Host", "$host"},
+									},
+									&gonginx.Directive{
+										Name:       "proxy_set_header",
+										Parameters: []string{"X-Forwarded-For", "$remote_addr"},
+									},
 								},
 							},
 						},

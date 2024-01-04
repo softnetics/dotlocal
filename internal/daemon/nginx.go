@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"strconv"
 	"syscall"
 	"time"
 
@@ -115,6 +116,14 @@ func (n *Nginx) writeConfig() error {
 							Name:       "proxy_pass",
 							Parameters: []string{mapping.Target},
 						},
+						&gonginx.Directive{
+							Name:       "proxy_set_header",
+							Parameters: []string{"Host", "$host"},
+						},
+						&gonginx.Directive{
+							Name:       "proxy_set_header",
+							Parameters: []string{"X-Forwarded-For", "$remote_addr"},
+						},
 					},
 				},
 			})
@@ -126,7 +135,7 @@ func (n *Nginx) writeConfig() error {
 				Directives: append([]gonginx.IDirective{
 					&gonginx.Directive{
 						Name:       "listen",
-						Parameters: []string{fmt.Sprintf("%d", n.port)},
+						Parameters: []string{strconv.Itoa(n.port)},
 					},
 					&gonginx.Directive{
 						Name:       "server_name",
@@ -136,6 +145,22 @@ func (n *Nginx) writeConfig() error {
 			},
 		})
 	}
+	http.Directives = append(http.Directives, &gonginx.Directive{
+		Name:       "server",
+		Parameters: []string{},
+		Block: &gonginx.LuaBlock{
+			Directives: []gonginx.IDirective{
+				&gonginx.Directive{
+					Name:       "listen",
+					Parameters: []string{strconv.Itoa(n.port), "default_server"},
+				},
+				&gonginx.Directive{
+					Name:       "return",
+					Parameters: []string{"404"},
+				},
+			},
+		},
+	})
 
 	configString := gonginx.DumpBlock(conf, gonginx.IndentedStyle)
 	// println(configString)
