@@ -1,6 +1,7 @@
 package util
 
 import (
+	"net"
 	"os"
 	"path"
 )
@@ -23,4 +24,17 @@ func GetApiSocketPath() string {
 	}
 
 	return path.Join(home, ".dotlocal", "api.sock")
+}
+
+func FindAvailablePort() (int, error) {
+	listener, err := net.Listen("tcp", "127.0.0.1:0")
+	if err != nil {
+		return 0, err
+	}
+	port := listener.Addr().(*net.TCPAddr).Port
+	err = listener.Close()
+	if err != nil {
+		return 0, err
+	}
+	return port, nil
 }

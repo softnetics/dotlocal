@@ -5,12 +5,14 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"os/exec"
 	"os/signal"
-	"syscall"
+	"strconv"
 	"time"
 
 	api "github.com/softnetics/dotlocal/internal/api/proto"
 	"github.com/softnetics/dotlocal/internal/client"
+	"github.com/softnetics/dotlocal/internal/util"
 	"github.com/spf13/cobra"
 	"go.uber.org/zap"
 )
@@ -18,9 +20,10 @@ import (
 var logger *zap.Logger
 
 var (
-	hostname   string
-	pathPrefix string
-	target     string
+	hostname     string
+	pathPrefix   string
+	targetArg    string
+	overridePort string
 
 	rootCmd = &cobra.Command{
 		Use: "dotlocal",
@@ -29,14 +32,14 @@ var (
 			if err != nil {
 				log.Fatal(err)
 			}
+			target := getTarget()
 
-			ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
-			defer stop()
-
+			loopCtx, cancel := context.WithCancel(context.Background())
+			defer cancel()
 			go func() {
 				wasSuccessful := false
 				for {
-					_, err := apiClient.CreateMapping(ctx, &api.CreateMappingRequest{
+					_, err := apiClient.CreateMapping(loopCtx, &api.CreateMappingRequest{
 						Host:       &hostname,
 						PathPrefix: &pathPrefix,
 						Target:     &target,
@@ -54,13 +57,53 @@ var (
 					select {
 					case <-timer.C:
 						continue
-					case <-ctx.Done():
+					case <-loopCtx.Done():
 						return
 					}
 				}
 			}()
 
-			<-ctx.Done()
+			if len(args) > 0 {
+				ch := make(chan os.Signal, 1)
+				signal.Notify(ch, os.Interrupt, os.Kill)
+
+				cmd := exec.Command(args[0], args[1:]...)
+				cmd.Env = os.Environ()
+				if overridePort != "" {
+					cmd.Env = append(cmd.Env, fmt.Sprintf("PORT=%s", overridePort))
+				}
+				cmd.Stdin = os.Stdin
+				cmd.Stdout = os.Stdout
+				cmd.Stderr = os.Stderr
+				err = cmd.Start()
+				if err != nil {
+					log.Fatal(err)
+				}
+
+				go func() {
+					for {
+						select {
+						case <-ch:
+							cancel()
+							cmd.Process.Kill()
+							return
+						case <-loopCtx.Done():
+							return
+						}
+					}
+				}()
+
+				err = cmd.Wait()
+				if err != nil {
+					if exiterr, ok := err.(*exec.ExitError); ok {
+						os.Exit(exiterr.ExitCode())
+					} else {
+						log.Fatal(err)
+					}
+				}
+			} else {
+				<-context.Background().Done()
+			}
 		},
 	}
 )
@@ -82,6 +125,21 @@ func init() {
 	rootCmd.Flags().StringVarP(&hostname, "host", "", "", "Hostname to map")
 	rootCmd.MarkFlagRequired("host")
 	rootCmd.Flags().StringVarP(&pathPrefix, "path-prefix", "p", "", "Path prefix")
-	rootCmd.Flags().StringVarP(&target, "target", "t", "", "Target URL")
-	rootCmd.MarkFlagRequired("target")
+	rootCmd.Flags().StringVarP(&targetArg, "target", "t", "", "Target URL")
+}
+
+func getTarget() string {
+	if targetArg != "" {
+		return targetArg
+	}
+	portString := os.Getenv("PORT")
+	port, err := strconv.Atoi(portString)
+	if err != nil {
+		port, err = util.FindAvailablePort()
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+	overridePort = strconv.Itoa(port)
+	return fmt.Sprintf("http://localhost:%d", port)
 }

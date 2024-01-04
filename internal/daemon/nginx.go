@@ -2,7 +2,6 @@ package daemon
 
 import (
 	"fmt"
-	"net"
 	"os"
 	"os/exec"
 	"syscall"
@@ -29,7 +28,7 @@ func NewNginx(logger *zap.Logger) (*Nginx, error) {
 	if err != nil {
 		return nil, err
 	}
-	port, err := findAvailablePort()
+	port, err := util.FindAvailablePort()
 	if err != nil {
 		return nil, err
 	}
@@ -156,17 +155,4 @@ func (n *Nginx) reloadConfig() error {
 	}
 	n.logger.Info("Reloaded nginx config")
 	return nil
-}
-
-func findAvailablePort() (int, error) {
-	listener, err := net.Listen("tcp", "127.0.0.1:0")
-	if err != nil {
-		return 0, err
-	}
-	port := listener.Addr().(*net.TCPAddr).Port
-	err = listener.Close()
-	if err != nil {
-		return 0, err
-	}
-	return port, nil
 }
