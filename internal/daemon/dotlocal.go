@@ -1,6 +1,7 @@
 package daemon
 
 import (
+	"github.com/dchest/uniuri"
 	"github.com/samber/lo"
 	"github.com/softnetics/dotlocal/internal"
 	"github.com/softnetics/dotlocal/internal/daemon/dnsproxy"
@@ -13,7 +14,7 @@ type DotLocal struct {
 	logger   *zap.Logger
 	nginx    *Nginx
 	dnsProxy dnsproxy.DNSProxy
-	mappings []internal.Mapping
+	mappings map[string]internal.Mapping
 }
 
 func NewDotLocal(logger *zap.Logger) (*DotLocal, error) {
@@ -53,8 +54,34 @@ func (d *DotLocal) Start() error {
 	return nil
 }
 
-func (d *DotLocal) SetMappings(mappings []internal.Mapping) error {
-	d.mappings = mappings
+func (d *DotLocal) GetMappings() []internal.Mapping {
+	return lo.MapToSlice(d.mappings, func(host string, mapping internal.Mapping) internal.Mapping {
+		return mapping
+	})
+}
+
+func (d *DotLocal) CreateMapping(opts internal.MappingOptions) (internal.Mapping, error) {
+	id := uniuri.NewLen(6)
+	mapping := internal.Mapping{
+		ID:         id,
+		Host:       opts.Host,
+		PathPrefix: opts.PathPrefix,
+		Target:     opts.Target,
+	}
+	d.mappings[id] = mapping
+	d.logger.Info("Created mapping", zap.Any("mapping", mapping))
+	return mapping, d.UpdateMappings()
+}
+
+func (d *DotLocal) RemoveMapping(ids ...string) error {
+	for _, id := range ids {
+		delete(d.mappings, id)
+	}
+	return d.UpdateMappings()
+}
+
+func (d *DotLocal) UpdateMappings() error {
+	mappings := d.GetMappings()
 	err := d.nginx.SetMappings(mappings)
 	if err != nil {
 		return err

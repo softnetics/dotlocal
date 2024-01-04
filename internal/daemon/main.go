@@ -1,25 +1,22 @@
-package main
+package daemon
 
 import (
-	"log"
+	"context"
+	"os/signal"
+	"syscall"
 
-	"github.com/softnetics/dotlocal/internal/daemon"
 	"go.uber.org/zap"
+	"gopkg.in/tomb.v2"
 )
 
-func main() {
-	logger, err := zap.NewDevelopment()
+func Start(logger *zap.Logger) error {
+	dotlocal, err := NewDotLocal(logger)
 	if err != nil {
-		log.Fatal(err)
-	}
-
-	dotlocal, err := daemon.NewDotLocal(logger)
-	if err != nil {
-		panic(err)
+		return err
 	}
 	err = dotlocal.Start()
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	// err = dotlocal.SetMappings([]internal.Mapping{
@@ -43,8 +40,26 @@ func main() {
 	// 	panic(err)
 	// }
 
-	err = dotlocal.Wait()
+	apiServer, err := NewAPIServer(logger.Named("api"), dotlocal)
 	if err != nil {
-		panic(err)
+		return err
 	}
+
+	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
+	defer stop()
+
+	var t tomb.Tomb
+	t.Go(func() error {
+		return apiServer.Start()
+	})
+
+	<-ctx.Done()
+	logger.Info("Shutting down")
+
+	err = apiServer.Stop()
+	if err != nil {
+		return err
+	}
+
+	return t.Wait()
 }
