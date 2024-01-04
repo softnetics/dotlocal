@@ -23,7 +23,7 @@ func NewDotLocal(logger *zap.Logger) (*DotLocal, error) {
 		return nil, err
 	}
 
-	dnsProxy, err := orbdnsproxy.NewOrbstackDNSProxy(logger.Named("orbdnsproxxy"))
+	dnsProxy, err := orbdnsproxy.NewOrbstackDNSProxy(logger.Named("orbdnsproxy"))
 	if err != nil {
 		return nil, err
 	}
