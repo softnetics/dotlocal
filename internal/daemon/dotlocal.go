@@ -140,5 +140,8 @@ func (d *DotLocal) removeExpiredMappings() error {
 			expiredMappings = append(expiredMappings, mapping)
 		}
 	}
+	if len(expiredMappings) == 0 {
+		return nil
+	}
 	return d.RemoveMapping(expiredMappings...)
 }
