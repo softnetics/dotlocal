@@ -1,15 +1,16 @@
 package daemon
 
 import (
+	"context"
 	"log"
 	"net"
 
-	"github.com/samber/lo"
 	"github.com/softnetics/dotlocal/internal"
 	api "github.com/softnetics/dotlocal/internal/api/proto"
 	"github.com/softnetics/dotlocal/internal/util"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
+	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 type APIServer struct {
@@ -59,31 +60,14 @@ func newDotLocalServer(logger *zap.Logger, dotlocal *DotLocal) *dotLocalServer {
 	}
 }
 
-func (s *dotLocalServer) CreateMappingWhileConnected(stream api.DotLocal_CreateMappingWhileConnectedServer) error {
-	var createdMappings []internal.Mapping
-
-	for {
-		req, err := stream.Recv()
-		if err != nil {
-			if err != stream.Context().Err() {
-				break
-			}
-			return err
-		}
-
-		s.logger.Info("CreateMappingWhileConnected", zap.Any("req", req))
-		mapping, err := s.dotlocal.CreateMapping(internal.MappingOptions{
-			Host:       *req.Host,
-			PathPrefix: *req.PathPrefix,
-			Target:     *req.Target,
-		})
-		if err != nil {
-			return err
-		}
-		createdMappings = append(createdMappings, mapping)
+func (s *dotLocalServer) CreateMapping(ctx context.Context, req *api.CreateMappingRequest) (*emptypb.Empty, error) {
+	_, err := s.dotlocal.CreateMapping(internal.MappingOptions{
+		Host:       *req.Host,
+		PathPrefix: *req.PathPrefix,
+		Target:     *req.Target,
+	})
+	if err != nil {
+		return nil, err
 	}
-
-	return s.dotlocal.RemoveMapping(lo.Map(createdMappings, func(mapping internal.Mapping, _ int) string {
-		return mapping.ID
-	})...)
+	return &emptypb.Empty{}, nil
 }

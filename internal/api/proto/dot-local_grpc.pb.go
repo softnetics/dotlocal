@@ -23,7 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type DotLocalClient interface {
-	CreateMappingWhileConnected(ctx context.Context, opts ...grpc.CallOption) (DotLocal_CreateMappingWhileConnectedClient, error)
+	CreateMapping(ctx context.Context, in *CreateMappingRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type dotLocalClient struct {
@@ -34,45 +34,20 @@ func NewDotLocalClient(cc grpc.ClientConnInterface) DotLocalClient {
 	return &dotLocalClient{cc}
 }
 
-func (c *dotLocalClient) CreateMappingWhileConnected(ctx context.Context, opts ...grpc.CallOption) (DotLocal_CreateMappingWhileConnectedClient, error) {
-	stream, err := c.cc.NewStream(ctx, &DotLocal_ServiceDesc.Streams[0], "/DotLocal/CreateMappingWhileConnected", opts...)
+func (c *dotLocalClient) CreateMapping(ctx context.Context, in *CreateMappingRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, "/DotLocal/CreateMapping", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &dotLocalCreateMappingWhileConnectedClient{stream}
-	return x, nil
-}
-
-type DotLocal_CreateMappingWhileConnectedClient interface {
-	Send(*CreateMappingRequest) error
-	CloseAndRecv() (*emptypb.Empty, error)
-	grpc.ClientStream
-}
-
-type dotLocalCreateMappingWhileConnectedClient struct {
-	grpc.ClientStream
-}
-
-func (x *dotLocalCreateMappingWhileConnectedClient) Send(m *CreateMappingRequest) error {
-	return x.ClientStream.SendMsg(m)
-}
-
-func (x *dotLocalCreateMappingWhileConnectedClient) CloseAndRecv() (*emptypb.Empty, error) {
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	m := new(emptypb.Empty)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
+	return out, nil
 }
 
 // DotLocalServer is the server API for DotLocal service.
 // All implementations must embed UnimplementedDotLocalServer
 // for forward compatibility
 type DotLocalServer interface {
-	CreateMappingWhileConnected(DotLocal_CreateMappingWhileConnectedServer) error
+	CreateMapping(context.Context, *CreateMappingRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedDotLocalServer()
 }
 
@@ -80,8 +55,8 @@ type DotLocalServer interface {
 type UnimplementedDotLocalServer struct {
 }
 
-func (UnimplementedDotLocalServer) CreateMappingWhileConnected(DotLocal_CreateMappingWhileConnectedServer) error {
-	return status.Errorf(codes.Unimplemented, "method CreateMappingWhileConnected not implemented")
+func (UnimplementedDotLocalServer) CreateMapping(context.Context, *CreateMappingRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateMapping not implemented")
 }
 func (UnimplementedDotLocalServer) mustEmbedUnimplementedDotLocalServer() {}
 
@@ -96,30 +71,22 @@ func RegisterDotLocalServer(s grpc.ServiceRegistrar, srv DotLocalServer) {
 	s.RegisterService(&DotLocal_ServiceDesc, srv)
 }
 
-func _DotLocal_CreateMappingWhileConnected_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(DotLocalServer).CreateMappingWhileConnected(&dotLocalCreateMappingWhileConnectedServer{stream})
-}
-
-type DotLocal_CreateMappingWhileConnectedServer interface {
-	SendAndClose(*emptypb.Empty) error
-	Recv() (*CreateMappingRequest, error)
-	grpc.ServerStream
-}
-
-type dotLocalCreateMappingWhileConnectedServer struct {
-	grpc.ServerStream
-}
-
-func (x *dotLocalCreateMappingWhileConnectedServer) SendAndClose(m *emptypb.Empty) error {
-	return x.ServerStream.SendMsg(m)
-}
-
-func (x *dotLocalCreateMappingWhileConnectedServer) Recv() (*CreateMappingRequest, error) {
-	m := new(CreateMappingRequest)
-	if err := x.ServerStream.RecvMsg(m); err != nil {
+func _DotLocal_CreateMapping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateMappingRequest)
+	if err := dec(in); err != nil {
 		return nil, err
 	}
-	return m, nil
+	if interceptor == nil {
+		return srv.(DotLocalServer).CreateMapping(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/DotLocal/CreateMapping",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DotLocalServer).CreateMapping(ctx, req.(*CreateMappingRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 // DotLocal_ServiceDesc is the grpc.ServiceDesc for DotLocal service.
@@ -128,13 +95,12 @@ func (x *dotLocalCreateMappingWhileConnectedServer) Recv() (*CreateMappingReques
 var DotLocal_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "DotLocal",
 	HandlerType: (*DotLocalServer)(nil),
-	Methods:     []grpc.MethodDesc{},
-	Streams: []grpc.StreamDesc{
+	Methods: []grpc.MethodDesc{
 		{
-			StreamName:    "CreateMappingWhileConnected",
-			Handler:       _DotLocal_CreateMappingWhileConnected_Handler,
-			ClientStreams: true,
+			MethodName: "CreateMapping",
+			Handler:    _DotLocal_CreateMapping_Handler,
 		},
 	},
+	Streams:  []grpc.StreamDesc{},
 	Metadata: "proto/dot-local.proto",
 }

@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 
 	api "github.com/softnetics/dotlocal/internal/api/proto"
 	"github.com/softnetics/dotlocal/internal/client"
@@ -32,27 +33,34 @@ var (
 			ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 			defer stop()
 
-			stream, err := apiClient.CreateMappingWhileConnected(ctx)
-			if err != nil {
-				log.Fatal(err)
-			}
-
-			logger.Info(fmt.Sprintf("Forwarding %s%s to %s", hostname, pathPrefix, target))
-			err = stream.Send(&api.CreateMappingRequest{
-				Host:       &hostname,
-				PathPrefix: &pathPrefix,
-				Target:     &target,
-			})
-			if err != nil {
-				log.Fatal(err)
-			}
+			go func() {
+				wasSuccessful := false
+				for {
+					_, err := apiClient.CreateMapping(ctx, &api.CreateMappingRequest{
+						Host:       &hostname,
+						PathPrefix: &pathPrefix,
+						Target:     &target,
+					})
+					duration := 1 * time.Minute
+					if err != nil {
+						logger.Error("Failed to add mapping. Retrying in 5 seconds.", zap.Error(err))
+						duration = 5 * time.Second
+						wasSuccessful = false
+					} else if !wasSuccessful {
+						logger.Info(fmt.Sprintf("Forwarding %s%s to %s", hostname, pathPrefix, target))
+						wasSuccessful = true
+					}
+					timer := time.NewTimer(duration)
+					select {
+					case <-timer.C:
+						continue
+					case <-ctx.Done():
+						return
+					}
+				}
+			}()
 
 			<-ctx.Done()
-			logger.Info("Shutting down")
-			_, err = stream.CloseAndRecv()
-			if err != nil {
-				log.Fatal(err)
-			}
 		},
 	}
 )
