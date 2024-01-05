@@ -1,12 +1,15 @@
 package daemon
 
 import (
+	"bufio"
 	"fmt"
+	"io"
 	"os"
 	"os/exec"
 	"strconv"
+	"strings"
+	"sync"
 	"syscall"
-	"time"
 
 	"github.com/samber/lo"
 	"github.com/softnetics/dotlocal/internal"
@@ -46,17 +49,35 @@ func (n *Nginx) Start() error {
 	n.writeConfig()
 	n.logger.Debug("Starting nginx", zap.Int("port", n.port))
 
-	fmt.Printf("nginx -t -c %s\n", n.configFile)
+	fmt.Printf("nginx -c %s\n", n.configFile)
 	cmd := exec.Command("nginx", "-c", n.configFile)
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	err := cmd.Start()
+	stdout, err := cmd.StdoutPipe()
 	if err != nil {
 		return err
 	}
-	n.cmd = cmd
+	var wg sync.WaitGroup
+	wg.Add(1)
+	go func() {
+		func() {
+			defer wg.Done()
+			scanner := bufio.NewScanner(stdout)
+			for scanner.Scan() {
+				line := scanner.Text()
+				println(line)
+				if strings.Contains(line, "start worker processes") {
+					return
+				}
+			}
+		}()
+		io.Copy(os.Stdout, stdout)
+	}()
 
-	time.Sleep(100)
+	err = cmd.Start()
+	if err != nil {
+		return err
+	}
+	wg.Wait()
+	n.cmd = cmd
 
 	n.logger.Info("Ready")
 
@@ -78,7 +99,8 @@ func (n *Nginx) Stop() error {
 	if err != nil {
 		return err
 	}
-	return n.cmd.Wait()
+	n.cmd.Wait()
+	return nil
 }
 
 func (n *Nginx) Port() int {
@@ -88,6 +110,7 @@ func (n *Nginx) Port() int {
 func (n *Nginx) writeConfig() error {
 	p := parser.NewStringParser(`
 		daemon off;
+		error_log /dev/stdout info;
 		events {
 			worker_connections 1024;
 		}
