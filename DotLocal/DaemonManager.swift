@@ -57,6 +57,7 @@ class DaemonManager: ObservableObject {
         DispatchQueue.global().async {
             task.waitUntilExit()
             DispatchQueue.main.async {
+                NotificationCenter.default.removeObserver(token)
                 self.onStop()
             }
         }
@@ -75,6 +76,7 @@ class DaemonManager: ObservableObject {
         )
         let apiClient = DotLocalAsyncClient(channel: channel)
         self.apiClient = apiClient
+        
         state = .started
     }
     

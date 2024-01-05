@@ -18,7 +18,7 @@ struct ContentView: View {
             case .starting:
                 ProgressView()
             case .started:
-                Text("DotLocal is running")
+                MappingList()
             }
         }
         .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, maxHeight: .infinity)

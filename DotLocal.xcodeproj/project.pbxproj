@@ -11,6 +11,9 @@
 		D50378042B482578008F9AA8 /* dot-local.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50378022B482578008F9AA8 /* dot-local.pb.swift */; };
 		D50378052B482578008F9AA8 /* dot-local.grpc.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50378012B482578008F9AA8 /* dot-local.grpc.swift */; };
 		D50378062B482578008F9AA8 /* preferences.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50378032B482578008F9AA8 /* preferences.pb.swift */; };
+		D50378092B48708C008F9AA8 /* MappingListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50378082B48708C008F9AA8 /* MappingListViewModel.swift */; };
+		D503780B2B48718D008F9AA8 /* MappingList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D503780A2B48718D008F9AA8 /* MappingList.swift */; };
+		D503780D2B487250008F9AA8 /* ProtoExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D503780C2B487250008F9AA8 /* ProtoExtensions.swift */; };
 		D529B1AE2B47BF8C00DC288B /* DotLocalApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D529B1AD2B47BF8C00DC288B /* DotLocalApp.swift */; };
 		D529B1B02B47BF8C00DC288B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D529B1AF2B47BF8C00DC288B /* ContentView.swift */; };
 		D529B1B22B47BF8E00DC288B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D529B1B12B47BF8E00DC288B /* Assets.xcassets */; };
@@ -82,6 +85,9 @@
 		D50378012B482578008F9AA8 /* dot-local.grpc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "dot-local.grpc.swift"; sourceTree = "<group>"; };
 		D50378022B482578008F9AA8 /* dot-local.pb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "dot-local.pb.swift"; sourceTree = "<group>"; };
 		D50378032B482578008F9AA8 /* preferences.pb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = preferences.pb.swift; sourceTree = "<group>"; };
+		D50378082B48708C008F9AA8 /* MappingListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MappingListViewModel.swift; sourceTree = "<group>"; };
+		D503780A2B48718D008F9AA8 /* MappingList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MappingList.swift; sourceTree = "<group>"; };
+		D503780C2B487250008F9AA8 /* ProtoExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtoExtensions.swift; sourceTree = "<group>"; };
 		D529B1AA2B47BF8C00DC288B /* DotLocal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DotLocal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D529B1AD2B47BF8C00DC288B /* DotLocalApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotLocalApp.swift; sourceTree = "<group>"; };
 		D529B1AF2B47BF8C00DC288B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -130,6 +136,7 @@
 			isa = PBXGroup;
 			children = (
 				D50378072B482588008F9AA8 /* proto */,
+				D503780C2B487250008F9AA8 /* ProtoExtensions.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -170,10 +177,12 @@
 			isa = PBXGroup;
 			children = (
 				D50377F72B481F69008F9AA8 /* Model */,
-				D5E8DD282B47E54800E083E0 /* AppDelegate.swift */,
-				D529B1BE2B47BF8E00DC288B /* DotLocalTests */,
 				D529B1AD2B47BF8C00DC288B /* DotLocalApp.swift */,
+				D5E8DD282B47E54800E083E0 /* AppDelegate.swift */,
 				D529B1AF2B47BF8C00DC288B /* ContentView.swift */,
+				D50378082B48708C008F9AA8 /* MappingListViewModel.swift */,
+				D503780A2B48718D008F9AA8 /* MappingList.swift */,
+				D529B1BE2B47BF8E00DC288B /* DotLocalTests */,
 				D529B1B12B47BF8E00DC288B /* Assets.xcassets */,
 				D529B1B62B47BF8E00DC288B /* DotLocal.entitlements */,
 				D529B1B32B47BF8E00DC288B /* Preview Content */,
@@ -375,10 +384,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				D5E8DD292B47E54800E083E0 /* AppDelegate.swift in Sources */,
+				D50378092B48708C008F9AA8 /* MappingListViewModel.swift in Sources */,
 				D5E8DD332B47E97F00E083E0 /* DaemonManager.swift in Sources */,
 				D529B1B02B47BF8C00DC288B /* ContentView.swift in Sources */,
+				D503780D2B487250008F9AA8 /* ProtoExtensions.swift in Sources */,
 				D50378042B482578008F9AA8 /* dot-local.pb.swift in Sources */,
 				D50378052B482578008F9AA8 /* dot-local.grpc.swift in Sources */,
+				D503780B2B48718D008F9AA8 /* MappingList.swift in Sources */,
 				D529B1AE2B47BF8C00DC288B /* DotLocalApp.swift in Sources */,
 				D50378062B482578008F9AA8 /* preferences.pb.swift in Sources */,
 			);

@@ -6,6 +6,7 @@ option go_package = "github.com/softnetics/dotlocal/api";
 service DotLocal {
   rpc CreateMapping (CreateMappingRequest) returns (google.protobuf.Empty) {}
   rpc RemoveMapping (MappingKey) returns (google.protobuf.Empty) {}
+  rpc ListMappings (google.protobuf.Empty) returns (ListMappingsResponse) {}
 }
 
 message CreateMappingRequest {
@@ -25,4 +26,8 @@ message Mapping {
   required string id = 3;
   required string target = 4;
   required google.protobuf.Timestamp expires_at = 5;
+}
+
+message ListMappingsResponse {
+  repeated Mapping mappings = 1;
 }

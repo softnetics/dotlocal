@@ -25,6 +25,7 @@ const _ = grpc.SupportPackageIsVersion7
 type DotLocalClient interface {
 	CreateMapping(ctx context.Context, in *CreateMappingRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	RemoveMapping(ctx context.Context, in *MappingKey, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	ListMappings(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ListMappingsResponse, error)
 }
 
 type dotLocalClient struct {
@@ -53,12 +54,22 @@ func (c *dotLocalClient) RemoveMapping(ctx context.Context, in *MappingKey, opts
 	return out, nil
 }
 
+func (c *dotLocalClient) ListMappings(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ListMappingsResponse, error) {
+	out := new(ListMappingsResponse)
+	err := c.cc.Invoke(ctx, "/DotLocal/ListMappings", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // DotLocalServer is the server API for DotLocal service.
 // All implementations must embed UnimplementedDotLocalServer
 // for forward compatibility
 type DotLocalServer interface {
 	CreateMapping(context.Context, *CreateMappingRequest) (*emptypb.Empty, error)
 	RemoveMapping(context.Context, *MappingKey) (*emptypb.Empty, error)
+	ListMappings(context.Context, *emptypb.Empty) (*ListMappingsResponse, error)
 	mustEmbedUnimplementedDotLocalServer()
 }
 
@@ -71,6 +82,9 @@ func (UnimplementedDotLocalServer) CreateMapping(context.Context, *CreateMapping
 }
 func (UnimplementedDotLocalServer) RemoveMapping(context.Context, *MappingKey) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RemoveMapping not implemented")
+}
+func (UnimplementedDotLocalServer) ListMappings(context.Context, *emptypb.Empty) (*ListMappingsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListMappings not implemented")
 }
 func (UnimplementedDotLocalServer) mustEmbedUnimplementedDotLocalServer() {}
 
@@ -121,6 +135,24 @@ func _DotLocal_RemoveMapping_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _DotLocal_ListMappings_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DotLocalServer).ListMappings(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/DotLocal/ListMappings",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DotLocalServer).ListMappings(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // DotLocal_ServiceDesc is the grpc.ServiceDesc for DotLocal service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -135,6 +167,10 @@ var DotLocal_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RemoveMapping",
 			Handler:    _DotLocal_RemoveMapping_Handler,
+		},
+		{
+			MethodName: "ListMappings",
+			Handler:    _DotLocal_ListMappings_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -25,6 +25,11 @@ public protocol DotLocalClientProtocol: GRPCClient {
     _ request: MappingKey,
     callOptions: CallOptions?
   ) -> UnaryCall<MappingKey, SwiftProtobuf.Google_Protobuf_Empty>
+
+  func listMappings(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions?
+  ) -> UnaryCall<SwiftProtobuf.Google_Protobuf_Empty, ListMappingsResponse>
 }
 
 extension DotLocalClientProtocol {
@@ -65,6 +70,24 @@ extension DotLocalClientProtocol {
       request: request,
       callOptions: callOptions ?? self.defaultCallOptions,
       interceptors: self.interceptors?.makeRemoveMappingInterceptors() ?? []
+    )
+  }
+
+  /// Unary call to ListMappings
+  ///
+  /// - Parameters:
+  ///   - request: Request to send to ListMappings.
+  ///   - callOptions: Call options.
+  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+  public func listMappings(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions? = nil
+  ) -> UnaryCall<SwiftProtobuf.Google_Protobuf_Empty, ListMappingsResponse> {
+    return self.makeUnaryCall(
+      path: DotLocalClientMetadata.Methods.listMappings.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeListMappingsInterceptors() ?? []
     )
   }
 }
@@ -140,6 +163,11 @@ public protocol DotLocalAsyncClientProtocol: GRPCClient {
     _ request: MappingKey,
     callOptions: CallOptions?
   ) -> GRPCAsyncUnaryCall<MappingKey, SwiftProtobuf.Google_Protobuf_Empty>
+
+  func makeListMappingsCall(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions?
+  ) -> GRPCAsyncUnaryCall<SwiftProtobuf.Google_Protobuf_Empty, ListMappingsResponse>
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
@@ -175,6 +203,18 @@ extension DotLocalAsyncClientProtocol {
       interceptors: self.interceptors?.makeRemoveMappingInterceptors() ?? []
     )
   }
+
+  public func makeListMappingsCall(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions? = nil
+  ) -> GRPCAsyncUnaryCall<SwiftProtobuf.Google_Protobuf_Empty, ListMappingsResponse> {
+    return self.makeAsyncUnaryCall(
+      path: DotLocalClientMetadata.Methods.listMappings.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeListMappingsInterceptors() ?? []
+    )
+  }
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
@@ -200,6 +240,18 @@ extension DotLocalAsyncClientProtocol {
       request: request,
       callOptions: callOptions ?? self.defaultCallOptions,
       interceptors: self.interceptors?.makeRemoveMappingInterceptors() ?? []
+    )
+  }
+
+  public func listMappings(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions? = nil
+  ) async throws -> ListMappingsResponse {
+    return try await self.performAsyncUnaryCall(
+      path: DotLocalClientMetadata.Methods.listMappings.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeListMappingsInterceptors() ?? []
     )
   }
 }
@@ -228,6 +280,9 @@ public protocol DotLocalClientInterceptorFactoryProtocol: Sendable {
 
   /// - Returns: Interceptors to use when invoking 'removeMapping'.
   func makeRemoveMappingInterceptors() -> [ClientInterceptor<MappingKey, SwiftProtobuf.Google_Protobuf_Empty>]
+
+  /// - Returns: Interceptors to use when invoking 'listMappings'.
+  func makeListMappingsInterceptors() -> [ClientInterceptor<SwiftProtobuf.Google_Protobuf_Empty, ListMappingsResponse>]
 }
 
 public enum DotLocalClientMetadata {
@@ -237,6 +292,7 @@ public enum DotLocalClientMetadata {
     methods: [
       DotLocalClientMetadata.Methods.createMapping,
       DotLocalClientMetadata.Methods.removeMapping,
+      DotLocalClientMetadata.Methods.listMappings,
     ]
   )
 
@@ -252,6 +308,12 @@ public enum DotLocalClientMetadata {
       path: "/DotLocal/RemoveMapping",
       type: GRPCCallType.unary
     )
+
+    public static let listMappings = GRPCMethodDescriptor(
+      name: "ListMappings",
+      path: "/DotLocal/ListMappings",
+      type: GRPCCallType.unary
+    )
   }
 }
 
@@ -262,6 +324,8 @@ public protocol DotLocalProvider: CallHandlerProvider {
   func createMapping(request: CreateMappingRequest, context: StatusOnlyCallContext) -> EventLoopFuture<SwiftProtobuf.Google_Protobuf_Empty>
 
   func removeMapping(request: MappingKey, context: StatusOnlyCallContext) -> EventLoopFuture<SwiftProtobuf.Google_Protobuf_Empty>
+
+  func listMappings(request: SwiftProtobuf.Google_Protobuf_Empty, context: StatusOnlyCallContext) -> EventLoopFuture<ListMappingsResponse>
 }
 
 extension DotLocalProvider {
@@ -294,6 +358,15 @@ extension DotLocalProvider {
         userFunction: self.removeMapping(request:context:)
       )
 
+    case "ListMappings":
+      return UnaryServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<SwiftProtobuf.Google_Protobuf_Empty>(),
+        responseSerializer: ProtobufSerializer<ListMappingsResponse>(),
+        interceptors: self.interceptors?.makeListMappingsInterceptors() ?? [],
+        userFunction: self.listMappings(request:context:)
+      )
+
     default:
       return nil
     }
@@ -315,6 +388,11 @@ public protocol DotLocalAsyncProvider: CallHandlerProvider, Sendable {
     request: MappingKey,
     context: GRPCAsyncServerCallContext
   ) async throws -> SwiftProtobuf.Google_Protobuf_Empty
+
+  func listMappings(
+    request: SwiftProtobuf.Google_Protobuf_Empty,
+    context: GRPCAsyncServerCallContext
+  ) async throws -> ListMappingsResponse
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
@@ -354,6 +432,15 @@ extension DotLocalAsyncProvider {
         wrapping: { try await self.removeMapping(request: $0, context: $1) }
       )
 
+    case "ListMappings":
+      return GRPCAsyncServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<SwiftProtobuf.Google_Protobuf_Empty>(),
+        responseSerializer: ProtobufSerializer<ListMappingsResponse>(),
+        interceptors: self.interceptors?.makeListMappingsInterceptors() ?? [],
+        wrapping: { try await self.listMappings(request: $0, context: $1) }
+      )
+
     default:
       return nil
     }
@@ -369,6 +456,10 @@ public protocol DotLocalServerInterceptorFactoryProtocol: Sendable {
   /// - Returns: Interceptors to use when handling 'removeMapping'.
   ///   Defaults to calling `self.makeInterceptors()`.
   func makeRemoveMappingInterceptors() -> [ServerInterceptor<MappingKey, SwiftProtobuf.Google_Protobuf_Empty>]
+
+  /// - Returns: Interceptors to use when handling 'listMappings'.
+  ///   Defaults to calling `self.makeInterceptors()`.
+  func makeListMappingsInterceptors() -> [ServerInterceptor<SwiftProtobuf.Google_Protobuf_Empty, ListMappingsResponse>]
 }
 
 public enum DotLocalServerMetadata {
@@ -378,6 +469,7 @@ public enum DotLocalServerMetadata {
     methods: [
       DotLocalServerMetadata.Methods.createMapping,
       DotLocalServerMetadata.Methods.removeMapping,
+      DotLocalServerMetadata.Methods.listMappings,
     ]
   )
 
@@ -391,6 +483,12 @@ public enum DotLocalServerMetadata {
     public static let removeMapping = GRPCMethodDescriptor(
       name: "RemoveMapping",
       path: "/DotLocal/RemoveMapping",
+      type: GRPCCallType.unary
+    )
+
+    public static let listMappings = GRPCMethodDescriptor(
+      name: "ListMappings",
+      path: "/DotLocal/ListMappings",
       type: GRPCCallType.unary
     )
   }

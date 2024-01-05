@@ -7,12 +7,14 @@ import (
 	"os"
 	"strconv"
 
+	"github.com/samber/lo"
 	"github.com/softnetics/dotlocal/internal"
 	api "github.com/softnetics/dotlocal/internal/api/proto"
 	"github.com/softnetics/dotlocal/internal/util"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/types/known/emptypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type APIServer struct {
@@ -138,4 +140,21 @@ func (s *dotLocalServer) RemoveMapping(ctx context.Context, key *api.MappingKey)
 		return nil, err
 	}
 	return &emptypb.Empty{}, nil
+}
+
+func (s *dotLocalServer) ListMappings(ctx context.Context, _ *emptypb.Empty) (*api.ListMappingsResponse, error) {
+	res := &api.ListMappingsResponse{
+		Mappings: lo.Map(s.dotlocal.GetMappings(), func(mapping internal.Mapping, _ int) *api.Mapping {
+			return &api.Mapping{
+				Id:         &mapping.ID,
+				Host:       &mapping.Host,
+				PathPrefix: &mapping.PathPrefix,
+				Target:     &mapping.Target,
+				ExpiresAt: &timestamppb.Timestamp{
+					Seconds: mapping.ExpresAt.Unix(),
+				},
+			}
+		}),
+	}
+	return res, nil
 }
