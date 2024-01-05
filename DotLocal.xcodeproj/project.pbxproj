@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D50377F62B481B59008F9AA8 /* GRPC in Frameworks */ = {isa = PBXBuildFile; productRef = D50377F52B481B59008F9AA8 /* GRPC */; };
+		D50378042B482578008F9AA8 /* dot-local.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50378022B482578008F9AA8 /* dot-local.pb.swift */; };
+		D50378052B482578008F9AA8 /* dot-local.grpc.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50378012B482578008F9AA8 /* dot-local.grpc.swift */; };
+		D50378062B482578008F9AA8 /* preferences.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50378032B482578008F9AA8 /* preferences.pb.swift */; };
 		D529B1AE2B47BF8C00DC288B /* DotLocalApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D529B1AD2B47BF8C00DC288B /* DotLocalApp.swift */; };
 		D529B1B02B47BF8C00DC288B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D529B1AF2B47BF8C00DC288B /* ContentView.swift */; };
 		D529B1B22B47BF8E00DC288B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D529B1B12B47BF8E00DC288B /* Assets.xcassets */; };
@@ -75,6 +79,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		D50378012B482578008F9AA8 /* dot-local.grpc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "dot-local.grpc.swift"; sourceTree = "<group>"; };
+		D50378022B482578008F9AA8 /* dot-local.pb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "dot-local.pb.swift"; sourceTree = "<group>"; };
+		D50378032B482578008F9AA8 /* preferences.pb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = preferences.pb.swift; sourceTree = "<group>"; };
 		D529B1AA2B47BF8C00DC288B /* DotLocal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DotLocal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D529B1AD2B47BF8C00DC288B /* DotLocalApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotLocalApp.swift; sourceTree = "<group>"; };
 		D529B1AF2B47BF8C00DC288B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -98,6 +105,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D50377F62B481B59008F9AA8 /* GRPC in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -118,6 +126,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D50377F72B481F69008F9AA8 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				D50378072B482588008F9AA8 /* proto */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		D50378072B482588008F9AA8 /* proto */ = {
+			isa = PBXGroup;
+			children = (
+				D50378012B482578008F9AA8 /* dot-local.grpc.swift */,
+				D50378022B482578008F9AA8 /* dot-local.pb.swift */,
+				D50378032B482578008F9AA8 /* preferences.pb.swift */,
+			);
+			path = proto;
+			sourceTree = "<group>";
+		};
 		D529B1A12B47BF8C00DC288B = {
 			isa = PBXGroup;
 			children = (
@@ -143,6 +169,7 @@
 		D529B1AC2B47BF8C00DC288B /* DotLocal */ = {
 			isa = PBXGroup;
 			children = (
+				D50377F72B481F69008F9AA8 /* Model */,
 				D5E8DD282B47E54800E083E0 /* AppDelegate.swift */,
 				D529B1BE2B47BF8E00DC288B /* DotLocalTests */,
 				D529B1AD2B47BF8C00DC288B /* DotLocalApp.swift */,
@@ -200,6 +227,9 @@
 			dependencies = (
 			);
 			name = DotLocal;
+			packageProductDependencies = (
+				D50377F52B481B59008F9AA8 /* GRPC */,
+			);
 			productName = DotLocal;
 			productReference = D529B1AA2B47BF8C00DC288B /* DotLocal.app */;
 			productType = "com.apple.product-type.application";
@@ -272,6 +302,9 @@
 				Base,
 			);
 			mainGroup = D529B1A12B47BF8C00DC288B;
+			packageReferences = (
+				D50377F42B481B59008F9AA8 /* XCRemoteSwiftPackageReference "grpc-swift" */,
+			);
 			productRefGroup = D529B1AB2B47BF8C00DC288B /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -344,7 +377,10 @@
 				D5E8DD292B47E54800E083E0 /* AppDelegate.swift in Sources */,
 				D5E8DD332B47E97F00E083E0 /* DaemonManager.swift in Sources */,
 				D529B1B02B47BF8C00DC288B /* ContentView.swift in Sources */,
+				D50378042B482578008F9AA8 /* dot-local.pb.swift in Sources */,
+				D50378052B482578008F9AA8 /* dot-local.grpc.swift in Sources */,
 				D529B1AE2B47BF8C00DC288B /* DotLocalApp.swift in Sources */,
+				D50378062B482578008F9AA8 /* preferences.pb.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -667,6 +703,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D50377F42B481B59008F9AA8 /* XCRemoteSwiftPackageReference "grpc-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/grpc/grpc-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.21.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D50377F52B481B59008F9AA8 /* GRPC */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D50377F42B481B59008F9AA8 /* XCRemoteSwiftPackageReference "grpc-swift" */;
+			productName = GRPC;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D529B1A22B47BF8C00DC288B /* Project object */;
 }
