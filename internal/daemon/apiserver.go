@@ -2,8 +2,10 @@ package daemon
 
 import (
 	"context"
-	"log"
+	"errors"
 	"net"
+	"os"
+	"strconv"
 
 	"github.com/softnetics/dotlocal/internal"
 	api "github.com/softnetics/dotlocal/internal/api/proto"
@@ -27,15 +29,24 @@ func NewAPIServer(logger *zap.Logger, dotlocal *DotLocal) (*APIServer, error) {
 }
 
 func (s *APIServer) Start() error {
-	lis, err := net.Listen("unix", util.GetApiSocketPath())
+	err := s.killExistingProcess()
 	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
+		return err
+	}
+
+	pid := os.Getpid()
+	err = os.WriteFile(util.GetPidPath(), []byte(strconv.Itoa(pid)), 0644)
+
+	socketPath := util.GetApiSocketPath()
+	lis, err := net.Listen("unix", socketPath)
+	if err != nil {
+		return err
 	}
 	var opts []grpc.ServerOption
 	s.grpcServer = grpc.NewServer(opts...)
 	api.RegisterDotLocalServer(s.grpcServer, newDotLocalServer(s.logger, s.dotlocal))
 
-	s.logger.Info("API server listening", zap.String("path", util.GetApiSocketPath()))
+	s.logger.Info("API server listening", zap.String("path", socketPath))
 	s.grpcServer.Serve(lis)
 
 	return nil
@@ -43,6 +54,46 @@ func (s *APIServer) Start() error {
 
 func (s *APIServer) Stop() error {
 	s.grpcServer.Stop()
+	os.Remove(util.GetPidPath())
+	return nil
+}
+
+func (s *APIServer) killExistingProcess() error {
+	_, err := os.Stat(util.GetApiSocketPath())
+	if err != nil {
+		if errors.Is(err, os.ErrNotExist) {
+			return nil
+		}
+		return err
+	}
+	s.logger.Info("Killing existing process")
+
+	pidBytes, err := os.ReadFile(util.GetPidPath())
+	if err != nil {
+		return err
+	}
+	pid, err := strconv.Atoi(string(pidBytes))
+	if err != nil {
+		return err
+	}
+
+	process, err := os.FindProcess(pid)
+	if err != nil {
+		return err
+	}
+	err = process.Kill()
+	if err != nil {
+		return err
+	}
+	err = os.Remove(util.GetPidPath())
+	if err != nil {
+		return err
+	}
+	err = os.Remove(util.GetApiSocketPath())
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

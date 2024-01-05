@@ -15,15 +15,29 @@ func CreateTmpFile() (string, error) {
 	return f.Name(), nil
 }
 
-func GetApiSocketPath() string {
-	home := os.Getenv("HOME")
+var dotlocalPath *string
 
-	err := os.MkdirAll(path.Join(home, ".dotlocal"), 0755)
-	if err != nil {
-		panic(err)
+func GetDotlocalPath() string {
+	if dotlocalPath == nil {
+		home := os.Getenv("HOME")
+		dir := path.Join(home, ".dotlocal")
+		dotlocalPath = &dir
+
+		err := os.MkdirAll(dir, 0755)
+		if err != nil {
+			panic(err)
+		}
 	}
 
-	return path.Join(home, ".dotlocal", "api.sock")
+	return *dotlocalPath
+}
+
+func GetApiSocketPath() string {
+	return path.Join(GetDotlocalPath(), "api.sock")
+}
+
+func GetPidPath() string {
+	return path.Join(GetDotlocalPath(), "pid")
 }
 
 func FindAvailablePort() (int, error) {
