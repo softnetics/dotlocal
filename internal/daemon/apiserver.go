@@ -19,6 +19,7 @@ type APIServer struct {
 	logger     *zap.Logger
 	grpcServer *grpc.Server
 	dotlocal   *DotLocal
+	serve      func() error
 }
 
 func NewAPIServer(logger *zap.Logger, dotlocal *DotLocal) (*APIServer, error) {
@@ -46,13 +47,20 @@ func (s *APIServer) Start() error {
 	s.grpcServer = grpc.NewServer(opts...)
 	api.RegisterDotLocalServer(s.grpcServer, newDotLocalServer(s.logger, s.dotlocal))
 
-	s.logger.Info("API server listening", zap.String("path", socketPath))
-	s.grpcServer.Serve(lis)
+	s.serve = func() error {
+		s.logger.Info("API server listening", zap.String("path", socketPath))
+		return s.grpcServer.Serve(lis)
+	}
 
 	return nil
 }
 
+func (s *APIServer) Serve() error {
+	return s.serve()
+}
+
 func (s *APIServer) Stop() error {
+	s.logger.Info("Stopping API server")
 	s.grpcServer.Stop()
 	os.Remove(util.GetPidPath())
 	return nil

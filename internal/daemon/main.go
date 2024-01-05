@@ -30,14 +30,23 @@ func Start(logger *zap.Logger) error {
 	t.Go(func() error {
 		return apiServer.Start()
 	})
+	err = t.Wait()
+	if err != nil {
+		return err
+	}
+
+	var t2 tomb.Tomb
+	t2.Go(func() error {
+		return apiServer.Serve()
+	})
 
 	<-ctx.Done()
 	logger.Info("Shutting down")
 
-	t.Go(func() error {
+	t2.Go(func() error {
 		return apiServer.Stop()
 	})
-	t.Go(func() error {
+	t2.Go(func() error {
 		return dotlocal.Stop()
 	})
 
