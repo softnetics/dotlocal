@@ -2,14 +2,20 @@ package daemon
 
 import (
 	"context"
+	"errors"
+	"os"
 	"time"
 
 	"github.com/dchest/uniuri"
 	"github.com/samber/lo"
 	"github.com/softnetics/dotlocal/internal"
+	api "github.com/softnetics/dotlocal/internal/api/proto"
 	"github.com/softnetics/dotlocal/internal/daemon/dnsproxy"
 	"github.com/softnetics/dotlocal/internal/daemon/orbdnsproxy"
+	"github.com/softnetics/dotlocal/internal/util"
 	"go.uber.org/zap"
+	"google.golang.org/protobuf/encoding/protojson"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"gopkg.in/tomb.v2"
 )
 
@@ -46,6 +52,26 @@ func (d *DotLocal) Start() error {
 	d.ctx = ctx
 	d.cancel = cancel
 
+	preferences, err := d.loadPreferences()
+	if err != nil {
+		return err
+	}
+	for _, mapping := range preferences.Mappings {
+		key := internal.MappingKey{
+			Host:       *mapping.Host,
+			PathPrefix: *mapping.PathPrefix,
+		}
+		state := &internal.MappingState{
+			ID:        *mapping.Id,
+			Target:    *mapping.Target,
+			ExpiresAt: mapping.ExpiresAt.AsTime(),
+		}
+		if state.ExpiresAt.Before(time.Now()) {
+			continue
+		}
+		d.mappings[key] = state
+	}
+
 	var t tomb.Tomb
 	t.Go(func() error {
 		return d.nginx.Start()
@@ -54,7 +80,12 @@ func (d *DotLocal) Start() error {
 		return d.dnsProxy.Start(d.nginx.Port())
 	})
 
-	err := t.Wait()
+	err = t.Wait()
+	if err != nil {
+		return err
+	}
+
+	err = d.UpdateMappings()
 	if err != nil {
 		return err
 	}
@@ -87,7 +118,57 @@ func (d *DotLocal) Stop() error {
 	t.Go(func() error {
 		return d.dnsProxy.Stop()
 	})
-	return t.Wait()
+	err := t.Wait()
+	if err != nil {
+		return err
+	}
+	d.logger.Info("Stopped")
+	err = d.savePreferences()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (d *DotLocal) loadPreferences() (*api.Preferences, error) {
+	json, err := os.ReadFile(util.GetPreferencesPath())
+	if err != nil {
+		if errors.Is(err, os.ErrNotExist) {
+			return &api.Preferences{}, nil
+		}
+		return nil, err
+	}
+	preference := &api.Preferences{}
+	err = protojson.Unmarshal(json, preference)
+	if err != nil {
+		return &api.Preferences{}, nil
+	}
+	return preference, nil
+}
+
+func (d *DotLocal) savePreferences() error {
+	mappings := lo.Map(d.GetMappings(), func(mapping internal.Mapping, _ int) *api.Mapping {
+		return &api.Mapping{
+			Id:         &mapping.ID,
+			Host:       &mapping.Host,
+			PathPrefix: &mapping.PathPrefix,
+			Target:     &mapping.Target,
+			ExpiresAt:  &timestamppb.Timestamp{Seconds: mapping.ExpresAt.Unix()},
+		}
+	})
+	preference := &api.Preferences{
+		Mappings: mappings,
+	}
+	json, err := protojson.Marshal(preference)
+	if err != nil {
+		return err
+	}
+	err = os.WriteFile(util.GetPreferencesPath(), json, 0644)
+	if err != nil {
+		return err
+	}
+	d.logger.Info("Saved preferences", zap.String("path", util.GetPreferencesPath()))
+	return nil
 }
 
 func (d *DotLocal) GetMappings() []internal.Mapping {

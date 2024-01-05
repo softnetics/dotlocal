@@ -40,6 +40,10 @@ func GetPidPath() string {
 	return path.Join(GetDotlocalPath(), "pid")
 }
 
+func GetPreferencesPath() string {
+	return path.Join(GetDotlocalPath(), "preferences.json")
+}
+
 func FindAvailablePort() (int, error) {
 	listener, err := net.Listen("tcp", "127.0.0.1:0")
 	if err != nil {

@@ -7,6 +7,7 @@ type Mapping struct {
 	Host       string
 	PathPrefix string
 	Target     string
+	ExpresAt   time.Time
 }
 
 func NewMapping(key MappingKey, state *MappingState) Mapping {
@@ -15,6 +16,7 @@ func NewMapping(key MappingKey, state *MappingState) Mapping {
 		Host:       key.Host,
 		PathPrefix: key.PathPrefix,
 		Target:     state.Target,
+		ExpresAt:   state.ExpiresAt,
 	}
 }
 

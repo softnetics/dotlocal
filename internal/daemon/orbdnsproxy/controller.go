@@ -96,6 +96,7 @@ func (p *OrbstackDNSProxy) SetHosts(hosts map[string]struct{}) error {
 	p.logger.Debug("Setting hosts", zap.Any("hosts", hosts))
 
 	var t tomb.Tomb
+	needsWait := false
 
 	for host := range hosts {
 		_, exists := p.containers[host]
@@ -108,6 +109,7 @@ func (p *OrbstackDNSProxy) SetHosts(hosts map[string]struct{}) error {
 			return err
 		}
 		p.containers[host] = container
+		needsWait = true
 		t.Go(func() error {
 			return container.CreateAndStart()
 		})
@@ -120,12 +122,16 @@ func (p *OrbstackDNSProxy) SetHosts(hosts map[string]struct{}) error {
 		if exists {
 			continue
 		}
+		needsWait = true
 		t.Go(func() error {
 			delete(p.containers, host)
 			return container.Remove()
 		})
 	}
 
+	if !needsWait {
+		return nil
+	}
 	return t.Wait()
 }
 

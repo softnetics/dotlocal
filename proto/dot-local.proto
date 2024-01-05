@@ -1,4 +1,5 @@
 import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
 
 option go_package = "github.com/softnetics/dotlocal/api";
 
@@ -16,4 +17,12 @@ message CreateMappingRequest {
 message MappingKey {
   required string host = 1;
   required string path_prefix = 2;
+}
+
+message Mapping {
+  required string host = 1;
+  required string path_prefix = 2;
+  required string id = 3;
+  required string target = 4;
+  required google.protobuf.Timestamp expires_at = 5;
 }
