@@ -50,5 +50,5 @@ func Start(logger *zap.Logger) error {
 		return dotlocal.Stop()
 	})
 
-	return t.Wait()
+	return t2.Wait()
 }
