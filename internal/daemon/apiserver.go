@@ -74,7 +74,7 @@ func (s *APIServer) killExistingProcess() error {
 		}
 		return err
 	}
-	s.logger.Info("Killing existing process")
+	s.logger.Info("Killing existing process", zap.String("path", util.GetApiSocketPath()))
 
 	pidBytes, err := os.ReadFile(util.GetPidPath())
 	if err != nil {
@@ -89,10 +89,8 @@ func (s *APIServer) killExistingProcess() error {
 	if err != nil {
 		return err
 	}
-	err = process.Kill()
-	if err != nil {
-		return err
-	}
+	_ = process.Kill()
+
 	err = os.Remove(util.GetPidPath())
 	if err != nil {
 		return err
