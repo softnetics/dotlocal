@@ -34,6 +34,8 @@ var (
 			}
 			target := getTarget()
 
+			exitCode := 0
+
 			loopCtx, cancel := context.WithCancel(context.Background())
 			defer cancel()
 			go func() {
@@ -96,7 +98,7 @@ var (
 				err = cmd.Wait()
 				if err != nil {
 					if exiterr, ok := err.(*exec.ExitError); ok {
-						os.Exit(exiterr.ExitCode())
+						exitCode = exiterr.ExitCode()
 					} else {
 						log.Fatal(err)
 					}
@@ -104,6 +106,15 @@ var (
 			} else {
 				<-context.Background().Done()
 			}
+
+			_, err = apiClient.RemoveMapping(context.Background(), &api.MappingKey{
+				Host:       &hostname,
+				PathPrefix: &pathPrefix,
+			})
+			if err != nil {
+				log.Fatal(err)
+			}
+			os.Exit(exitCode)
 		},
 	}
 )

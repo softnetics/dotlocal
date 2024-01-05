@@ -4,10 +4,16 @@ option go_package = "github.com/softnetics/dotlocal/api";
 
 service DotLocal {
   rpc CreateMapping (CreateMappingRequest) returns (google.protobuf.Empty) {}
+  rpc RemoveMapping (MappingKey) returns (google.protobuf.Empty) {}
 }
 
 message CreateMappingRequest {
   required string host = 1;
   required string path_prefix = 2;
   required string target = 3;
+}
+
+message MappingKey {
+  required string host = 1;
+  required string path_prefix = 2;
 }

@@ -71,3 +71,14 @@ func (s *dotLocalServer) CreateMapping(ctx context.Context, req *api.CreateMappi
 	}
 	return &emptypb.Empty{}, nil
 }
+
+func (s *dotLocalServer) RemoveMapping(ctx context.Context, key *api.MappingKey) (*emptypb.Empty, error) {
+	err := s.dotlocal.RemoveMapping(internal.MappingKey{
+		Host:       *key.Host,
+		PathPrefix: *key.PathPrefix,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return &emptypb.Empty{}, nil
+}
