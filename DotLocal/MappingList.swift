@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct MappingList: View {
-    @Environment(\.controlActiveState) var controlActiveState
     @StateObject var vm = MappingListViewModel()
     
     var body: some View {
@@ -40,18 +39,6 @@ struct MappingList: View {
                             .bold()
                         Text("dotlocal -n test.local pnpm dev").monospaced()
                     }
-                }
-            }
-        }
-        .onAppear {
-            Task {
-                await vm.fetchMappings()
-            }
-        }
-        .onChange(of: controlActiveState) {
-            if controlActiveState == .key {
-                Task {
-                    await vm.fetchMappings()
                 }
             }
         }

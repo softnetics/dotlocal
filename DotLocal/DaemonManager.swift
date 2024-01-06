@@ -8,6 +8,7 @@
 import Foundation
 import GRPC
 import NIO
+import Combine
 
 class DaemonManager: ObservableObject {
     static let shared = DaemonManager()
@@ -18,6 +19,7 @@ class DaemonManager: ObservableObject {
     private var task: Process? = nil
     private(set) var apiClient: DotLocalAsyncClient? = nil
     private var group: EventLoopGroup? = nil
+    private let _updates = PassthroughSubject<Void, Never>()
     
     private init() {
     }
@@ -49,6 +51,9 @@ class DaemonManager: ObservableObject {
                 DispatchQueue.main.async {
                     self.onStart()
                 }
+            } else if chunk.contains("Updated mappings") {
+                print("sending update")
+                self._updates.send()
             }
             handle.waitForDataInBackgroundAndNotify()
         }
@@ -98,6 +103,10 @@ class DaemonManager: ObservableObject {
             return
         }
         task.waitUntilExit()
+    }
+    
+    func updates() -> AnyPublisher<Void, Never> {
+        return _updates.prepend(()).eraseToAnyPublisher()
     }
 }
 

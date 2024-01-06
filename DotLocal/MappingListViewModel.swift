@@ -6,19 +6,30 @@
 //
 
 import Foundation
+import Combine
 
 @MainActor class MappingListViewModel: ObservableObject {
     @Published var loading = true
     @Published var mappings = [Mapping]()
     
-    func fetchMappings() async {
-        guard let apiClient = DaemonManager.shared.apiClient else {return}
-        do {
-            let res = try await apiClient.listMappings(.with({_ in }))
-            self.mappings = res.mappings.sorted()
-        } catch {
-            print(error)
-        }
-        loading = false
+    private var subscriptions = Set<AnyCancellable>()
+    
+    init() {
+        DaemonManager.shared.updates()
+            .flatMap { _ in
+                Future<[Mapping], Never> { promise in
+                    Task {
+                        guard let apiClient = DaemonManager.shared.apiClient else {
+                            promise(.success([]))
+                            return
+                        }
+                        let res = try await apiClient.listMappings(.with({_ in}))
+                        promise(.success(res.mappings.sorted()))
+                    }
+                }
+            }.sink { mappings in
+                self.loading = false
+                self.mappings = mappings
+            }.store(in: &subscriptions)
     }
 }

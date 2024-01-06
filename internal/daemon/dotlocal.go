@@ -229,6 +229,7 @@ func (d *DotLocal) UpdateMappings() error {
 	if err != nil {
 		return err
 	}
+	d.logger.Info("Updated mappings", zap.Any("mappings", mappings))
 	return nil
 }
 
