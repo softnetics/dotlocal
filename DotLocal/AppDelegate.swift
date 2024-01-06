@@ -7,6 +7,7 @@
 
 import Foundation
 import AppKit
+import Defaults
 
 class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
@@ -14,7 +15,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
-        sender.setActivationPolicy(.accessory)
+        if Defaults[.showInMenuBar] {
+            sender.setActivationPolicy(.accessory)
+        }
         return false
     }
     

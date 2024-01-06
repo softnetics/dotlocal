@@ -7,6 +7,7 @@
 
 import SwiftUI
 import AppKit
+import LaunchAtLogin
 
 struct AppMenu: View {
     @Environment(\.openWindow) var openWindow
@@ -24,6 +25,7 @@ struct AppMenu: View {
             }
         }
         Divider()
+        SettingsLink().keyboardShortcut(",")
         Button("Quit DotLocal") {
             NSApplication.shared.terminate(nil)
         }.keyboardShortcut("Q")
