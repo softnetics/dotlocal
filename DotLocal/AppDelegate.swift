@@ -18,6 +18,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         return false
     }
     
+    func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows _: Bool) -> Bool {
+        sender.setActivationPolicy(.regular)
+        return true
+    }
+    
     func applicationWillTerminate(_ notification: Notification) {
         DaemonManager.shared.stop()
         DaemonManager.shared.wait()

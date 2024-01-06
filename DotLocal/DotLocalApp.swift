@@ -13,7 +13,11 @@ struct DotLocalApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
     var body: some Scene {
-        WindowGroup {
+        MenuBarExtra("DotLocal", systemImage: "server.rack", isInserted: .constant(true)) {
+            AppMenu()
+        }
+        
+        WindowGroup() {
             ContentView()
         }
     }
