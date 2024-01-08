@@ -52,6 +52,7 @@ func (n *Nginx) Start() error {
 	fmt.Printf("nginx -c %s\n", n.configFile)
 	cmd := exec.Command("nginx", "-c", n.configFile)
 	stdout, err := cmd.StdoutPipe()
+	cmd.Stderr = os.Stderr
 	if err != nil {
 		return err
 	}
