@@ -1,6 +1,8 @@
 dist
 go_out
 .xcode.env.local
+.DS_Store
+**/DotLocal.app
 
 # Xcode
 #
