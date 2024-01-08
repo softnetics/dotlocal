@@ -38,6 +38,7 @@ class DaemonManager: ObservableObject {
         environment["PATH"] = environment["PATH"]! + ":" + binPath
         task.environment = environment
         task.launchPath = launchPath
+        task.currentDirectoryURL = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(".dotlocal")
         
         let outputPipe = Pipe()
         task.standardError = outputPipe
