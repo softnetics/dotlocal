@@ -56,7 +56,7 @@ struct MappingList: View {
                 Text("Try creating a new route")
                     .font(.system(size: 18, weight: .bold))
                     .bold()
-                Text("dotlocal -n test.local pnpm dev").monospaced()
+                Text("dotlocal --host test.local pnpm dev").monospaced()
             } else {
                 Text("Install \(getDotLocalLabel()) Command Line Tool to create routes")
                 Button(action: {
