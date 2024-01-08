@@ -25,7 +25,13 @@ struct AppMenu: View {
             }
         }
         Divider()
-        SettingsLink().keyboardShortcut(",")
+        if #available(macOS 14.0, *) {
+            SettingsLink().keyboardShortcut(",")
+        } else {
+            Button(action: {
+                NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
+            }, label: { Text("Settings...") })
+        }
         Button("Quit DotLocal") {
             NSApplication.shared.terminate(nil)
         }.keyboardShortcut("Q")

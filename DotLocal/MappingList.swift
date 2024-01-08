@@ -31,31 +31,45 @@ struct MappingList: View {
             if vm.loading {
                 ProgressView()
             } else if vm.mappings.isEmpty {
-                ContentUnavailableView {
-                    Label("No Routes", systemImage: "arrow.triangle.swap")
-                } description: {
-                    VStack(spacing: 4) {
-                        if clientManager.installed {
-                            Text("Try creating a new route")
-                                .font(.system(size: 18, weight: .bold))
-                                .bold()
-                            Text("dotlocal -n test.local pnpm dev").monospaced()
-                        } else {
-                            Text("Install \(getDotLocalLabel()) Command Line Tool to create routes")
-                            Button(action: {
-                                Task {
-                                    await clientManager.installCli()
-                                }
-                            }, label: {
-                                Text("Install")
-                            })
-                        }
+                if #available(macOS 14.0, *) {
+                    ContentUnavailableView {
+                        Label("No Routes", systemImage: "arrow.triangle.swap")
+                    } description: {
+                        hintView()
                     }
-                }
-                .onAppear {
-                    clientManager.checkInstalled()
+                } else {
+                    VStack(spacing: 8) {
+                        Image(systemName: "arrow.triangle.swap").font(.system(size: 48)).foregroundStyle(.tertiary).padding(.bottom, 8)
+                        Text("No Routes").font(.title).fontWeight(.bold)
+                        hintView()
+                    }
+                    .foregroundStyle(.secondary)
                 }
             }
+        }
+    }
+    
+    @ViewBuilder
+    private func hintView() -> some View {
+        VStack(spacing: 4) {
+            if clientManager.installed {
+                Text("Try creating a new route")
+                    .font(.system(size: 18, weight: .bold))
+                    .bold()
+                Text("dotlocal -n test.local pnpm dev").monospaced()
+            } else {
+                Text("Install \(getDotLocalLabel()) Command Line Tool to create routes")
+                Button(action: {
+                    Task {
+                        await clientManager.installCli()
+                    }
+                }, label: {
+                    Text("Install")
+                })
+            }
+        }
+        .onAppear {
+            clientManager.checkInstalled()
         }
     }
     
