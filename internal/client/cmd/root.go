@@ -27,7 +27,8 @@ var (
 	overridePort string
 
 	rootCmd = &cobra.Command{
-		Use: "dotlocal",
+		Use:  "dotlocal",
+		Args: cobra.ArbitraryArgs,
 		Run: func(cmd *cobra.Command, args []string) {
 			apiClient, err := client.NewApiClient()
 			if err != nil {
