@@ -10,6 +10,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/samber/lo"
 	api "github.com/softnetics/dotlocal/internal/api/proto"
 	"github.com/softnetics/dotlocal/internal/client"
 	"github.com/softnetics/dotlocal/internal/util"
@@ -65,10 +66,10 @@ var (
 				}
 			}()
 
-			if len(args) > 0 {
-				ch := make(chan os.Signal, 1)
-				signal.Notify(ch, os.Interrupt, os.Kill)
+			ch := make(chan os.Signal, 1)
+			signal.Notify(ch, os.Interrupt, os.Kill)
 
+			if len(args) > 0 {
 				cmd := exec.Command(args[0], args[1:]...)
 				cmd.Env = os.Environ()
 				if overridePort != "" {
@@ -85,9 +86,9 @@ var (
 				go func() {
 					for {
 						select {
-						case <-ch:
+						case signal := <-ch:
 							cancel()
-							cmd.Process.Kill()
+							lo.Must0(cmd.Process.Signal(signal))
 							return
 						case <-loopCtx.Done():
 							return
@@ -104,7 +105,7 @@ var (
 					}
 				}
 			} else {
-				<-context.Background().Done()
+				<-ch
 			}
 
 			_, err = apiClient.RemoveMapping(context.Background(), &api.MappingKey{
