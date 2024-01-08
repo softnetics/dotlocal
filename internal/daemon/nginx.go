@@ -142,7 +142,7 @@ func (n *Nginx) writeConfig() error {
 		directives := []gonginx.IDirective{
 			&gonginx.Directive{
 				Name:       "listen",
-				Parameters: []string{strconv.Itoa(n.port)},
+				Parameters: []string{"127.0.0.1:" + strconv.Itoa(n.port)},
 			},
 			&gonginx.Directive{
 				Name:       "server_name",
@@ -210,7 +210,7 @@ func (n *Nginx) writeConfig() error {
 			Directives: []gonginx.IDirective{
 				&gonginx.Directive{
 					Name:       "listen",
-					Parameters: []string{strconv.Itoa(n.port), "default_server"},
+					Parameters: []string{"127.0.0.1:" + strconv.Itoa(n.port), "default_server"},
 				},
 				&gonginx.Directive{
 					Name:       "return",
