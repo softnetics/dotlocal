@@ -21,6 +21,8 @@ struct DotLocalApp: App {
         
         WindowGroup() {
             ContentView()
+        }.commands {
+            CommandGroup(replacing: .newItem) {}
         }
         
         Settings {

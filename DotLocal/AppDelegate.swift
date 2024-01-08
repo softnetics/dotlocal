@@ -12,6 +12,7 @@ import Defaults
 class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         DaemonManager.shared.start()
+        ClientManager.shared.checkInstalled()
     }
     
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
