@@ -2,6 +2,7 @@ package daemon
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -58,6 +59,7 @@ func (n *Nginx) Start() error {
 	}
 	var wg sync.WaitGroup
 	wg.Add(1)
+	nginxStarted := false
 	go func() {
 		func() {
 			defer wg.Done()
@@ -66,6 +68,7 @@ func (n *Nginx) Start() error {
 				line := scanner.Text()
 				println(line)
 				if strings.Contains(line, "start worker processes") {
+					nginxStarted = true
 					return
 				}
 			}
@@ -78,6 +81,13 @@ func (n *Nginx) Start() error {
 		return err
 	}
 	wg.Wait()
+	if !nginxStarted {
+		err := cmd.Wait()
+		if err != nil {
+			return err
+		}
+		return errors.New("nginx failed to start")
+	}
 	n.cmd = cmd
 
 	n.logger.Info("Ready")

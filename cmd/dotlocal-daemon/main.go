@@ -15,6 +15,6 @@ func main() {
 
 	err = daemon.Start(logger)
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatal("Failed to start daemon", zap.Error(err))
 	}
 }
