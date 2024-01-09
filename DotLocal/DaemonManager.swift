@@ -35,7 +35,7 @@ class DaemonManager: ObservableObject {
         
         let task = Process()
         var environment = ProcessInfo.processInfo.environment
-        environment["PATH"] = environment["PATH"]! + ":" + binPath
+        environment["PATH"] = binPath
         task.environment = environment
         task.launchPath = launchPath
         task.currentDirectoryURL = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(".dotlocal")
