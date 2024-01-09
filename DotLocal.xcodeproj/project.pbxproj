@@ -32,7 +32,7 @@
 		D5E8DD292B47E54800E083E0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E8DD282B47E54800E083E0 /* AppDelegate.swift */; };
 		D5E8DD312B47E83500E083E0 /* dotlocal-daemon in Copy Daemon */ = {isa = PBXBuildFile; fileRef = D5E8DD2D2B47E7B900E083E0 /* dotlocal-daemon */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D5E8DD332B47E97F00E083E0 /* DaemonManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E8DD322B47E97F00E083E0 /* DaemonManager.swift */; };
-		D5E8DD402B47F56900E083E0 /* dotlocal in Copy Client (2 items) */ = {isa = PBXBuildFile; fileRef = D5E8DD2B2B47E7AE00E083E0 /* dotlocal */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		D5E8DD402B47F56900E083E0 /* dotlocal in Copy Client */ = {isa = PBXBuildFile; fileRef = D5E8DD2B2B47E7AE00E083E0 /* dotlocal */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,15 +64,15 @@
 			name = "Copy Daemon";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D5E8DD2F2B47E82200E083E0 /* Copy Client (2 items) */ = {
+		D5E8DD2F2B47E82200E083E0 /* Copy Client */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = bin;
 			dstSubfolderSpec = 7;
 			files = (
-				D5E8DD402B47F56900E083E0 /* dotlocal in Copy Client (2 items) */,
+				D5E8DD402B47F56900E083E0 /* dotlocal in Copy Client */,
 			);
-			name = "Copy Client (2 items)";
+			name = "Copy Client";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		D5E8DD412B47F57400E083E0 /* Copy Binaries */ = {
@@ -264,7 +264,7 @@
 				D5E8DD412B47F57400E083E0 /* Copy Binaries */,
 				D529B1D82B47C06400DC288B /* Build golang binaries */,
 				D5E8DD2A2B47E79700E083E0 /* Copy Daemon */,
-				D5E8DD2F2B47E82200E083E0 /* Copy Client (2 items) */,
+				D5E8DD2F2B47E82200E083E0 /* Copy Client */,
 			);
 			buildRules = (
 			);
