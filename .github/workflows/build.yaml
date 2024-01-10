@@ -60,5 +60,5 @@ jobs:
       - name: Package
         run: |
           npm install -g create-dmg
-          create-dmg "Build/$FULL_PRODUCT_NAME" Build
+          create-dmg "Build/Applications/$FULL_PRODUCT_NAME" Build
           ls Build
