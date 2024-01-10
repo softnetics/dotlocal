@@ -40,7 +40,7 @@ public struct Sudo {
 
         let (osStatus, stdout) = await executeWithPrivileges(authorization: authRef, path: path, arguments: arguments)
 
-        return (status == errAuthorizationSuccess, stdout)
+        return (osStatus == errAuthorizationSuccess, stdout)
     }
 
     private static func executeWithPrivileges(authorization: AuthorizationRef,
