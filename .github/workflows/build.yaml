@@ -14,16 +14,15 @@ jobs:
       - name: Select Xcode
         run: sudo xcode-select -s "/Applications/Xcode_15.1.app"
 
+      - name: Resolve dependencies
+        run: xcodebuild -resolvePackageDependencies
+
       - name: Config environment
         run: |
           SCHEME=$(xcodebuild -list -json | jq -r '.project.schemes[0]')
 
-          function get-build-setting {
-            RESULT="$(xcodebuild -scheme "$SCHEME" -showBuildSettings | grep " $1 " | sed "s/[ ]*$1 = //")"
-            echo $RESULT
-          }
-
-          FULL_PRODUCT_NAME=$(get-build-setting FULL_PRODUCT_NAME)
+          BUILD_SETTINGS=$(xcodebuild -scheme "$SCHEME" -showBuildSettings -json | jq -r '.[0].buildSettings')
+          FULL_PRODUCT_NAME=$(echo $BUILD_SETTINGS | jq -r '.FULL_PRODUCT_NAME')
           echo "SCHEME=$SCHEME" >> "$GITHUB_ENV"
           echo "FULL_PRODUCT_NAME=$FULL_PRODUCT_NAME" >> "$GITHUB_ENV"
 
