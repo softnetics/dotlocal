@@ -41,5 +41,7 @@ jobs:
       - name: Create Release Pull Request
         id: changesets
         uses: changesets/action@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         with:
           version: pnpm run version
