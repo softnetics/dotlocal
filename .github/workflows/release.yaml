@@ -38,6 +38,9 @@ jobs:
           node-version: 20
           cache: pnpm
   
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --prefer-offline
+  
       - name: Create Release Pull Request
         id: changesets
         uses: changesets/action@v1
