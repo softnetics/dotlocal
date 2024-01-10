@@ -107,6 +107,8 @@
 		D529B1C92B47BF8E00DC288B /* DotLocalUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotLocalUITests.swift; sourceTree = "<group>"; };
 		D529B1CB2B47BF8E00DC288B /* DotLocalUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotLocalUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		D582E9052B4C5BC00054343B /* nginx */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = nginx; sourceTree = "<group>"; };
+		D582E90A2B4E7BA90054343B /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		D582E90B2B4E7C750054343B /* Version.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Version.xcconfig; sourceTree = "<group>"; };
 		D5DEA9B22B4888310029BB00 /* AppMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMenu.swift; sourceTree = "<group>"; };
 		D5DEA9BD2B4995DD0029BB00 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		D5DEA9BF2B499C2F0029BB00 /* Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Defaults.swift; sourceTree = "<group>"; };
@@ -168,6 +170,7 @@
 		D529B1A12B47BF8C00DC288B = {
 			isa = PBXGroup;
 			children = (
+				D582E9092B4E7B9F0054343B /* Config */,
 				D582E8FF2B4C5AEE0054343B /* bin */,
 				D5E8DD2D2B47E7B900E083E0 /* dotlocal-daemon */,
 				D5E8DD2B2B47E7AE00E083E0 /* dotlocal */,
@@ -249,6 +252,15 @@
 				D582E9052B4C5BC00054343B /* nginx */,
 			);
 			path = universal;
+			sourceTree = "<group>";
+		};
+		D582E9092B4E7B9F0054343B /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				D582E90A2B4E7BA90054343B /* Config.xcconfig */,
+				D582E90B2B4E7C750054343B /* Version.xcconfig */,
+			);
+			path = Config;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -475,6 +487,7 @@
 /* Begin XCBuildConfiguration section */
 		D529B1CD2B47BF8E00DC288B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D582E90A2B4E7BA90054343B /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -538,6 +551,7 @@
 		};
 		D529B1CE2B47BF8E00DC288B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D582E90A2B4E7BA90054343B /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -612,7 +626,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = 0.1;
+				MARKETING_VERSION = "$(MARKETING_VERSION)";
 				PRODUCT_BUNDLE_IDENTIFIER = dev.suphon.DotLocal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -641,7 +655,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = 0.1;
+				MARKETING_VERSION = "$(MARKETING_VERSION)";
 				PRODUCT_BUNDLE_IDENTIFIER = dev.suphon.DotLocal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

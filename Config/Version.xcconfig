@@ -1,0 +1,11 @@
+//
+//  Version.xcconfig
+//  DotLocal
+//
+//  Created by Suphon Thanakornpakapong on 10/1/2567 BE.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+MARKETING_VERSION = 0.0.0
