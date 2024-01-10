@@ -71,4 +71,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ${{ env.FULL_PRODUCT_NAME }}.dmg
-          path: Build/$FULL_PRODUCT_NAME.dmg
+          path: Build/${{ env.FULL_PRODUCT_NAME }}.dmg
