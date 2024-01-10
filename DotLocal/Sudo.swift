@@ -40,7 +40,7 @@ public struct Sudo {
 
         let (osStatus, stdout) = await executeWithPrivileges(authorization: authRef, path: path, arguments: arguments)
 
-        return (status == errAuthorizationSuccess, stdout)
+        return (osStatus == errAuthorizationSuccess, stdout)
     }
 
     private static func executeWithPrivileges(authorization: AuthorizationRef,
@@ -80,16 +80,6 @@ public struct Sudo {
 
                 // Convert the data to a string (adjust the encoding as needed)
                 fileContent = String(data: content, encoding: .utf8) ?? ""
-    //            let bufferSize = 1024
-    //            print("1")
-    //            guard let _read = file._read else {
-    //                print("???")
-    //                return
-    //            }
-    //            print("2")
-    //            var buffer = [CChar](repeating: 0, count: Int(bufferSize))
-    //            _read(&file, &buffer, Int32(bufferSize))
-    //            print("got \(buffer)")
             }
         }
     }
