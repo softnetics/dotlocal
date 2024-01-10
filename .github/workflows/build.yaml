@@ -1,0 +1,56 @@
+name: build
+on:
+  push:
+    branches:
+      - actions
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+        name: Checkout
+
+      - name: Config environment
+        run: |
+          SCHEME=$(xcodebuild -list -json | jq -r '.project.schemes[0]')
+
+          function get-build-setting {
+            RESULT="$(xcodebuild -scheme "$SCHEME" -showBuildSettings | grep " $1 " | sed "s/[ ]*$1 = //")"
+            echo $RESULT
+          }
+
+          FULL_PRODUCT_NAME=$(get-build-setting FULL_PRODUCT_NAME)
+          echo "SCHEME=$SCHEME" >> "$GITHUB_ENV"
+          echo "FULL_PRODUCT_NAME=$FULL_PRODUCT_NAME" >> "$GITHUB_ENV"
+
+      - name: Install the Apple certificate
+        env:
+          BUILD_CERTIFICATE_BASE64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
+          P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+        run: |
+          # create variables
+          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
+          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+
+          # import certificate from secrets
+          echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode -o $CERTIFICATE_PATH
+
+          # create temporary keychain
+          security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+
+          # import certificate to keychain
+          security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+          security list-keychain -d user -s $KEYCHAIN_PATH
+
+      - name: Build
+        run: xcodebuild -scheme "$SCHEME" install DSTROOT=Build | xcpretty
+
+      - name: Package
+        run: |
+          npm install -g create-dmg
+          create-dmg "Build/$FULL_PRODUCT_NAME" Build
+          ls Build
