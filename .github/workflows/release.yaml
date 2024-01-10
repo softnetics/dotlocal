@@ -48,3 +48,4 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         with:
           version: pnpm run version
+          publish: pnpm changeset tag
