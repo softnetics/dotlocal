@@ -3,7 +3,22 @@ on:
   push:
     branches:
       - main
+    tags:
+      - "v*.*.*"
 
+permissions:
+  actions: read
+  checks: read
+  contents: write
+  deployments: read
+  issues: read
+  discussions: read
+  packages: read
+  pull-requests: read
+  repository-projects: read
+  security-events: read
+  statuses: read
+      
 jobs:
   build:
     runs-on: macos-13
@@ -72,3 +87,25 @@ jobs:
         with:
           name: ${{ env.PRODUCT_NAME }}.dmg
           path: Build/${{ env.PRODUCT_NAME }}.dmg
+
+      - name: Prepare for release
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          set -e
+          VERSION=$(cat package.json | jq -r .version)
+          DMG_NAME="Build/${{ env.PRODUCT_NAME }}-v$VERSION.dmg"
+          CHANGELOG_PATH="$RUNNER_TEMP/CHANGELOG.md"
+
+          ./scripts/changelog $VERSION > $CHANGELOG_PATH
+          cp Build/${{ env.PRODUCT_NAME }}.dmg $DMG_NAME
+
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+          echo "DMG_NAME=$DMG_NAME" >> "$GITHUB_ENV"
+          echo "CHANGELOG_PATH=$CHANGELOG_PATH" >> "$GITHUB_ENV"
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          body_path: ${{ env.CHANGELOG_PATH }}
+          files: ${{ env.DMG_NAME }}

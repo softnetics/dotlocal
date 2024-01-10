@@ -1,0 +1,33 @@
+#!/bin/bash
+
+set -e
+
+VERSION=$1
+if [ -z "$VERSION" ]; then
+  echo "usage: $0 <version>"
+  exit 1
+fi
+
+# read CHANGELOG.md line by line
+# if line starts with ## $VERSION, print all lines until next ##
+
+STATE='find_version'
+
+while read -r line; do
+  if [[ $STATE == 'find_version' ]]; then
+    if [[ $line == "## $VERSION"* ]]; then
+      STATE='print_until_next_version'
+    fi
+  elif [[ $STATE == 'print_until_next_version' ]]; then
+    if [[ $line == "## "* ]]; then
+      break
+    else
+      echo $line
+    fi
+  fi
+done < CHANGELOG.md
+
+if [[ $STATE == 'find_version' ]]; then
+  echo "Could not find beginning of version $VERSION"
+  exit 1
+fi
