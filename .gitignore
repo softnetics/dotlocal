@@ -4,6 +4,8 @@ go_out
 .DS_Store
 **/DotLocal.app
 
+node_modules
+
 # Xcode
 #
 # gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore

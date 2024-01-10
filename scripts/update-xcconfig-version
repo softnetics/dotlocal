@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Read the current version from package.json
+current_version=$(jq -r '.version' package.json)
+
+# Update the MARKETING_VERSION field in Version.xcconfig using sed
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  sed -i '' "s/MARKETING_VERSION = .*/MARKETING_VERSION = $current_version/" ./Config/Version.xcconfig
+else
+  sed -i "s/MARKETING_VERSION = .*/MARKETING_VERSION = $current_version/" ./Config/Version.xcconfig
+fi
+
+echo "MARKETING_VERSION field updated to $current_version"
