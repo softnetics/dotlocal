@@ -11,7 +11,7 @@ import (
 	"github.com/softnetics/dotlocal/internal"
 	api "github.com/softnetics/dotlocal/internal/api/proto"
 	"github.com/softnetics/dotlocal/internal/daemon/dnsproxy"
-	"github.com/softnetics/dotlocal/internal/daemon/orbdnsproxy"
+	"github.com/softnetics/dotlocal/internal/daemon/mdnsproxy"
 	"github.com/softnetics/dotlocal/internal/util"
 	"go.uber.org/zap"
 	"google.golang.org/protobuf/encoding/protojson"
@@ -34,7 +34,7 @@ func NewDotLocal(logger *zap.Logger) (*DotLocal, error) {
 		return nil, err
 	}
 
-	dnsProxy, err := orbdnsproxy.NewOrbstackDNSProxy(logger.Named("orbdnsproxy"))
+	mdnsProxy, err := mdnsproxy.NewMDNSProxy(logger.Named("dnsproxy"))
 	if err != nil {
 		return nil, err
 	}
@@ -42,7 +42,7 @@ func NewDotLocal(logger *zap.Logger) (*DotLocal, error) {
 	return &DotLocal{
 		logger:   logger,
 		nginx:    nginx,
-		dnsProxy: dnsProxy,
+		dnsProxy: mdnsProxy,
 		mappings: make(map[internal.MappingKey]*internal.MappingState),
 	}, nil
 }

@@ -1,4 +1,4 @@
-package orbdnsproxy
+package mdnsproxy
 
 import (
 	"os"
@@ -13,26 +13,26 @@ import (
 
 var nginxImage = "nginx:1.24.0-alpine"
 
-type OrbstackDNSProxy struct {
+type MDNSProxy struct {
 	logger          *zap.Logger
 	port            int
 	nginxConfigFile string
 	hostProcesses   map[string]*exec.Cmd
 }
 
-func NewOrbstackDNSProxy(logger *zap.Logger) (dnsproxy.DNSProxy, error) {
+func NewMDNSProxy(logger *zap.Logger) (dnsproxy.DNSProxy, error) {
 	nginxConfigFile, err := util.CreateTmpFile()
 	if err != nil {
 		return nil, err
 	}
 
-	return &OrbstackDNSProxy{
+	return &MDNSProxy{
 		logger:          logger,
 		nginxConfigFile: nginxConfigFile,
 	}, nil
 }
 
-func (p *OrbstackDNSProxy) Start() error {
+func (p *MDNSProxy) Start() error {
 	p.logger.Debug("Ensuring nginx image exists", zap.String("image", nginxImage))
 	err := p.writeNginxConfig()
 	if err != nil {
@@ -42,7 +42,7 @@ func (p *OrbstackDNSProxy) Start() error {
 	return nil
 }
 
-func (p *OrbstackDNSProxy) Stop() error {
+func (p *MDNSProxy) Stop() error {
 	p.logger.Info("Stopping")
 	var t tomb.Tomb
 	t.Go(func() error {
@@ -51,7 +51,7 @@ func (p *OrbstackDNSProxy) Stop() error {
 	return t.Wait()
 }
 
-func (p *OrbstackDNSProxy) SetHosts(hosts map[string]struct{}) error {
+func (p *MDNSProxy) SetHosts(hosts map[string]struct{}) error {
 	p.logger.Debug("Setting hosts", zap.Any("hosts", hosts))
 
 	newHostProcesses := make(map[string]*exec.Cmd)
@@ -75,7 +75,7 @@ func (p *OrbstackDNSProxy) SetHosts(hosts map[string]struct{}) error {
 	return nil
 }
 
-func (p *OrbstackDNSProxy) writeNginxConfig() error {
+func (p *MDNSProxy) writeNginxConfig() error {
 	conf := &gonginx.Block{
 		Directives: []gonginx.IDirective{
 			&gonginx.Directive{
