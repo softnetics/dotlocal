@@ -1,0 +1,14 @@
+//
+//  AppConfig.xcconfig
+//  DotLocal
+//
+//  Created by Suphon Thanakornpakapong on 11/1/2567 BE.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+#include "Config/Config.xcconfig"
+
+PRODUCT_BUNDLE_IDENTIFIER = $(APP_BUNDLE_IDENTIFIER)
+SWIFT_ACTIVE_COMPILATION_CONDITIONS = APP

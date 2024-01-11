@@ -22,6 +22,11 @@
 		D529B1CA2B47BF8E00DC288B /* DotLocalUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D529B1C92B47BF8E00DC288B /* DotLocalUITests.swift */; };
 		D529B1CC2B47BF8E00DC288B /* DotLocalUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D529B1CB2B47BF8E00DC288B /* DotLocalUITestsLaunchTests.swift */; };
 		D582E9072B4C5BE20054343B /* nginx in Copy Binaries */ = {isa = PBXBuildFile; fileRef = D582E9052B4C5BC00054343B /* nginx */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		D59D89502B4FFC380009270C /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59D894F2B4FFC380009270C /* main.swift */; };
+		D59D895A2B4FFDE20009270C /* DotLocalHelperTool in Copy Helper */ = {isa = PBXBuildFile; fileRef = D59D894D2B4FFC380009270C /* DotLocalHelperTool */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		D59D895C2B4FFF080009270C /* helper.plist in Copy Helper Plist */ = {isa = PBXBuildFile; fileRef = D59D89562B4FFD290009270C /* helper.plist */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		D59D89612B5048C40009270C /* SharedConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59D89602B5048C40009270C /* SharedConstants.swift */; };
+		D59D89622B5048C40009270C /* SharedConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59D89602B5048C40009270C /* SharedConstants.swift */; };
 		D5DEA9B32B4888310029BB00 /* AppMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DEA9B22B4888310029BB00 /* AppMenu.swift */; };
 		D5DEA9B62B49936B0029BB00 /* LaunchAtLogin in Frameworks */ = {isa = PBXBuildFile; productRef = D5DEA9B52B49936B0029BB00 /* LaunchAtLogin */; };
 		D5DEA9BC2B4995BC0029BB00 /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = D5DEA9BB2B4995BC0029BB00 /* Defaults */; };
@@ -53,6 +58,37 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		D59D894B2B4FFC380009270C /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		D59D89592B4FFDD30009270C /* Copy Helper */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Contents/Library/LaunchDaemons;
+			dstSubfolderSpec = 1;
+			files = (
+				D59D895A2B4FFDE20009270C /* DotLocalHelperTool in Copy Helper */,
+			);
+			name = "Copy Helper";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D59D895B2B4FFEFB0009270C /* Copy Helper Plist */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Contents/Library/LaunchDaemons;
+			dstSubfolderSpec = 1;
+			files = (
+				D59D895C2B4FFF080009270C /* helper.plist in Copy Helper Plist */,
+			);
+			name = "Copy Helper Plist";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D5E8DD2A2B47E79700E083E0 /* Copy Daemon */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -109,6 +145,13 @@
 		D582E9052B4C5BC00054343B /* nginx */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = nginx; sourceTree = "<group>"; };
 		D582E90A2B4E7BA90054343B /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		D582E90B2B4E7C750054343B /* Version.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Version.xcconfig; sourceTree = "<group>"; };
+		D59D894D2B4FFC380009270C /* DotLocalHelperTool */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DotLocalHelperTool; sourceTree = BUILT_PRODUCTS_DIR; };
+		D59D894F2B4FFC380009270C /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		D59D89542B4FFC650009270C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D59D89562B4FFD290009270C /* helper.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = helper.plist; sourceTree = "<group>"; };
+		D59D89602B5048C40009270C /* SharedConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedConstants.swift; sourceTree = "<group>"; };
+		D59D89632B50506D0009270C /* AppConfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = AppConfig.xcconfig; sourceTree = "<group>"; };
+		D59D89642B5050E60009270C /* HelperToolConfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = HelperToolConfig.xcconfig; sourceTree = "<group>"; };
 		D5DEA9B22B4888310029BB00 /* AppMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMenu.swift; sourceTree = "<group>"; };
 		D5DEA9BD2B4995DD0029BB00 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		D5DEA9BF2B499C2F0029BB00 /* Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Defaults.swift; sourceTree = "<group>"; };
@@ -145,6 +188,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D59D894A2B4FFC380009270C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -174,7 +224,9 @@
 				D582E8FF2B4C5AEE0054343B /* bin */,
 				D5E8DD2D2B47E7B900E083E0 /* dotlocal-daemon */,
 				D5E8DD2B2B47E7AE00E083E0 /* dotlocal */,
+				D59D895D2B5048420009270C /* Shared */,
 				D529B1AC2B47BF8C00DC288B /* DotLocal */,
+				D59D894E2B4FFC380009270C /* DotLocalHelperTool */,
 				D529B1C82B47BF8E00DC288B /* DotLocalUITests */,
 				D529B1AB2B47BF8C00DC288B /* Products */,
 			);
@@ -186,6 +238,7 @@
 				D529B1AA2B47BF8C00DC288B /* DotLocal.app */,
 				D529B1BB2B47BF8E00DC288B /* DotLocalTests.xctest */,
 				D529B1C52B47BF8E00DC288B /* DotLocalUITests.xctest */,
+				D59D894D2B4FFC380009270C /* DotLocalHelperTool */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -193,6 +246,8 @@
 		D529B1AC2B47BF8C00DC288B /* DotLocal */ = {
 			isa = PBXGroup;
 			children = (
+				D59D89632B50506D0009270C /* AppConfig.xcconfig */,
+				D59D89552B4FFCFF0009270C /* LaunchDaemons */,
 				D50377F72B481F69008F9AA8 /* Model */,
 				D529B1AD2B47BF8C00DC288B /* DotLocalApp.swift */,
 				D5E8DD282B47E54800E083E0 /* AppDelegate.swift */,
@@ -263,6 +318,32 @@
 			path = Config;
 			sourceTree = "<group>";
 		};
+		D59D894E2B4FFC380009270C /* DotLocalHelperTool */ = {
+			isa = PBXGroup;
+			children = (
+				D59D894F2B4FFC380009270C /* main.swift */,
+				D59D89542B4FFC650009270C /* Info.plist */,
+				D59D89642B5050E60009270C /* HelperToolConfig.xcconfig */,
+			);
+			path = DotLocalHelperTool;
+			sourceTree = "<group>";
+		};
+		D59D89552B4FFCFF0009270C /* LaunchDaemons */ = {
+			isa = PBXGroup;
+			children = (
+				D59D89562B4FFD290009270C /* helper.plist */,
+			);
+			path = LaunchDaemons;
+			sourceTree = "<group>";
+		};
+		D59D895D2B5048420009270C /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				D59D89602B5048C40009270C /* SharedConstants.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -277,6 +358,8 @@
 				D529B1D82B47C06400DC288B /* Build golang binaries */,
 				D5E8DD2A2B47E79700E083E0 /* Copy Daemon */,
 				D5E8DD2F2B47E82200E083E0 /* Copy Client */,
+				D59D89592B4FFDD30009270C /* Copy Helper */,
+				D59D895B2B4FFEFB0009270C /* Copy Helper Plist */,
 			);
 			buildRules = (
 			);
@@ -328,6 +411,23 @@
 			productReference = D529B1C52B47BF8E00DC288B /* DotLocalUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		D59D894C2B4FFC380009270C /* DotLocalHelperTool */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D59D89532B4FFC380009270C /* Build configuration list for PBXNativeTarget "DotLocalHelperTool" */;
+			buildPhases = (
+				D59D89492B4FFC380009270C /* Sources */,
+				D59D894A2B4FFC380009270C /* Frameworks */,
+				D59D894B2B4FFC380009270C /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DotLocalHelperTool;
+			productName = DotLocalHelperTool;
+			productReference = D59D894D2B4FFC380009270C /* DotLocalHelperTool */;
+			productType = "com.apple.product-type.tool";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -348,6 +448,9 @@
 					D529B1C42B47BF8E00DC288B = {
 						CreatedOnToolsVersion = 15.1;
 						TestTargetID = D529B1A92B47BF8C00DC288B;
+					};
+					D59D894C2B4FFC380009270C = {
+						CreatedOnToolsVersion = 15.1;
 					};
 				};
 			};
@@ -370,8 +473,9 @@
 			projectRoot = "";
 			targets = (
 				D529B1A92B47BF8C00DC288B /* DotLocal */,
-				D529B1BA2B47BF8E00DC288B /* DotLocalTests */,
+				D59D894C2B4FFC380009270C /* DotLocalHelperTool */,
 				D529B1C42B47BF8E00DC288B /* DotLocalUITests */,
+				D529B1BA2B47BF8E00DC288B /* DotLocalTests */,
 			);
 		};
 /* End PBXProject section */
@@ -438,6 +542,7 @@
 				D5DEA9C02B499C2F0029BB00 /* Defaults.swift in Sources */,
 				D50378092B48708C008F9AA8 /* MappingListViewModel.swift in Sources */,
 				D5E8DD332B47E97F00E083E0 /* DaemonManager.swift in Sources */,
+				D59D89612B5048C40009270C /* SharedConstants.swift in Sources */,
 				D5DEA9B32B4888310029BB00 /* AppMenu.swift in Sources */,
 				D529B1B02B47BF8C00DC288B /* ContentView.swift in Sources */,
 				D503780D2B487250008F9AA8 /* ProtoExtensions.swift in Sources */,
@@ -469,6 +574,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D59D89492B4FFC380009270C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D59D89622B5048C40009270C /* SharedConstants.swift in Sources */,
+				D59D89502B4FFC380009270C /* main.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -487,7 +601,6 @@
 /* Begin XCBuildConfiguration section */
 		D529B1CD2B47BF8E00DC288B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D582E90A2B4E7BA90054343B /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -551,7 +664,6 @@
 		};
 		D529B1CE2B47BF8E00DC288B /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D582E90A2B4E7BA90054343B /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -607,6 +719,7 @@
 		};
 		D529B1D02B47BF8E00DC288B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D59D89632B50506D0009270C /* AppConfig.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -627,7 +740,6 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = "$(MARKETING_VERSION)";
-				PRODUCT_BUNDLE_IDENTIFIER = dev.suphon.DotLocal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -636,6 +748,7 @@
 		};
 		D529B1D12B47BF8E00DC288B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D59D89632B50506D0009270C /* AppConfig.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -656,7 +769,6 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = "$(MARKETING_VERSION)";
-				PRODUCT_BUNDLE_IDENTIFIER = dev.suphon.DotLocal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -735,6 +847,36 @@
 			};
 			name = Release;
 		};
+		D59D89512B4FFC380009270C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D59D89642B5050E60009270C /* HelperToolConfig.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2HCNNF2TB5;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = "$(SRCROOT)/DotLocalHelperTool/Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = "$(MARKETING_VERSION)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		D59D89522B4FFC380009270C /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D59D89642B5050E60009270C /* HelperToolConfig.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2HCNNF2TB5;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = "$(SRCROOT)/DotLocalHelperTool/Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = "$(MARKETING_VERSION)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -770,6 +912,15 @@
 			buildConfigurations = (
 				D529B1D62B47BF8E00DC288B /* Debug */,
 				D529B1D72B47BF8E00DC288B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D59D89532B4FFC380009270C /* Build configuration list for PBXNativeTarget "DotLocalHelperTool" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D59D89512B4FFC380009270C /* Debug */,
+				D59D89522B4FFC380009270C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

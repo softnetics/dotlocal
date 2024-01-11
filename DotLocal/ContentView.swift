@@ -6,12 +6,32 @@
 //
 
 import SwiftUI
+import ServiceManagement
 
 struct ContentView: View {
     @StateObject var daemonManager = DaemonManager.shared
     
     var body: some View {
         VStack {
+            Button(action: {
+                let service = SMAppService.daemon(plistName: "helper.plist")
+                do {
+                    print("status: \(service.status.rawValue)")
+                    if service.status == .enabled {
+                        print("will unregister")
+                        try service.unregister()
+                        print("did unregister")
+                    } else {
+                        print("will register")
+                        try service.register()
+                        print("did register")
+                    }
+                } catch {
+                    print("error: \(error)")
+                }
+            }, label: {
+                Text("Test")
+            })
             switch daemonManager.state {
             case .stopped:
                 Text("DotLocal is not running")
