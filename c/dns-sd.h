@@ -1,1 +1,0 @@
-int startDNSService(char *host);

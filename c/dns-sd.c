@@ -359,55 +359,37 @@ static void HandleEvents(void)
 }
 #endif
 
-void daemonize() {
-    pid_t pid, sid;
-
-    // Fork the parent process
-    pid = fork();
-
-    // If fork fails, exit
-    if (pid < 0) {
-        exit(EXIT_FAILURE);
-    }
-
-    // If we got a good PID, then we can exit the parent process
-    if (pid > 0) {
-        exit(EXIT_SUCCESS);
-    }
-
-    // Change the file mode mask
-    umask(0);
-
-    // Create a new SID for the child process
-    sid = setsid();
-    if (sid < 0) {
-        exit(EXIT_FAILURE);
-    }
-
-    // Change the current working directory
-    if ((chdir("/")) < 0) {
-        exit(EXIT_FAILURE);
-    }
-
-    // Close standard file descriptors
-    close(STDIN_FILENO);
-    close(STDOUT_FILENO);
-    close(STDERR_FILENO);
+static bool isEndedWithDotLocal(const char *const hostname) {
+    const char *const dotLocal = ".local";
+    const size_t hostnameLen = strlen(hostname);
+    const size_t dotLocalLen = strlen(dotLocal);
+    if (hostnameLen < dotLocalLen) return false;
+    return (strcasecmp(hostname + hostnameLen - dotLocalLen, dotLocal) == 0);
 }
 
 int main(int argc, char *argv[]) {
-    char* host = argv[1];
+    if (argc < 2) {
+        printf("Usage: %s <list of hostnames>\n", argv[0]);
+        return 1;
+    }
     DNSServiceErrorType err;
+    DNSServiceFlags flags = 0;
     printtimestamp();
     printf("...STARTING...\n");
-    printf("Registering host to local\n");
-    printf("Host: %s\n", host);
-    printf("Client pa is not null\n");
     err = DNSServiceCreateConnection(&client_pa);
     if (err) { fprintf(stderr, "DNSServiceCreateConnection returned %d\n", err); return(err); }
-    DNSServiceFlags flags = 0;
-    err = RegisterProxyAddressRecord(client_pa, host, "127.0.0.1", flags);
-    if (err) { fprintf(stderr, "DNSServiceRegisterRecord returned %d\n", err); return(err); }
+    for (int i = 1; i < argc; i++) {
+        char* host = argv[i];
+        if (!isEndedWithDotLocal(host)) {
+            printf("Adding .local to %s\n", host);
+            host = malloc(strlen(argv[i]) + 7);
+            strcpy(host, argv[i]);
+            strcat(host, ".local");
+        }
+        printf("Registering %s\n", host);
+        err = RegisterProxyAddressRecord(client_pa, host, "127.0.0.1", flags);
+        if (err) { fprintf(stderr, "DNSServiceRegisterRecord returned %d\n", err); return(err); }
+    }
     HandleEvents();
 
     if (client_pa) DNSServiceRefDeallocate(client_pa);

@@ -17,7 +17,7 @@ type MDNSProxy struct {
 	logger          *zap.Logger
 	port            int
 	nginxConfigFile string
-	hostProcesses   map[string]*exec.Cmd
+	command         *exec.Cmd
 }
 
 func NewMDNSProxy(logger *zap.Logger) (dnsproxy.DNSProxy, error) {
@@ -51,27 +51,29 @@ func (p *MDNSProxy) Stop() error {
 	return t.Wait()
 }
 
-func (p *MDNSProxy) SetHosts(hosts map[string]struct{}) error {
-	p.logger.Debug("Setting hosts", zap.Any("hosts", hosts))
+func (p *MDNSProxy) SetHosts(hostsMap map[string]struct{}) error {
+	p.logger.Debug("Setting hosts", zap.Any("hosts", hostsMap))
 
-	newHostProcesses := make(map[string]*exec.Cmd)
-
-	for host := range hosts {
-		p.logger.Debug("Setting host", zap.String("host", host))
-		cmd := exec.Command("./c/build/dns-sd", host)
-		cmd.Start()
-		newHostProcesses[host] = cmd
+	hosts := make([]string, len(hostsMap))
+	i := 0
+	for host := range hostsMap {
+		hosts[i] = host
+		i++
 	}
-	for host, cmd := range p.hostProcesses {
-		if _, ok := hosts[host]; !ok {
-			p.logger.Debug("Killing host", zap.String("host", host))
-			err := cmd.Process.Kill()
-			if err != nil {
-				return err
-			}
+
+	p.logger.Debug("Setting hosts", zap.Any("hosts", hosts))
+	cmd := exec.Command("./c/build/dns-sd", hosts...)
+	err := cmd.Start()
+	if err != nil {
+		return err
+	}
+	if p.command != nil {
+		err := p.command.Process.Kill()
+		if err != nil {
+			return err
 		}
 	}
-	p.hostProcesses = newHostProcesses
+	p.command = cmd
 	return nil
 }
 
