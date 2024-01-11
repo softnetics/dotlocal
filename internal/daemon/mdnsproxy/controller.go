@@ -63,7 +63,7 @@ func (p *MDNSProxy) SetHosts(hostsMap map[string]struct{}) error {
 	}
 
 	p.logger.Debug("Setting hosts", zap.Any("hosts", hosts))
-	cmd := exec.Command("./c/build/dns-sd", hosts...)
+	cmd := exec.Command("./cmd/dns-sd/dns-sd", hosts...)
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
 		p.logger.Error("Failed to get stdout pipe", zap.Error(err))
