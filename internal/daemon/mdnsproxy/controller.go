@@ -1,6 +1,7 @@
 package mdnsproxy
 
 import (
+	"bufio"
 	"os"
 	"os/exec"
 
@@ -63,10 +64,23 @@ func (p *MDNSProxy) SetHosts(hostsMap map[string]struct{}) error {
 
 	p.logger.Debug("Setting hosts", zap.Any("hosts", hosts))
 	cmd := exec.Command("./c/build/dns-sd", hosts...)
-	err := cmd.Start()
+	stdout, err := cmd.StdoutPipe()
 	if err != nil {
+		p.logger.Error("Failed to get stdout pipe", zap.Error(err))
 		return err
 	}
+	err = cmd.Start()
+	if err != nil {
+		p.logger.Error("Failed to start dns-sd", zap.Error(err))
+		return err
+	}
+	go func() {
+		scanner := bufio.NewScanner(stdout)
+		for scanner.Scan() {
+			p.logger.Info("dns-sd", zap.String("line", scanner.Text()))
+		}
+		p.logger.Info("dns-sd exited")
+	}()
 	if p.command != nil {
 		err := p.command.Process.Kill()
 		if err != nil {
