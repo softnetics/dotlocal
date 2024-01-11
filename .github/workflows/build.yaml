@@ -109,3 +109,12 @@ jobs:
         with:
           body_path: ${{ env.CHANGELOG_PATH }}
           files: ${{ env.DMG_NAME }}
+
+      - name: Bump cask version
+        uses: benc-uk/workflow-dispatch@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          workflow: bump-cask.yaml
+          repo: softnetics/homebrew-tap
+          ref: main
+          inputs: '{ "cask": "dotlocal", "version": "${{ env.VERSION }}" }'
