@@ -77,7 +77,7 @@ func (d *DotLocal) Start() error {
 		return d.nginx.Start()
 	})
 	t.Go(func() error {
-		return d.dnsProxy.Start(d.nginx.Port())
+		return d.dnsProxy.Start()
 	})
 
 	err = t.Wait()
