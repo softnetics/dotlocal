@@ -4,7 +4,7 @@ import "google/protobuf/timestamp.proto";
 option go_package = "github.com/softnetics/dotlocal/api";
 
 service DotLocal {
-  rpc CreateMapping (CreateMappingRequest) returns (google.protobuf.Empty) {}
+  rpc CreateMapping (CreateMappingRequest) returns (Mapping) {}
   rpc RemoveMapping (MappingKey) returns (google.protobuf.Empty) {}
   rpc ListMappings (google.protobuf.Empty) returns (ListMappingsResponse) {}
 }

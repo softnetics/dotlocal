@@ -123,8 +123,8 @@ func newDotLocalServer(logger *zap.Logger, dotlocal *DotLocal) *dotLocalServer {
 	}
 }
 
-func (s *dotLocalServer) CreateMapping(ctx context.Context, req *api.CreateMappingRequest) (*emptypb.Empty, error) {
-	_, err := s.dotlocal.CreateMapping(internal.MappingOptions{
+func (s *dotLocalServer) CreateMapping(ctx context.Context, req *api.CreateMappingRequest) (*api.Mapping, error) {
+	mapping, err := s.dotlocal.CreateMapping(internal.MappingOptions{
 		Host:       *req.Host,
 		PathPrefix: *req.PathPrefix,
 		Target:     *req.Target,
@@ -132,7 +132,7 @@ func (s *dotLocalServer) CreateMapping(ctx context.Context, req *api.CreateMappi
 	if err != nil {
 		return nil, err
 	}
-	return &emptypb.Empty{}, nil
+	return mappingToApiMapping(mapping), nil
 }
 
 func (s *dotLocalServer) RemoveMapping(ctx context.Context, key *api.MappingKey) (*emptypb.Empty, error) {
@@ -149,16 +149,20 @@ func (s *dotLocalServer) RemoveMapping(ctx context.Context, key *api.MappingKey)
 func (s *dotLocalServer) ListMappings(ctx context.Context, _ *emptypb.Empty) (*api.ListMappingsResponse, error) {
 	res := &api.ListMappingsResponse{
 		Mappings: lo.Map(s.dotlocal.GetMappings(), func(mapping internal.Mapping, _ int) *api.Mapping {
-			return &api.Mapping{
-				Id:         &mapping.ID,
-				Host:       &mapping.Host,
-				PathPrefix: &mapping.PathPrefix,
-				Target:     &mapping.Target,
-				ExpiresAt: &timestamppb.Timestamp{
-					Seconds: mapping.ExpresAt.Unix(),
-				},
-			}
+			return mappingToApiMapping(mapping)
 		}),
 	}
 	return res, nil
+}
+
+func mappingToApiMapping(mapping internal.Mapping) *api.Mapping {
+	return &api.Mapping{
+		Id:         &mapping.ID,
+		Host:       &mapping.Host,
+		PathPrefix: &mapping.PathPrefix,
+		Target:     &mapping.Target,
+		ExpiresAt: &timestamppb.Timestamp{
+			Seconds: mapping.ExpresAt.Unix(),
+		},
+	}
 }

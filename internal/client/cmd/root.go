@@ -43,7 +43,7 @@ var (
 			go func() {
 				wasSuccessful := false
 				for {
-					_, err := apiClient.CreateMapping(loopCtx, &api.CreateMappingRequest{
+					mapping, err := apiClient.CreateMapping(loopCtx, &api.CreateMappingRequest{
 						Host:       &hostname,
 						PathPrefix: &pathPrefix,
 						Target:     &target,
@@ -54,7 +54,7 @@ var (
 						duration = 5 * time.Second
 						wasSuccessful = false
 					} else if !wasSuccessful {
-						logger.Info(fmt.Sprintf("Forwarding %s%s to %s", hostname, pathPrefix, target))
+						logger.Info(fmt.Sprintf("Forwarding http://%s%s to %s", *mapping.Host, *mapping.PathPrefix, *mapping.Target))
 						wasSuccessful = true
 					}
 					timer := time.NewTimer(duration)

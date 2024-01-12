@@ -19,7 +19,7 @@ public protocol DotLocalClientProtocol: GRPCClient {
   func createMapping(
     _ request: CreateMappingRequest,
     callOptions: CallOptions?
-  ) -> UnaryCall<CreateMappingRequest, SwiftProtobuf.Google_Protobuf_Empty>
+  ) -> UnaryCall<CreateMappingRequest, Mapping>
 
   func removeMapping(
     _ request: MappingKey,
@@ -46,7 +46,7 @@ extension DotLocalClientProtocol {
   public func createMapping(
     _ request: CreateMappingRequest,
     callOptions: CallOptions? = nil
-  ) -> UnaryCall<CreateMappingRequest, SwiftProtobuf.Google_Protobuf_Empty> {
+  ) -> UnaryCall<CreateMappingRequest, Mapping> {
     return self.makeUnaryCall(
       path: DotLocalClientMetadata.Methods.createMapping.path,
       request: request,
@@ -157,7 +157,7 @@ public protocol DotLocalAsyncClientProtocol: GRPCClient {
   func makeCreateMappingCall(
     _ request: CreateMappingRequest,
     callOptions: CallOptions?
-  ) -> GRPCAsyncUnaryCall<CreateMappingRequest, SwiftProtobuf.Google_Protobuf_Empty>
+  ) -> GRPCAsyncUnaryCall<CreateMappingRequest, Mapping>
 
   func makeRemoveMappingCall(
     _ request: MappingKey,
@@ -183,7 +183,7 @@ extension DotLocalAsyncClientProtocol {
   public func makeCreateMappingCall(
     _ request: CreateMappingRequest,
     callOptions: CallOptions? = nil
-  ) -> GRPCAsyncUnaryCall<CreateMappingRequest, SwiftProtobuf.Google_Protobuf_Empty> {
+  ) -> GRPCAsyncUnaryCall<CreateMappingRequest, Mapping> {
     return self.makeAsyncUnaryCall(
       path: DotLocalClientMetadata.Methods.createMapping.path,
       request: request,
@@ -222,7 +222,7 @@ extension DotLocalAsyncClientProtocol {
   public func createMapping(
     _ request: CreateMappingRequest,
     callOptions: CallOptions? = nil
-  ) async throws -> SwiftProtobuf.Google_Protobuf_Empty {
+  ) async throws -> Mapping {
     return try await self.performAsyncUnaryCall(
       path: DotLocalClientMetadata.Methods.createMapping.path,
       request: request,
@@ -276,7 +276,7 @@ public struct DotLocalAsyncClient: DotLocalAsyncClientProtocol {
 public protocol DotLocalClientInterceptorFactoryProtocol: Sendable {
 
   /// - Returns: Interceptors to use when invoking 'createMapping'.
-  func makeCreateMappingInterceptors() -> [ClientInterceptor<CreateMappingRequest, SwiftProtobuf.Google_Protobuf_Empty>]
+  func makeCreateMappingInterceptors() -> [ClientInterceptor<CreateMappingRequest, Mapping>]
 
   /// - Returns: Interceptors to use when invoking 'removeMapping'.
   func makeRemoveMappingInterceptors() -> [ClientInterceptor<MappingKey, SwiftProtobuf.Google_Protobuf_Empty>]
@@ -321,7 +321,7 @@ public enum DotLocalClientMetadata {
 public protocol DotLocalProvider: CallHandlerProvider {
   var interceptors: DotLocalServerInterceptorFactoryProtocol? { get }
 
-  func createMapping(request: CreateMappingRequest, context: StatusOnlyCallContext) -> EventLoopFuture<SwiftProtobuf.Google_Protobuf_Empty>
+  func createMapping(request: CreateMappingRequest, context: StatusOnlyCallContext) -> EventLoopFuture<Mapping>
 
   func removeMapping(request: MappingKey, context: StatusOnlyCallContext) -> EventLoopFuture<SwiftProtobuf.Google_Protobuf_Empty>
 
@@ -344,7 +344,7 @@ extension DotLocalProvider {
       return UnaryServerHandler(
         context: context,
         requestDeserializer: ProtobufDeserializer<CreateMappingRequest>(),
-        responseSerializer: ProtobufSerializer<SwiftProtobuf.Google_Protobuf_Empty>(),
+        responseSerializer: ProtobufSerializer<Mapping>(),
         interceptors: self.interceptors?.makeCreateMappingInterceptors() ?? [],
         userFunction: self.createMapping(request:context:)
       )
@@ -382,7 +382,7 @@ public protocol DotLocalAsyncProvider: CallHandlerProvider, Sendable {
   func createMapping(
     request: CreateMappingRequest,
     context: GRPCAsyncServerCallContext
-  ) async throws -> SwiftProtobuf.Google_Protobuf_Empty
+  ) async throws -> Mapping
 
   func removeMapping(
     request: MappingKey,
@@ -418,7 +418,7 @@ extension DotLocalAsyncProvider {
       return GRPCAsyncServerHandler(
         context: context,
         requestDeserializer: ProtobufDeserializer<CreateMappingRequest>(),
-        responseSerializer: ProtobufSerializer<SwiftProtobuf.Google_Protobuf_Empty>(),
+        responseSerializer: ProtobufSerializer<Mapping>(),
         interceptors: self.interceptors?.makeCreateMappingInterceptors() ?? [],
         wrapping: { try await self.createMapping(request: $0, context: $1) }
       )
@@ -451,7 +451,7 @@ public protocol DotLocalServerInterceptorFactoryProtocol: Sendable {
 
   /// - Returns: Interceptors to use when handling 'createMapping'.
   ///   Defaults to calling `self.makeInterceptors()`.
-  func makeCreateMappingInterceptors() -> [ServerInterceptor<CreateMappingRequest, SwiftProtobuf.Google_Protobuf_Empty>]
+  func makeCreateMappingInterceptors() -> [ServerInterceptor<CreateMappingRequest, Mapping>]
 
   /// - Returns: Interceptors to use when handling 'removeMapping'.
   ///   Defaults to calling `self.makeInterceptors()`.

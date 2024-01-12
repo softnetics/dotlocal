@@ -8,11 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		D50377F62B481B59008F9AA8 /* GRPC in Frameworks */ = {isa = PBXBuildFile; productRef = D50377F52B481B59008F9AA8 /* GRPC */; };
-		D50378042B482578008F9AA8 /* dot-local.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50378022B482578008F9AA8 /* dot-local.pb.swift */; };
-		D50378052B482578008F9AA8 /* dot-local.grpc.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50378012B482578008F9AA8 /* dot-local.grpc.swift */; };
-		D50378062B482578008F9AA8 /* preferences.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50378032B482578008F9AA8 /* preferences.pb.swift */; };
 		D503780B2B48718D008F9AA8 /* MappingList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D503780A2B48718D008F9AA8 /* MappingList.swift */; };
-		D503780D2B487250008F9AA8 /* ProtoExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D503780C2B487250008F9AA8 /* ProtoExtensions.swift */; };
 		D529B1AE2B47BF8C00DC288B /* DotLocalApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D529B1AD2B47BF8C00DC288B /* DotLocalApp.swift */; };
 		D529B1B02B47BF8C00DC288B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D529B1AF2B47BF8C00DC288B /* ContentView.swift */; };
 		D529B1B22B47BF8E00DC288B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D529B1B12B47BF8E00DC288B /* Assets.xcassets */; };
@@ -21,10 +17,14 @@
 		D529B1CA2B47BF8E00DC288B /* DotLocalUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D529B1C92B47BF8E00DC288B /* DotLocalUITests.swift */; };
 		D529B1CC2B47BF8E00DC288B /* DotLocalUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D529B1CB2B47BF8E00DC288B /* DotLocalUITestsLaunchTests.swift */; };
 		D56116AA2B510CFD00FEB087 /* DaemonManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56116A92B510CFD00FEB087 /* DaemonManager.swift */; };
-		D56116B22B51109900FEB087 /* dot-local.grpc.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50378012B482578008F9AA8 /* dot-local.grpc.swift */; };
-		D56116B32B51109900FEB087 /* dot-local.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50378022B482578008F9AA8 /* dot-local.pb.swift */; };
-		D56116B42B51109900FEB087 /* preferences.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50378032B482578008F9AA8 /* preferences.pb.swift */; };
-		D56116B52B51109900FEB087 /* ProtoExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D503780C2B487250008F9AA8 /* ProtoExtensions.swift */; };
+		D56116BC2B51621500FEB087 /* dot-local.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56116B92B51621500FEB087 /* dot-local.pb.swift */; };
+		D56116BD2B51621500FEB087 /* dot-local.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56116B92B51621500FEB087 /* dot-local.pb.swift */; };
+		D56116BE2B51621500FEB087 /* preferences.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56116BA2B51621500FEB087 /* preferences.pb.swift */; };
+		D56116BF2B51621500FEB087 /* preferences.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56116BA2B51621500FEB087 /* preferences.pb.swift */; };
+		D56116C02B51621500FEB087 /* dot-local.grpc.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56116BB2B51621500FEB087 /* dot-local.grpc.swift */; };
+		D56116C12B51621500FEB087 /* dot-local.grpc.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56116BB2B51621500FEB087 /* dot-local.grpc.swift */; };
+		D56116C32B51628E00FEB087 /* ProtoExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56116C22B51628E00FEB087 /* ProtoExtensions.swift */; };
+		D56116C42B51628E00FEB087 /* ProtoExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56116C22B51628E00FEB087 /* ProtoExtensions.swift */; };
 		D5793C492B50E8D400979DC3 /* HelperManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5793C482B50E8D400979DC3 /* HelperManager.swift */; };
 		D5793C5C2B5103CC00979DC3 /* GRPC in Frameworks */ = {isa = PBXBuildFile; productRef = D5793C5B2B5103CC00979DC3 /* GRPC */; };
 		D5793C5E2B5103CF00979DC3 /* EmbeddedPropertyList in Frameworks */ = {isa = PBXBuildFile; productRef = D5793C5D2B5103CF00979DC3 /* EmbeddedPropertyList */; };
@@ -152,11 +152,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		D50378012B482578008F9AA8 /* dot-local.grpc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "dot-local.grpc.swift"; sourceTree = "<group>"; };
-		D50378022B482578008F9AA8 /* dot-local.pb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "dot-local.pb.swift"; sourceTree = "<group>"; };
-		D50378032B482578008F9AA8 /* preferences.pb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = preferences.pb.swift; sourceTree = "<group>"; };
 		D503780A2B48718D008F9AA8 /* MappingList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MappingList.swift; sourceTree = "<group>"; };
-		D503780C2B487250008F9AA8 /* ProtoExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtoExtensions.swift; sourceTree = "<group>"; };
 		D529B1AA2B47BF8C00DC288B /* DotLocal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DotLocal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D529B1AD2B47BF8C00DC288B /* DotLocalApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotLocalApp.swift; sourceTree = "<group>"; };
 		D529B1AF2B47BF8C00DC288B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -169,6 +165,10 @@
 		D529B1C92B47BF8E00DC288B /* DotLocalUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotLocalUITests.swift; sourceTree = "<group>"; };
 		D529B1CB2B47BF8E00DC288B /* DotLocalUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotLocalUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		D56116A92B510CFD00FEB087 /* DaemonManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DaemonManager.swift; sourceTree = "<group>"; };
+		D56116B92B51621500FEB087 /* dot-local.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "dot-local.pb.swift"; sourceTree = "<group>"; };
+		D56116BA2B51621500FEB087 /* preferences.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = preferences.pb.swift; sourceTree = "<group>"; };
+		D56116BB2B51621500FEB087 /* dot-local.grpc.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "dot-local.grpc.swift"; sourceTree = "<group>"; };
+		D56116C22B51628E00FEB087 /* ProtoExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtoExtensions.swift; sourceTree = "<group>"; };
 		D5793C482B50E8D400979DC3 /* HelperManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperManager.swift; sourceTree = "<group>"; };
 		D5793C5F2B5103E300979DC3 /* DaemonState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaemonState.swift; sourceTree = "<group>"; };
 		D582E9052B4C5BC00054343B /* nginx */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = nginx; sourceTree = "<group>"; };
@@ -236,26 +236,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		D50377F72B481F69008F9AA8 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				D50378072B482588008F9AA8 /* proto */,
-				D503780C2B487250008F9AA8 /* ProtoExtensions.swift */,
-			);
-			name = Model;
-			path = ../DotLocal/Model;
-			sourceTree = "<group>";
-		};
-		D50378072B482588008F9AA8 /* proto */ = {
-			isa = PBXGroup;
-			children = (
-				D50378012B482578008F9AA8 /* dot-local.grpc.swift */,
-				D50378022B482578008F9AA8 /* dot-local.pb.swift */,
-				D50378032B482578008F9AA8 /* preferences.pb.swift */,
-			);
-			path = proto;
-			sourceTree = "<group>";
-		};
 		D529B1A12B47BF8C00DC288B = {
 			isa = PBXGroup;
 			children = (
@@ -331,6 +311,25 @@
 			path = DotLocalUITests;
 			sourceTree = "<group>";
 		};
+		D56116B62B51621500FEB087 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				D56116B72B51621500FEB087 /* proto */,
+				D56116C22B51628E00FEB087 /* ProtoExtensions.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		D56116B72B51621500FEB087 /* proto */ = {
+			isa = PBXGroup;
+			children = (
+				D56116B92B51621500FEB087 /* dot-local.pb.swift */,
+				D56116BA2B51621500FEB087 /* preferences.pb.swift */,
+				D56116BB2B51621500FEB087 /* dot-local.grpc.swift */,
+			);
+			path = proto;
+			sourceTree = "<group>";
+		};
 		D582E8FF2B4C5AEE0054343B /* bin */ = {
 			isa = PBXGroup;
 			children = (
@@ -379,7 +378,7 @@
 		D59D895D2B5048420009270C /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				D50377F72B481F69008F9AA8 /* Model */,
+				D56116B62B51621500FEB087 /* Model */,
 				D59D89602B5048C40009270C /* SharedConstants.swift */,
 				D59D89682B50548C0009270C /* HelperToolInfoPropertyList.swift */,
 				D59D89852B5067E60009270C /* HelperToolLaunchdPropertyList.swift */,
@@ -638,8 +637,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				D5793C602B5103E300979DC3 /* DaemonState.swift in Sources */,
+				D56116BE2B51621500FEB087 /* preferences.pb.swift in Sources */,
 				D59D897D2B505E4B0009270C /* CodeInfo.swift in Sources */,
 				D5E8DD292B47E54800E083E0 /* AppDelegate.swift in Sources */,
+				D56116C32B51628E00FEB087 /* ProtoExtensions.swift in Sources */,
 				D5DEA9C02B499C2F0029BB00 /* Defaults.swift in Sources */,
 				D59D89862B5067E60009270C /* HelperToolLaunchdPropertyList.swift in Sources */,
 				D5793C492B50E8D400979DC3 /* HelperManager.swift in Sources */,
@@ -647,15 +648,13 @@
 				D59D89612B5048C40009270C /* SharedConstants.swift in Sources */,
 				D5DEA9B32B4888310029BB00 /* AppMenu.swift in Sources */,
 				D59D89832B5065CD0009270C /* MyError.swift in Sources */,
+				D56116C02B51621500FEB087 /* dot-local.grpc.swift in Sources */,
 				D529B1B02B47BF8C00DC288B /* ContentView.swift in Sources */,
-				D503780D2B487250008F9AA8 /* ProtoExtensions.swift in Sources */,
 				D59D89692B50548C0009270C /* HelperToolInfoPropertyList.swift in Sources */,
 				D5DEA9BE2B4995DD0029BB00 /* SettingsView.swift in Sources */,
-				D50378042B482578008F9AA8 /* dot-local.pb.swift in Sources */,
-				D50378052B482578008F9AA8 /* dot-local.grpc.swift in Sources */,
 				D503780B2B48718D008F9AA8 /* MappingList.swift in Sources */,
 				D529B1AE2B47BF8C00DC288B /* DotLocalApp.swift in Sources */,
-				D50378062B482578008F9AA8 /* preferences.pb.swift in Sources */,
+				D56116BC2B51621500FEB087 /* dot-local.pb.swift in Sources */,
 				D5DEA9C42B49C0200029BB00 /* ClientManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -681,18 +680,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D56116B22B51109900FEB087 /* dot-local.grpc.swift in Sources */,
-				D56116B32B51109900FEB087 /* dot-local.pb.swift in Sources */,
-				D56116B42B51109900FEB087 /* preferences.pb.swift in Sources */,
-				D56116B52B51109900FEB087 /* ProtoExtensions.swift in Sources */,
 				D59D89842B5065CD0009270C /* MyError.swift in Sources */,
 				D5793C612B5103E300979DC3 /* DaemonState.swift in Sources */,
 				D59D897E2B505E4B0009270C /* CodeInfo.swift in Sources */,
 				D59D89622B5048C40009270C /* SharedConstants.swift in Sources */,
+				D56116C12B51621500FEB087 /* dot-local.grpc.swift in Sources */,
+				D56116BF2B51621500FEB087 /* preferences.pb.swift in Sources */,
 				D59D89812B505EFE0009270C /* ManageClient.swift in Sources */,
 				D59D89872B5067E60009270C /* HelperToolLaunchdPropertyList.swift in Sources */,
+				D56116C42B51628E00FEB087 /* ProtoExtensions.swift in Sources */,
 				D56116AA2B510CFD00FEB087 /* DaemonManager.swift in Sources */,
 				D59D896A2B50548C0009270C /* HelperToolInfoPropertyList.swift in Sources */,
+				D56116BD2B51621500FEB087 /* dot-local.pb.swift in Sources */,
 				D59D89502B4FFC380009270C /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

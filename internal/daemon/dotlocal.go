@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/dchest/uniuri"
@@ -178,6 +179,9 @@ func (d *DotLocal) GetMappings() []internal.Mapping {
 }
 
 func (d *DotLocal) CreateMapping(opts internal.MappingOptions) (internal.Mapping, error) {
+	if !strings.HasSuffix(opts.Host, ".local") {
+		opts.Host += ".local"
+	}
 	if opts.PathPrefix == "" {
 		opts.PathPrefix = "/"
 	}
