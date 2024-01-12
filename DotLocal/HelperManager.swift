@@ -14,6 +14,7 @@ class HelperManager: ObservableObject {
     
     private let service = SMAppService.daemon(plistName: "helper.plist")
     @Published var status: SMAppService.Status?
+    private var ranRegistered = false
     
     let xpcClient = XPCClient.forMachService(named: "dev.suphon.DotLocal.helper", withServerRequirement: try! .sameBundle)
     
@@ -49,9 +50,9 @@ class HelperManager: ObservableObject {
     
     @MainActor
     func checkStatus() {
-        let oldStatus = status
         status = service.status
-        if oldStatus != .enabled && status == .enabled {
+        if status == .enabled && !ranRegistered {
+            ranRegistered = true
             Task {
                 await onRegistered()
             }
