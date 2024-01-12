@@ -38,7 +38,7 @@ class HelperToolMonitor {
         
         var isReady: Bool {
             get {
-                if registeredWithLaunchd, registrationPropertyListExists, case .exists(let bundleVersion) = helperToolExecutable {
+                if registeredWithLaunchd, registrationPropertyListExists, case .exists(_) = helperToolExecutable {
                     return true
                 } else {
                     return false
