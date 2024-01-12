@@ -34,7 +34,7 @@ func NewDotLocal(logger *zap.Logger) (*DotLocal, error) {
 		return nil, err
 	}
 
-	mdnsProxy, err := mdnsproxy.NewMDNSProxy(logger.Named("dnsproxy"))
+	dnsProxy, err := mdnsproxy.NewMDNSProxy(logger.Named("dnsproxy"))
 	if err != nil {
 		return nil, err
 	}
@@ -42,7 +42,7 @@ func NewDotLocal(logger *zap.Logger) (*DotLocal, error) {
 	return &DotLocal{
 		logger:   logger,
 		nginx:    nginx,
-		dnsProxy: mdnsProxy,
+		dnsProxy: dnsProxy,
 		mappings: make(map[internal.MappingKey]*internal.MappingState),
 	}, nil
 }

@@ -166,6 +166,8 @@ static const char kFilePathSep = '/';
 #include "../mDNSShared/dnssd_clientstub.c"
 #endif
 
+#include "dns-sd.h"
+
 /** 
  * Global
 */
@@ -249,14 +251,13 @@ static void getip(const char *const name, struct sockaddr_storage *result)
     if (addrs) freeaddrinfo(addrs);
 }
 
-static DNSServiceErrorType RegisterProxyAddressRecord(DNSServiceRef sdref, const char *host, const char *ip, DNSServiceFlags flags)
+DNSServiceErrorType RegisterProxyAddressRecord(DNSServiceRef sdref, DNSRecordRef *RecordRef, const char *host, const char *ip, DNSServiceFlags flags)
 {
     // Call getip() after the call DNSServiceCreateConnection().
     // On the Win32 platform, WinSock must be initialized for getip() to succeed.
     // Any DNSService* call will initialize WinSock for us, so we make sure
     // DNSServiceCreateConnection() is called before getip() is.
     struct sockaddr_storage hostaddr;
-    static DNSRecordRef record = NULL;
     memset(&hostaddr, 0, sizeof(hostaddr));
     getip(ip, &hostaddr);
     if (!(flags & kDNSServiceFlagsShared))
@@ -264,10 +265,10 @@ static DNSServiceErrorType RegisterProxyAddressRecord(DNSServiceRef sdref, const
         flags |= kDNSServiceFlagsUnique;
     }
     if (hostaddr.ss_family == AF_INET)
-        return(DNSServiceRegisterRecord(sdref, &record, flags, kDNSServiceInterfaceIndexLocalOnly, host,
+        return(DNSServiceRegisterRecord(sdref, RecordRef, flags, kDNSServiceInterfaceIndexLocalOnly, host,
                                         kDNSServiceType_A,    kDNSServiceClass_IN,  4, &((struct sockaddr_in *)&hostaddr)->sin_addr,  240, MyRegisterRecordCallback, (void*)host));
     else if (hostaddr.ss_family == AF_INET6)
-        return(DNSServiceRegisterRecord(sdref, &record, flags, kDNSServiceInterfaceIndexLocalOnly, host,
+        return(DNSServiceRegisterRecord(sdref, RecordRef, flags, kDNSServiceInterfaceIndexLocalOnly, host,
                                         kDNSServiceType_AAAA, kDNSServiceClass_IN, 16, &((struct sockaddr_in6*)&hostaddr)->sin6_addr, 240, MyRegisterRecordCallback, (void*)host));
     else return(kDNSServiceErr_BadParam);
 }
@@ -358,40 +359,3 @@ static void HandleEvents(void)
     }
 }
 #endif
-
-static bool isEndedWithDotLocal(const char *const hostname) {
-    const char *const dotLocal = ".local";
-    const size_t hostnameLen = strlen(hostname);
-    const size_t dotLocalLen = strlen(dotLocal);
-    if (hostnameLen < dotLocalLen) return false;
-    return (strcasecmp(hostname + hostnameLen - dotLocalLen, dotLocal) == 0);
-}
-
-int main(int argc, char *argv[]) {
-    if (argc < 2) {
-        printf("Usage: %s <list of hostnames>\n", argv[0]);
-        return 1;
-    }
-    DNSServiceErrorType err;
-    DNSServiceFlags flags = 0;
-    printtimestamp();
-    printf("...STARTING...\n");
-    err = DNSServiceCreateConnection(&client_pa);
-    if (err) { fprintf(stderr, "DNSServiceCreateConnection returned %d\n", err); return(err); }
-    for (int i = 1; i < argc; i++) {
-        char* host = argv[i];
-        if (!isEndedWithDotLocal(host)) {
-            printf("Adding .local to %s\n", host);
-            host = malloc(strlen(argv[i]) + 7);
-            strcpy(host, argv[i]);
-            strcat(host, ".local");
-        }
-        printf("Registering %s\n", host);
-        err = RegisterProxyAddressRecord(client_pa, host, "127.0.0.1", flags);
-        if (err) { fprintf(stderr, "DNSServiceRegisterRecord returned %d\n", err); return(err); }
-    }
-    HandleEvents();
-
-    if (client_pa) DNSServiceRefDeallocate(client_pa);
-    return 0;
-}

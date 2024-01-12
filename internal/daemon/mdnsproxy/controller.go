@@ -1,145 +1,82 @@
 package mdnsproxy
 
 import (
-	"bufio"
-	"os"
-	"os/exec"
+	"context"
 
+	dnssd "github.com/softnetics/dotlocal/dns-sd"
 	"github.com/softnetics/dotlocal/internal/daemon/dnsproxy"
-	"github.com/softnetics/dotlocal/internal/util"
-	"github.com/tufanbarisyildirim/gonginx"
 	"go.uber.org/zap"
-	"gopkg.in/tomb.v2"
 )
 
 var nginxImage = "nginx:1.24.0-alpine"
 
 type MDNSProxy struct {
 	logger          *zap.Logger
-	port            int
-	nginxConfigFile string
-	command         *exec.Cmd
+	dnsService      dnssd.DNSService
+	registeredHosts map[string]dnssd.DNSRecord
+
+	cancelProcess context.CancelFunc
 }
 
 func NewMDNSProxy(logger *zap.Logger) (dnsproxy.DNSProxy, error) {
-	nginxConfigFile, err := util.CreateTmpFile()
-	if err != nil {
-		return nil, err
-	}
-
 	return &MDNSProxy{
 		logger:          logger,
-		nginxConfigFile: nginxConfigFile,
+		registeredHosts: make(map[string]dnssd.DNSRecord),
 	}, nil
 }
 
 func (p *MDNSProxy) Start() error {
-	p.logger.Debug("Ensuring nginx image exists", zap.String("image", nginxImage))
-	err := p.writeNginxConfig()
+	p.logger.Debug("Connecting to dns service")
+	service, err := dnssd.NewConnection()
 	if err != nil {
 		return err
 	}
+	p.dnsService = service
 	p.logger.Info("Ready")
+
+	ctx, cancel := context.WithCancel(context.Background())
+	p.cancelProcess = cancel
+	go func() {
+		err := service.Process(ctx)
+		if err != nil {
+			p.logger.Error("Failed to process dns service", zap.Error(err))
+		}
+	}()
+
 	return nil
 }
 
 func (p *MDNSProxy) Stop() error {
 	p.logger.Info("Stopping")
-	var t tomb.Tomb
-	t.Go(func() error {
-		return os.Remove(p.nginxConfigFile)
-	})
-	return t.Wait()
+	p.cancelProcess()
+	p.dnsService.Deallocate()
+	return nil
 }
 
 func (p *MDNSProxy) SetHosts(hostsMap map[string]struct{}) error {
 	p.logger.Debug("Setting hosts", zap.Any("hosts", hostsMap))
 
-	hosts := make([]string, len(hostsMap))
-	i := 0
 	for host := range hostsMap {
-		hosts[i] = host
-		i++
-	}
-
-	p.logger.Debug("Setting hosts", zap.Any("hosts", hosts))
-	cmd := exec.Command("./cmd/dns-sd/dns-sd", hosts...)
-	stdout, err := cmd.StdoutPipe()
-	if err != nil {
-		p.logger.Error("Failed to get stdout pipe", zap.Error(err))
-		return err
-	}
-	err = cmd.Start()
-	if err != nil {
-		p.logger.Error("Failed to start dns-sd", zap.Error(err))
-		return err
-	}
-	go func() {
-		scanner := bufio.NewScanner(stdout)
-		for scanner.Scan() {
-			p.logger.Info("dns-sd", zap.String("line", scanner.Text()))
+		if _, ok := p.registeredHosts[host]; ok {
+			continue
 		}
-		p.logger.Info("dns-sd exited")
-	}()
-	if p.command != nil {
-		err := p.command.Process.Kill()
+		p.logger.Debug("Adding host", zap.String("host", host))
+		record, err := p.dnsService.RegisterProxyAddressRecord(host, "127.0.0.1", 0)
 		if err != nil {
 			return err
 		}
+		p.registeredHosts[host] = record
 	}
-	p.command = cmd
-	return nil
-}
 
-func (p *MDNSProxy) writeNginxConfig() error {
-	conf := &gonginx.Block{
-		Directives: []gonginx.IDirective{
-			&gonginx.Directive{
-				Name: "server",
-				Block: &gonginx.Block{
-					Directives: []gonginx.IDirective{
-						&gonginx.Directive{
-							Name:       "listen",
-							Parameters: []string{"80"},
-						},
-						&gonginx.Directive{
-							Name:       "location",
-							Parameters: []string{"/"},
-							Block: &gonginx.Block{
-								Directives: []gonginx.IDirective{
-									&gonginx.Directive{
-										Name:       "proxy_http_version",
-										Parameters: []string{"1.1"},
-									},
-									&gonginx.Directive{
-										Name:       "proxy_set_header",
-										Parameters: []string{"Upgrade", "$http_upgrade"},
-									},
-									&gonginx.Directive{
-										Name:       "proxy_set_header",
-										Parameters: []string{"Connection", "\"Upgrade\""},
-									},
-									&gonginx.Directive{
-										Name:       "proxy_set_header",
-										Parameters: []string{"Host", "$host"},
-									},
-									&gonginx.Directive{
-										Name:       "proxy_set_header",
-										Parameters: []string{"X-Forwarded-For", "$remote_addr"},
-									},
-								},
-							},
-						},
-					},
-				},
-			},
-		},
-	}
-	configString := gonginx.DumpBlock(conf, gonginx.IndentedStyle)
-	p.logger.Debug("Writing nginx config", zap.String("config", configString))
-	err := os.WriteFile(p.nginxConfigFile, []byte(configString), 0644)
-	if err != nil {
-		return err
+	for host, record := range p.registeredHosts {
+		if _, ok := hostsMap[host]; !ok {
+			p.logger.Debug("Removing host", zap.String("host", host))
+			err := p.dnsService.RemoveRecord(record, 0)
+			if err != nil {
+				return err
+			}
+			delete(p.registeredHosts, host)
+		}
 	}
 	return nil
 }
