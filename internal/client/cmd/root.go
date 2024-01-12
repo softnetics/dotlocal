@@ -38,6 +38,8 @@ var (
 
 			exitCode := 0
 
+			var createdMapping *api.Mapping
+
 			loopCtx, cancel := context.WithCancel(context.Background())
 			defer cancel()
 			go func() {
@@ -57,6 +59,7 @@ var (
 						logger.Info(fmt.Sprintf("Forwarding http://%s%s to %s", *mapping.Host, *mapping.PathPrefix, *mapping.Target))
 						wasSuccessful = true
 					}
+					createdMapping = mapping
 					timer := time.NewTimer(duration)
 					select {
 					case <-timer.C:
@@ -109,12 +112,14 @@ var (
 				<-ch
 			}
 
-			_, err = apiClient.RemoveMapping(context.Background(), &api.MappingKey{
-				Host:       &hostname,
-				PathPrefix: &pathPrefix,
-			})
-			if err != nil {
-				log.Fatal(err)
+			if createdMapping != nil {
+				_, err = apiClient.RemoveMapping(context.Background(), &api.MappingKey{
+					Host:       createdMapping.Host,
+					PathPrefix: createdMapping.PathPrefix,
+				})
+				if err != nil {
+					log.Fatal(err)
+				}
 			}
 			os.Exit(exitCode)
 		},
