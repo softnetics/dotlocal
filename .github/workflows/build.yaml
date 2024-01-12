@@ -2,7 +2,7 @@ name: build
 on:
   push:
     branches:
-      - main
+      - '**'
     tags:
       - "v*.*.*"
 
@@ -18,7 +18,7 @@ permissions:
   repository-projects: read
   security-events: read
   statuses: read
-      
+
 jobs:
   build:
     runs-on: macos-13
