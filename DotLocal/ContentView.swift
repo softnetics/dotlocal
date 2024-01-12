@@ -21,13 +21,21 @@ struct ContentView: View {
                 switch daemonManager.state {
                 case .stopped:
                     Text("DotLocal is not running")
-                case .starting:
+                case .starting, .unknown:
                     ProgressView()
                 case .started:
                     MappingList()
                 }
             }.toolbar() {
-                StartStopButton(state: daemonManager.state, onStart: { daemonManager.start() }, onStop: { daemonManager.stop() })
+                StartStopButton(state: daemonManager.state, onStart: {
+                    Task {
+                        await daemonManager.start()
+                    }
+                }, onStop: {
+                    Task {
+                        await daemonManager.stop()
+                    }
+                })
             }
         default:
             Text("Unexpected state: \(helperManager.status.rawValue)")
@@ -46,7 +54,7 @@ struct StartStopButton: View {
             Button(action: onStart) {
                 Label("Start", systemImage: "play.fill")
             }
-        case .starting:
+        case .starting, .unknown:
             ProgressView().controlSize(.small)
         case .started:
             Button(action: onStop) {

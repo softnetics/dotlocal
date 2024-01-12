@@ -9,10 +9,10 @@ import SwiftUI
 
 struct MappingList: View {
     @StateObject var clientManager = ClientManager.shared
-    @StateObject var vm = MappingListViewModel()
+    @StateObject var daemonManager = DaemonManager.shared
     
     var body: some View {
-        List(vm.mappings) { mapping in
+        List(daemonManager.mappings) { mapping in
             HStack(spacing: 12) {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("\(mapping.host)\(mapping.pathPrefix)")
@@ -28,9 +28,7 @@ struct MappingList: View {
             .padding(.vertical, 4)
         }
         .overlay {
-            if vm.loading {
-                ProgressView()
-            } else if vm.mappings.isEmpty {
+            if daemonManager.mappings.isEmpty {
                 if #available(macOS 14.0, *) {
                     ContentUnavailableView {
                         Label("No Routes", systemImage: "arrow.triangle.swap")
@@ -47,6 +45,13 @@ struct MappingList: View {
                 }
             }
         }
+    }
+    
+    private func getMappings(state: DaemonState) -> [Mapping] {
+        if case .started(let mappings) = state {
+            return mappings
+        }
+        return []
     }
     
     @ViewBuilder

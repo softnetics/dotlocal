@@ -12,7 +12,6 @@ import SecureXPC
 
 class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
-        DaemonManager.shared.start()
         ClientManager.shared.checkInstalled()
         _ = HelperManager.shared
     }
@@ -29,8 +28,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         return true
     }
     
-    func applicationWillTerminate(_ notification: Notification) {
-        DaemonManager.shared.stop()
-        DaemonManager.shared.wait()
+    func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
+        print("applicationShouldTerminate called, stopping daemon and helper")
+        Task {
+            await DaemonManager.shared.stop()
+            try? await HelperManager.shared.xpcClient.send(to: SharedConstants.exitRoute)
+            NSApplication.shared.terminate(nil)
+        }
+        return .terminateLater
     }
 }

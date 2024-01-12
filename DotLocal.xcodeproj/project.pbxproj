@@ -11,7 +11,6 @@
 		D50378042B482578008F9AA8 /* dot-local.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50378022B482578008F9AA8 /* dot-local.pb.swift */; };
 		D50378052B482578008F9AA8 /* dot-local.grpc.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50378012B482578008F9AA8 /* dot-local.grpc.swift */; };
 		D50378062B482578008F9AA8 /* preferences.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50378032B482578008F9AA8 /* preferences.pb.swift */; };
-		D50378092B48708C008F9AA8 /* MappingListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50378082B48708C008F9AA8 /* MappingListViewModel.swift */; };
 		D503780B2B48718D008F9AA8 /* MappingList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D503780A2B48718D008F9AA8 /* MappingList.swift */; };
 		D503780D2B487250008F9AA8 /* ProtoExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D503780C2B487250008F9AA8 /* ProtoExtensions.swift */; };
 		D529B1AE2B47BF8C00DC288B /* DotLocalApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D529B1AD2B47BF8C00DC288B /* DotLocalApp.swift */; };
@@ -21,7 +20,16 @@
 		D529B1C02B47BF8E00DC288B /* DotLocalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D529B1BF2B47BF8E00DC288B /* DotLocalTests.swift */; };
 		D529B1CA2B47BF8E00DC288B /* DotLocalUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D529B1C92B47BF8E00DC288B /* DotLocalUITests.swift */; };
 		D529B1CC2B47BF8E00DC288B /* DotLocalUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D529B1CB2B47BF8E00DC288B /* DotLocalUITestsLaunchTests.swift */; };
+		D56116AA2B510CFD00FEB087 /* DaemonManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56116A92B510CFD00FEB087 /* DaemonManager.swift */; };
+		D56116B22B51109900FEB087 /* dot-local.grpc.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50378012B482578008F9AA8 /* dot-local.grpc.swift */; };
+		D56116B32B51109900FEB087 /* dot-local.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50378022B482578008F9AA8 /* dot-local.pb.swift */; };
+		D56116B42B51109900FEB087 /* preferences.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50378032B482578008F9AA8 /* preferences.pb.swift */; };
+		D56116B52B51109900FEB087 /* ProtoExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D503780C2B487250008F9AA8 /* ProtoExtensions.swift */; };
 		D5793C492B50E8D400979DC3 /* HelperManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5793C482B50E8D400979DC3 /* HelperManager.swift */; };
+		D5793C5C2B5103CC00979DC3 /* GRPC in Frameworks */ = {isa = PBXBuildFile; productRef = D5793C5B2B5103CC00979DC3 /* GRPC */; };
+		D5793C5E2B5103CF00979DC3 /* EmbeddedPropertyList in Frameworks */ = {isa = PBXBuildFile; productRef = D5793C5D2B5103CF00979DC3 /* EmbeddedPropertyList */; };
+		D5793C602B5103E300979DC3 /* DaemonState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5793C5F2B5103E300979DC3 /* DaemonState.swift */; };
+		D5793C612B5103E300979DC3 /* DaemonState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5793C5F2B5103E300979DC3 /* DaemonState.swift */; };
 		D582E9072B4C5BE20054343B /* nginx in Copy Binaries */ = {isa = PBXBuildFile; fileRef = D582E9052B4C5BC00054343B /* nginx */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D59D89502B4FFC380009270C /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59D894F2B4FFC380009270C /* main.swift */; };
 		D59D895A2B4FFDE20009270C /* DotLocalHelperTool in Copy Helper */ = {isa = PBXBuildFile; fileRef = D59D894D2B4FFC380009270C /* DotLocalHelperTool */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -31,12 +39,10 @@
 		D59D89692B50548C0009270C /* HelperToolInfoPropertyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59D89682B50548C0009270C /* HelperToolInfoPropertyList.swift */; };
 		D59D896A2B50548C0009270C /* HelperToolInfoPropertyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59D89682B50548C0009270C /* HelperToolInfoPropertyList.swift */; };
 		D59D896E2B5055BB0009270C /* EmbeddedPropertyList in Frameworks */ = {isa = PBXBuildFile; productRef = D59D896D2B5055BB0009270C /* EmbeddedPropertyList */; };
-		D59D89702B5055C00009270C /* EmbeddedPropertyList in Frameworks */ = {isa = PBXBuildFile; productRef = D59D896F2B5055C00009270C /* EmbeddedPropertyList */; };
 		D59D89792B505C430009270C /* SecureXPC in Frameworks */ = {isa = PBXBuildFile; productRef = D59D89782B505C430009270C /* SecureXPC */; };
 		D59D897B2B505C4B0009270C /* SecureXPC in Frameworks */ = {isa = PBXBuildFile; productRef = D59D897A2B505C4B0009270C /* SecureXPC */; };
 		D59D897D2B505E4B0009270C /* CodeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59D897C2B505E4B0009270C /* CodeInfo.swift */; };
 		D59D897E2B505E4B0009270C /* CodeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59D897C2B505E4B0009270C /* CodeInfo.swift */; };
-		D59D89802B505EFE0009270C /* ManageClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59D897F2B505EFE0009270C /* ManageClient.swift */; };
 		D59D89812B505EFE0009270C /* ManageClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59D897F2B505EFE0009270C /* ManageClient.swift */; };
 		D59D89832B5065CD0009270C /* MyError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59D89822B5065CD0009270C /* MyError.swift */; };
 		D59D89842B5065CD0009270C /* MyError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59D89822B5065CD0009270C /* MyError.swift */; };
@@ -68,6 +74,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = D529B1A92B47BF8C00DC288B;
 			remoteInfo = DotLocal;
+		};
+		D56116B02B51102F00FEB087 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D529B1A22B47BF8C00DC288B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D59D894C2B4FFC380009270C;
+			remoteInfo = DotLocalHelperTool;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -142,7 +155,6 @@
 		D50378012B482578008F9AA8 /* dot-local.grpc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "dot-local.grpc.swift"; sourceTree = "<group>"; };
 		D50378022B482578008F9AA8 /* dot-local.pb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "dot-local.pb.swift"; sourceTree = "<group>"; };
 		D50378032B482578008F9AA8 /* preferences.pb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = preferences.pb.swift; sourceTree = "<group>"; };
-		D50378082B48708C008F9AA8 /* MappingListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MappingListViewModel.swift; sourceTree = "<group>"; };
 		D503780A2B48718D008F9AA8 /* MappingList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MappingList.swift; sourceTree = "<group>"; };
 		D503780C2B487250008F9AA8 /* ProtoExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtoExtensions.swift; sourceTree = "<group>"; };
 		D529B1AA2B47BF8C00DC288B /* DotLocal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DotLocal.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -156,7 +168,9 @@
 		D529B1C52B47BF8E00DC288B /* DotLocalUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DotLocalUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D529B1C92B47BF8E00DC288B /* DotLocalUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotLocalUITests.swift; sourceTree = "<group>"; };
 		D529B1CB2B47BF8E00DC288B /* DotLocalUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotLocalUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		D56116A92B510CFD00FEB087 /* DaemonManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DaemonManager.swift; sourceTree = "<group>"; };
 		D5793C482B50E8D400979DC3 /* HelperManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperManager.swift; sourceTree = "<group>"; };
+		D5793C5F2B5103E300979DC3 /* DaemonState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaemonState.swift; sourceTree = "<group>"; };
 		D582E9052B4C5BC00054343B /* nginx */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = nginx; sourceTree = "<group>"; };
 		D582E90A2B4E7BA90054343B /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		D582E90B2B4E7C750054343B /* Version.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Version.xcconfig; sourceTree = "<group>"; };
@@ -213,8 +227,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D59D89702B5055C00009270C /* EmbeddedPropertyList in Frameworks */,
+				D5793C5C2B5103CC00979DC3 /* GRPC in Frameworks */,
 				D59D897B2B505C4B0009270C /* SecureXPC in Frameworks */,
+				D5793C5E2B5103CF00979DC3 /* EmbeddedPropertyList in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -227,7 +242,8 @@
 				D50378072B482588008F9AA8 /* proto */,
 				D503780C2B487250008F9AA8 /* ProtoExtensions.swift */,
 			);
-			path = Model;
+			name = Model;
+			path = ../DotLocal/Model;
 			sourceTree = "<group>";
 		};
 		D50378072B482588008F9AA8 /* proto */ = {
@@ -272,12 +288,10 @@
 			children = (
 				D59D89632B50506D0009270C /* AppConfig.xcconfig */,
 				D59D89552B4FFCFF0009270C /* LaunchDaemons */,
-				D50377F72B481F69008F9AA8 /* Model */,
 				D529B1AD2B47BF8C00DC288B /* DotLocalApp.swift */,
 				D5E8DD282B47E54800E083E0 /* AppDelegate.swift */,
 				D5DEA9B22B4888310029BB00 /* AppMenu.swift */,
 				D529B1AF2B47BF8C00DC288B /* ContentView.swift */,
-				D50378082B48708C008F9AA8 /* MappingListViewModel.swift */,
 				D503780A2B48718D008F9AA8 /* MappingList.swift */,
 				D529B1BE2B47BF8E00DC288B /* DotLocalTests */,
 				D529B1B12B47BF8E00DC288B /* Assets.xcassets */,
@@ -349,6 +363,7 @@
 				D59D89712B50572A0009270C /* Info.plist */,
 				D59D894F2B4FFC380009270C /* main.swift */,
 				D59D897F2B505EFE0009270C /* ManageClient.swift */,
+				D56116A92B510CFD00FEB087 /* DaemonManager.swift */,
 			);
 			path = DotLocalHelperTool;
 			sourceTree = "<group>";
@@ -364,11 +379,13 @@
 		D59D895D2B5048420009270C /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				D50377F72B481F69008F9AA8 /* Model */,
 				D59D89602B5048C40009270C /* SharedConstants.swift */,
 				D59D89682B50548C0009270C /* HelperToolInfoPropertyList.swift */,
 				D59D89852B5067E60009270C /* HelperToolLaunchdPropertyList.swift */,
 				D59D897C2B505E4B0009270C /* CodeInfo.swift */,
 				D59D89822B5065CD0009270C /* MyError.swift */,
+				D5793C5F2B5103E300979DC3 /* DaemonState.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -400,6 +417,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				D56116B12B51102F00FEB087 /* PBXTargetDependency */,
 			);
 			name = DotLocal;
 			packageProductDependencies = (
@@ -465,8 +483,9 @@
 			);
 			name = DotLocalHelperTool;
 			packageProductDependencies = (
-				D59D896F2B5055C00009270C /* EmbeddedPropertyList */,
 				D59D897A2B505C4B0009270C /* SecureXPC */,
+				D5793C5B2B5103CC00979DC3 /* GRPC */,
+				D5793C5D2B5103CF00979DC3 /* EmbeddedPropertyList */,
 			);
 			productName = DotLocalHelperTool;
 			productReference = D59D894D2B4FFC380009270C /* DotLocalHelperTool */;
@@ -618,13 +637,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D59D89802B505EFE0009270C /* ManageClient.swift in Sources */,
+				D5793C602B5103E300979DC3 /* DaemonState.swift in Sources */,
 				D59D897D2B505E4B0009270C /* CodeInfo.swift in Sources */,
 				D5E8DD292B47E54800E083E0 /* AppDelegate.swift in Sources */,
 				D5DEA9C02B499C2F0029BB00 /* Defaults.swift in Sources */,
 				D59D89862B5067E60009270C /* HelperToolLaunchdPropertyList.swift in Sources */,
 				D5793C492B50E8D400979DC3 /* HelperManager.swift in Sources */,
-				D50378092B48708C008F9AA8 /* MappingListViewModel.swift in Sources */,
 				D5E8DD332B47E97F00E083E0 /* DaemonManager.swift in Sources */,
 				D59D89612B5048C40009270C /* SharedConstants.swift in Sources */,
 				D5DEA9B32B4888310029BB00 /* AppMenu.swift in Sources */,
@@ -663,11 +681,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D56116B22B51109900FEB087 /* dot-local.grpc.swift in Sources */,
+				D56116B32B51109900FEB087 /* dot-local.pb.swift in Sources */,
+				D56116B42B51109900FEB087 /* preferences.pb.swift in Sources */,
+				D56116B52B51109900FEB087 /* ProtoExtensions.swift in Sources */,
 				D59D89842B5065CD0009270C /* MyError.swift in Sources */,
+				D5793C612B5103E300979DC3 /* DaemonState.swift in Sources */,
 				D59D897E2B505E4B0009270C /* CodeInfo.swift in Sources */,
 				D59D89622B5048C40009270C /* SharedConstants.swift in Sources */,
 				D59D89812B505EFE0009270C /* ManageClient.swift in Sources */,
 				D59D89872B5067E60009270C /* HelperToolLaunchdPropertyList.swift in Sources */,
+				D56116AA2B510CFD00FEB087 /* DaemonManager.swift in Sources */,
 				D59D896A2B50548C0009270C /* HelperToolInfoPropertyList.swift in Sources */,
 				D59D89502B4FFC380009270C /* main.swift in Sources */,
 			);
@@ -685,6 +709,11 @@
 			isa = PBXTargetDependency;
 			target = D529B1A92B47BF8C00DC288B /* DotLocal */;
 			targetProxy = D529B1C62B47BF8E00DC288B /* PBXContainerItemProxy */;
+		};
+		D56116B12B51102F00FEB087 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D59D894C2B4FFC380009270C /* DotLocalHelperTool */;
+			targetProxy = D56116B02B51102F00FEB087 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -948,6 +977,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/DotLocalHelperTool/Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = "$(MARKETING_VERSION)";
+				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
@@ -964,6 +994,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/DotLocalHelperTool/Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = "$(MARKETING_VERSION)";
+				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
@@ -1068,12 +1099,17 @@
 			package = D50377F42B481B59008F9AA8 /* XCRemoteSwiftPackageReference "grpc-swift" */;
 			productName = GRPC;
 		};
-		D59D896D2B5055BB0009270C /* EmbeddedPropertyList */ = {
+		D5793C5B2B5103CC00979DC3 /* GRPC */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D50377F42B481B59008F9AA8 /* XCRemoteSwiftPackageReference "grpc-swift" */;
+			productName = GRPC;
+		};
+		D5793C5D2B5103CF00979DC3 /* EmbeddedPropertyList */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = D59D896B2B5054FE0009270C /* XCRemoteSwiftPackageReference "EmbeddedPropertyList" */;
 			productName = EmbeddedPropertyList;
 		};
-		D59D896F2B5055C00009270C /* EmbeddedPropertyList */ = {
+		D59D896D2B5055BB0009270C /* EmbeddedPropertyList */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = D59D896B2B5054FE0009270C /* XCRemoteSwiftPackageReference "EmbeddedPropertyList" */;
 			productName = EmbeddedPropertyList;

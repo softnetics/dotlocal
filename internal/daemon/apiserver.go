@@ -45,6 +45,10 @@ func (s *APIServer) Start() error {
 	if err != nil {
 		return err
 	}
+	err = os.Chmod(socketPath, 0666)
+	if err != nil {
+		return err
+	}
 	var opts []grpc.ServerOption
 	s.grpcServer = grpc.NewServer(opts...)
 	api.RegisterDotLocalServer(s.grpcServer, newDotLocalServer(s.logger, s.dotlocal))

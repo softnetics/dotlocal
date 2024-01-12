@@ -15,10 +15,10 @@ class HelperManager: ObservableObject {
     private let service = SMAppService.daemon(plistName: "helper.plist")
     @Published var status: SMAppService.Status
     
-    let xpcClient = XPCClient.forMachService(named: "dev.suphon.DotLocal.helper")
+    let xpcClient = XPCClient.forMachService(named: "dev.suphon.DotLocal.helper", withServerRequirement: try! .sameBundle)
     
     private init() {
-        status = service.status
+        status = .notRegistered
         Task {
             print("sending exit to current helper")
             do {
@@ -37,8 +37,21 @@ class HelperManager: ObservableObject {
         }
     }
     
+    func onRegistered() async {
+        Task {
+            await DaemonManager.shared.subscribeDaemonState()
+        }
+        await DaemonManager.shared.start()
+    }
+    
     @MainActor
     func checkStatus() {
+        let oldStatus = status
         status = service.status
+        if oldStatus != .enabled && status == .enabled {
+            Task {
+                await onRegistered()
+            }
+        }
     }
 }

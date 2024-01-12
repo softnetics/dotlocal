@@ -18,18 +18,7 @@ func CreateTmpFile() (string, error) {
 var dotlocalPath *string
 
 func GetDotlocalPath() string {
-	if dotlocalPath == nil {
-		home := os.Getenv("HOME")
-		dir := path.Join(home, ".dotlocal")
-		dotlocalPath = &dir
-
-		err := os.MkdirAll(dir, 0755)
-		if err != nil {
-			panic(err)
-		}
-	}
-
-	return *dotlocalPath
+	return "/var/run/dotlocal"
 }
 
 func GetApiSocketPath() string {

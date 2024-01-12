@@ -51,6 +51,10 @@ func (p *OrbstackDNSProxy) Start(port int) error {
 	if err != nil {
 		return err
 	}
+	err = os.Chmod(p.nginxConfigFile, 0644)
+	if err != nil {
+		return err
+	}
 	err = ensureImageExists(p.docker, nginxImage)
 	if err != nil {
 		return err
