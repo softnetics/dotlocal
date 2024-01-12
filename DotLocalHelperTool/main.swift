@@ -6,13 +6,25 @@
 //
 
 import Foundation
-import os
+import SecureXPC
 
-func main() {
-    while true {
-        NSLog("Hello, World! i am \"\(ProcessInfo.processInfo.userName)\"")
-        sleep(1)
+NSLog("starting helper tool. PID \(getpid()). PPID \(getppid()).")
+NSLog("version: \(try HelperToolInfoPropertyList.main.version.rawValue)")
+
+if getppid() == 1 {
+    let server = try XPCServer.forMachService()
+    server.registerRoute(SharedConstants.exitRoute, handler: {
+        NSLog("exiting")
+        exit(0)
+    })
+    server.setErrorHandler { error in
+        if case .connectionInvalid = error {
+            // Ignore invalidated connections as this happens whenever the client disconnects which is not a problem
+        } else {
+            NSLog("error: \(error)")
+        }
     }
+    server.startAndBlock()
+} else {
+    print("not supported")
 }
-
-main()

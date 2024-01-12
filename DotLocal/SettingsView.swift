@@ -9,6 +9,7 @@ import SwiftUI
 import LaunchAtLogin
 import Defaults
 import Foundation
+import SecureXPC
 
 struct GeneralSettingsView: View {
     @Default(.showInMenuBar) var showInMenuBar

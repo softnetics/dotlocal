@@ -6,7 +6,8 @@
 //
 
 import Foundation
+import SecureXPC
 
 struct SharedConstants {
-    
+    static let exitRoute = XPCRoute.named("exit")
 }

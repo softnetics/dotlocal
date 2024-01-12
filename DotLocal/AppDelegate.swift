@@ -8,11 +8,13 @@
 import Foundation
 import AppKit
 import Defaults
+import SecureXPC
 
 class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         DaemonManager.shared.start()
         ClientManager.shared.checkInstalled()
+        _ = HelperManager.shared
     }
     
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {

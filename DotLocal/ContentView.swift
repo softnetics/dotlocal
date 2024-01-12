@@ -10,40 +10,27 @@ import ServiceManagement
 
 struct ContentView: View {
     @StateObject var daemonManager = DaemonManager.shared
+    @StateObject var helperManager = HelperManager.shared
     
     var body: some View {
-        VStack {
-            Button(action: {
-                let service = SMAppService.daemon(plistName: "helper.plist")
-                do {
-                    print("status: \(service.status.rawValue)")
-                    if service.status == .enabled {
-                        print("will unregister")
-                        try service.unregister()
-                        print("did unregister")
-                    } else {
-                        print("will register")
-                        try service.register()
-                        print("did register")
-                    }
-                } catch {
-                    print("error: \(error)")
+        switch helperManager.status {
+        case .requiresApproval:
+            RequiresApprovalView()
+        case .enabled:
+            VStack {
+                switch daemonManager.state {
+                case .stopped:
+                    Text("DotLocal is not running")
+                case .starting:
+                    ProgressView()
+                case .started:
+                    MappingList()
                 }
-            }, label: {
-                Text("Test")
-            })
-            switch daemonManager.state {
-            case .stopped:
-                Text("DotLocal is not running")
-            case .starting:
-                ProgressView()
-            case .started:
-                MappingList()
+            }.toolbar() {
+                StartStopButton(state: daemonManager.state, onStart: { daemonManager.start() }, onStop: { daemonManager.stop() })
             }
-        }
-        .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, maxHeight: .infinity)
-        .toolbar() {
-            StartStopButton(state: daemonManager.state, onStart: { daemonManager.start() }, onStop: { daemonManager.stop() })
+        default:
+            Text("Unexpected state: \(helperManager.status.rawValue)")
         }
     }
 }
@@ -69,6 +56,36 @@ struct StartStopButton: View {
     }
 }
 
+struct RequiresApprovalView: View {
+    @State var openedSettings = false
+    
+    var body: some View {
+        VStack(spacing: 8) {
+            Text("Helper Not Enabled").font(.title).fontWeight(.bold)
+            Text("Please enable DotLocal in the \"Allow in the Background\" section")
+            Button(action: {
+                print("previous status: \(HelperManager.shared.status)")
+                HelperManager.shared.checkStatus()
+                print("status: \(HelperManager.shared.status)")
+                if HelperManager.shared.status == .requiresApproval {
+                    openedSettings = true
+                    SMAppService.openSystemSettingsLoginItems()
+                }
+            }, label: {
+                if openedSettings {
+                    Text("Continue")
+                } else {
+                    Text("Open System Settings")
+                }
+            })
+        }.foregroundStyle(.secondary)
+    }
+}
+
+//#Preview {
+//    ContentView()
+//}
+
 #Preview {
-    ContentView()
+    RequiresApprovalView()
 }

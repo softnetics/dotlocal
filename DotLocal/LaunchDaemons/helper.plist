@@ -6,6 +6,11 @@
 	<string>dev.suphon.DotLocal.helper</string>
 	<key>BundleProgram</key>
 	<string>Contents/Library/LaunchDaemons/DotLocalHelperTool</string>
+	<key>MachServices</key>
+	<dict>
+		<key>dev.suphon.DotLocal.helper</key>
+		<true/>
+	</dict>
 	<key>RunAtLoad</key>
 	<true/>
 	<key>StandardOutPath</key>

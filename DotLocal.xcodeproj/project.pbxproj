@@ -21,12 +21,27 @@
 		D529B1C02B47BF8E00DC288B /* DotLocalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D529B1BF2B47BF8E00DC288B /* DotLocalTests.swift */; };
 		D529B1CA2B47BF8E00DC288B /* DotLocalUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D529B1C92B47BF8E00DC288B /* DotLocalUITests.swift */; };
 		D529B1CC2B47BF8E00DC288B /* DotLocalUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D529B1CB2B47BF8E00DC288B /* DotLocalUITestsLaunchTests.swift */; };
+		D5793C492B50E8D400979DC3 /* HelperManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5793C482B50E8D400979DC3 /* HelperManager.swift */; };
 		D582E9072B4C5BE20054343B /* nginx in Copy Binaries */ = {isa = PBXBuildFile; fileRef = D582E9052B4C5BC00054343B /* nginx */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D59D89502B4FFC380009270C /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59D894F2B4FFC380009270C /* main.swift */; };
 		D59D895A2B4FFDE20009270C /* DotLocalHelperTool in Copy Helper */ = {isa = PBXBuildFile; fileRef = D59D894D2B4FFC380009270C /* DotLocalHelperTool */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D59D895C2B4FFF080009270C /* helper.plist in Copy Helper Plist */ = {isa = PBXBuildFile; fileRef = D59D89562B4FFD290009270C /* helper.plist */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D59D89612B5048C40009270C /* SharedConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59D89602B5048C40009270C /* SharedConstants.swift */; };
 		D59D89622B5048C40009270C /* SharedConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59D89602B5048C40009270C /* SharedConstants.swift */; };
+		D59D89692B50548C0009270C /* HelperToolInfoPropertyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59D89682B50548C0009270C /* HelperToolInfoPropertyList.swift */; };
+		D59D896A2B50548C0009270C /* HelperToolInfoPropertyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59D89682B50548C0009270C /* HelperToolInfoPropertyList.swift */; };
+		D59D896E2B5055BB0009270C /* EmbeddedPropertyList in Frameworks */ = {isa = PBXBuildFile; productRef = D59D896D2B5055BB0009270C /* EmbeddedPropertyList */; };
+		D59D89702B5055C00009270C /* EmbeddedPropertyList in Frameworks */ = {isa = PBXBuildFile; productRef = D59D896F2B5055C00009270C /* EmbeddedPropertyList */; };
+		D59D89792B505C430009270C /* SecureXPC in Frameworks */ = {isa = PBXBuildFile; productRef = D59D89782B505C430009270C /* SecureXPC */; };
+		D59D897B2B505C4B0009270C /* SecureXPC in Frameworks */ = {isa = PBXBuildFile; productRef = D59D897A2B505C4B0009270C /* SecureXPC */; };
+		D59D897D2B505E4B0009270C /* CodeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59D897C2B505E4B0009270C /* CodeInfo.swift */; };
+		D59D897E2B505E4B0009270C /* CodeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59D897C2B505E4B0009270C /* CodeInfo.swift */; };
+		D59D89802B505EFE0009270C /* ManageClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59D897F2B505EFE0009270C /* ManageClient.swift */; };
+		D59D89812B505EFE0009270C /* ManageClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59D897F2B505EFE0009270C /* ManageClient.swift */; };
+		D59D89832B5065CD0009270C /* MyError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59D89822B5065CD0009270C /* MyError.swift */; };
+		D59D89842B5065CD0009270C /* MyError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59D89822B5065CD0009270C /* MyError.swift */; };
+		D59D89862B5067E60009270C /* HelperToolLaunchdPropertyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59D89852B5067E60009270C /* HelperToolLaunchdPropertyList.swift */; };
+		D59D89872B5067E60009270C /* HelperToolLaunchdPropertyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59D89852B5067E60009270C /* HelperToolLaunchdPropertyList.swift */; };
 		D5DEA9B32B4888310029BB00 /* AppMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DEA9B22B4888310029BB00 /* AppMenu.swift */; };
 		D5DEA9B62B49936B0029BB00 /* LaunchAtLogin in Frameworks */ = {isa = PBXBuildFile; productRef = D5DEA9B52B49936B0029BB00 /* LaunchAtLogin */; };
 		D5DEA9BC2B4995BC0029BB00 /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = D5DEA9BB2B4995BC0029BB00 /* Defaults */; };
@@ -142,16 +157,22 @@
 		D529B1C52B47BF8E00DC288B /* DotLocalUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DotLocalUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D529B1C92B47BF8E00DC288B /* DotLocalUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotLocalUITests.swift; sourceTree = "<group>"; };
 		D529B1CB2B47BF8E00DC288B /* DotLocalUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotLocalUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		D5793C482B50E8D400979DC3 /* HelperManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperManager.swift; sourceTree = "<group>"; };
 		D582E9052B4C5BC00054343B /* nginx */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = nginx; sourceTree = "<group>"; };
 		D582E90A2B4E7BA90054343B /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		D582E90B2B4E7C750054343B /* Version.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Version.xcconfig; sourceTree = "<group>"; };
 		D59D894D2B4FFC380009270C /* DotLocalHelperTool */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DotLocalHelperTool; sourceTree = BUILT_PRODUCTS_DIR; };
 		D59D894F2B4FFC380009270C /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		D59D89542B4FFC650009270C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D59D89562B4FFD290009270C /* helper.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = helper.plist; sourceTree = "<group>"; };
 		D59D89602B5048C40009270C /* SharedConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedConstants.swift; sourceTree = "<group>"; };
 		D59D89632B50506D0009270C /* AppConfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = AppConfig.xcconfig; sourceTree = "<group>"; };
 		D59D89642B5050E60009270C /* HelperToolConfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = HelperToolConfig.xcconfig; sourceTree = "<group>"; };
+		D59D89682B50548C0009270C /* HelperToolInfoPropertyList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperToolInfoPropertyList.swift; sourceTree = "<group>"; };
+		D59D89712B50572A0009270C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D59D897C2B505E4B0009270C /* CodeInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeInfo.swift; sourceTree = "<group>"; };
+		D59D897F2B505EFE0009270C /* ManageClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageClient.swift; sourceTree = "<group>"; };
+		D59D89822B5065CD0009270C /* MyError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyError.swift; sourceTree = "<group>"; };
+		D59D89852B5067E60009270C /* HelperToolLaunchdPropertyList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperToolLaunchdPropertyList.swift; sourceTree = "<group>"; };
 		D5DEA9B22B4888310029BB00 /* AppMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMenu.swift; sourceTree = "<group>"; };
 		D5DEA9BD2B4995DD0029BB00 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		D5DEA9BF2B499C2F0029BB00 /* Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Defaults.swift; sourceTree = "<group>"; };
@@ -170,7 +191,9 @@
 			files = (
 				D5DEA9BC2B4995BC0029BB00 /* Defaults in Frameworks */,
 				D5DEA9B62B49936B0029BB00 /* LaunchAtLogin in Frameworks */,
+				D59D89792B505C430009270C /* SecureXPC in Frameworks */,
 				D50377F62B481B59008F9AA8 /* GRPC in Frameworks */,
+				D59D896E2B5055BB0009270C /* EmbeddedPropertyList in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -192,6 +215,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D59D89702B5055C00009270C /* EmbeddedPropertyList in Frameworks */,
+				D59D897B2B505C4B0009270C /* SecureXPC in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -229,6 +254,7 @@
 				D59D894E2B4FFC380009270C /* DotLocalHelperTool */,
 				D529B1C82B47BF8E00DC288B /* DotLocalUITests */,
 				D529B1AB2B47BF8C00DC288B /* Products */,
+				D59D896C2B5055BB0009270C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -259,6 +285,7 @@
 				D529B1B12B47BF8E00DC288B /* Assets.xcassets */,
 				D529B1B62B47BF8E00DC288B /* DotLocal.entitlements */,
 				D529B1B32B47BF8E00DC288B /* Preview Content */,
+				D5793C482B50E8D400979DC3 /* HelperManager.swift */,
 				D5E8DD322B47E97F00E083E0 /* DaemonManager.swift */,
 				D5DEA9C32B49C0200029BB00 /* ClientManager.swift */,
 				D5DEA9BD2B4995DD0029BB00 /* SettingsView.swift */,
@@ -321,9 +348,10 @@
 		D59D894E2B4FFC380009270C /* DotLocalHelperTool */ = {
 			isa = PBXGroup;
 			children = (
-				D59D894F2B4FFC380009270C /* main.swift */,
-				D59D89542B4FFC650009270C /* Info.plist */,
 				D59D89642B5050E60009270C /* HelperToolConfig.xcconfig */,
+				D59D89712B50572A0009270C /* Info.plist */,
+				D59D894F2B4FFC380009270C /* main.swift */,
+				D59D897F2B505EFE0009270C /* ManageClient.swift */,
 			);
 			path = DotLocalHelperTool;
 			sourceTree = "<group>";
@@ -340,8 +368,19 @@
 			isa = PBXGroup;
 			children = (
 				D59D89602B5048C40009270C /* SharedConstants.swift */,
+				D59D89682B50548C0009270C /* HelperToolInfoPropertyList.swift */,
+				D59D89852B5067E60009270C /* HelperToolLaunchdPropertyList.swift */,
+				D59D897C2B505E4B0009270C /* CodeInfo.swift */,
+				D59D89822B5065CD0009270C /* MyError.swift */,
 			);
 			path = Shared;
+			sourceTree = "<group>";
+		};
+		D59D896C2B5055BB0009270C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -370,6 +409,8 @@
 				D50377F52B481B59008F9AA8 /* GRPC */,
 				D5DEA9B52B49936B0029BB00 /* LaunchAtLogin */,
 				D5DEA9BB2B4995BC0029BB00 /* Defaults */,
+				D59D896D2B5055BB0009270C /* EmbeddedPropertyList */,
+				D59D89782B505C430009270C /* SecureXPC */,
 			);
 			productName = DotLocal;
 			productReference = D529B1AA2B47BF8C00DC288B /* DotLocal.app */;
@@ -415,15 +456,21 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D59D89532B4FFC380009270C /* Build configuration list for PBXNativeTarget "DotLocalHelperTool" */;
 			buildPhases = (
+				D59D89722B505A550009270C /* ShellScript */,
 				D59D89492B4FFC380009270C /* Sources */,
 				D59D894A2B4FFC380009270C /* Frameworks */,
 				D59D894B2B4FFC380009270C /* CopyFiles */,
+				D59D89732B505B260009270C /* ShellScript */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = DotLocalHelperTool;
+			packageProductDependencies = (
+				D59D896F2B5055C00009270C /* EmbeddedPropertyList */,
+				D59D897A2B505C4B0009270C /* SecureXPC */,
+			);
 			productName = DotLocalHelperTool;
 			productReference = D59D894D2B4FFC380009270C /* DotLocalHelperTool */;
 			productType = "com.apple.product-type.tool";
@@ -467,6 +514,8 @@
 				D50377F42B481B59008F9AA8 /* XCRemoteSwiftPackageReference "grpc-swift" */,
 				D5DEA9B42B49936B0029BB00 /* XCRemoteSwiftPackageReference "LaunchAtLogin-Modern" */,
 				D5DEA9BA2B4995BC0029BB00 /* XCRemoteSwiftPackageReference "Defaults" */,
+				D59D896B2B5054FE0009270C /* XCRemoteSwiftPackageReference "EmbeddedPropertyList" */,
+				D59D89772B505C430009270C /* XCRemoteSwiftPackageReference "SecureXPC" */,
 			);
 			productRefGroup = D529B1AB2B47BF8C00DC288B /* Products */;
 			projectDirPath = "";
@@ -531,6 +580,40 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nmkdir -p ./go_out\n\nSRC_CHECKSUM=$(find . -type f -name \"*.go\" -or -name \"go.mod\" -or -name \"go.sum\" | xargs cksum)\nEXISTING_CHECKSUM=\"\"\nif [[ -f \"./go_out/src_checksum\" ]]; then\n    EXISTING_CHECKSUM=$(cat ./go_out/src_checksum)\nfi\nif [ \"$SRC_CHECKSUM\" == \"$EXISTING_CHECKSUM\" ]; then\n    echo \"source hasn't changed. skipping\"\n    exit 0\nfi\necho \"$SRC_CHECKSUM\" > ./go_out/src_checksum\n\nif [[ -f \"./.xcode.env\" ]]; then\n  source \"./.xcode.env\"\nfi\nif [[ -f \"./.xcode.env.local\" ]]; then\n  source \"./.xcode.env.local\"\nfi\n\nGOOS=darwin GOARCH=arm64 $GO_BINARY build -ldflags=\"-w\" -o ./go_out/arm64/dotlocal ./cmd/dotlocal/main.go\nGOOS=darwin GOARCH=arm64 $GO_BINARY build -ldflags=\"-w\" -o ./go_out/arm64/dotlocal-daemon ./cmd/dotlocal-daemon/main.go\nGOOS=darwin GOARCH=amd64 $GO_BINARY build -ldflags=\"-w\" -o ./go_out/amd64/dotlocal ./cmd/dotlocal/main.go\nGOOS=darwin GOARCH=amd64 $GO_BINARY build -ldflags=\"-w\" -o ./go_out/amd64/dotlocal-daemon ./cmd/dotlocal-daemon/main.go\nlipo -create -output ./go_out/dotlocal ./go_out/arm64/dotlocal ./go_out/amd64/dotlocal\nlipo -create -output ./go_out/dotlocal-daemon ./go_out/arm64/dotlocal-daemon ./go_out/amd64/dotlocal-daemon\n";
 		};
+		D59D89722B505A550009270C /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "LAUNCHDPLIST_FILE=$PROJECT_DIR/$LAUNCHDPLIST_FILE\n/usr/libexec/PlistBuddy -c \"Delete :CFBundleIdentifier\" $INFOPLIST_FILE || true\n/usr/libexec/PlistBuddy -c \"Delete :CFBundleVersion\" $INFOPLIST_FILE || true\nrm $LAUNCHDPLIST_FILE\n\n/usr/libexec/PlistBuddy -c \"Add :CFBundleIdentifier string $HELPER_TOOL_BUNDLE_IDENTIFIER\" $INFOPLIST_FILE\n/usr/libexec/PlistBuddy -c \"Add :CFBundleVersion string $HELPER_VERSION\" $INFOPLIST_FILE\n/usr/libexec/PlistBuddy -c \"Add :MachServices array\" $LAUNCHDPLIST_FILE\n/usr/libexec/PlistBuddy -c \"Add :MachServices: string $HELPER_TOOL_BUNDLE_IDENTIFIER\" $LAUNCHDPLIST_FILE\n";
+		};
+		D59D89732B505B260009270C /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "LAUNCHDPLIST_FILE=$PROJECT_DIR/$LAUNCHDPLIST_FILE\n/usr/libexec/PlistBuddy -c \"Delete :CFBundleIdentifier\" $INFOPLIST_FILE\n/usr/libexec/PlistBuddy -c \"Delete :CFBundleVersion\" $INFOPLIST_FILE\n#rm $LAUNCHDPLIST_FILE\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -538,14 +621,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D59D89802B505EFE0009270C /* ManageClient.swift in Sources */,
+				D59D897D2B505E4B0009270C /* CodeInfo.swift in Sources */,
 				D5E8DD292B47E54800E083E0 /* AppDelegate.swift in Sources */,
 				D5DEA9C02B499C2F0029BB00 /* Defaults.swift in Sources */,
+				D59D89862B5067E60009270C /* HelperToolLaunchdPropertyList.swift in Sources */,
+				D5793C492B50E8D400979DC3 /* HelperManager.swift in Sources */,
 				D50378092B48708C008F9AA8 /* MappingListViewModel.swift in Sources */,
 				D5E8DD332B47E97F00E083E0 /* DaemonManager.swift in Sources */,
 				D59D89612B5048C40009270C /* SharedConstants.swift in Sources */,
 				D5DEA9B32B4888310029BB00 /* AppMenu.swift in Sources */,
+				D59D89832B5065CD0009270C /* MyError.swift in Sources */,
 				D529B1B02B47BF8C00DC288B /* ContentView.swift in Sources */,
 				D503780D2B487250008F9AA8 /* ProtoExtensions.swift in Sources */,
+				D59D89692B50548C0009270C /* HelperToolInfoPropertyList.swift in Sources */,
 				D5DEA9BE2B4995DD0029BB00 /* SettingsView.swift in Sources */,
 				D50378042B482578008F9AA8 /* dot-local.pb.swift in Sources */,
 				D50378052B482578008F9AA8 /* dot-local.grpc.swift in Sources */,
@@ -578,7 +667,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D59D89842B5065CD0009270C /* MyError.swift in Sources */,
+				D59D897E2B505E4B0009270C /* CodeInfo.swift in Sources */,
 				D59D89622B5048C40009270C /* SharedConstants.swift in Sources */,
+				D59D89812B505EFE0009270C /* ManageClient.swift in Sources */,
+				D59D89872B5067E60009270C /* HelperToolLaunchdPropertyList.swift in Sources */,
+				D59D896A2B50548C0009270C /* HelperToolInfoPropertyList.swift in Sources */,
 				D59D89502B4FFC380009270C /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -854,6 +948,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2HCNNF2TB5;
 				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				INFOPLIST_FILE = "$(SRCROOT)/DotLocalHelperTool/Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = "$(MARKETING_VERSION)";
@@ -869,6 +964,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2HCNNF2TB5;
 				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				INFOPLIST_FILE = "$(SRCROOT)/DotLocalHelperTool/Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = "$(MARKETING_VERSION)";
@@ -936,6 +1032,22 @@
 				minimumVersion = 1.21.0;
 			};
 		};
+		D59D896B2B5054FE0009270C /* XCRemoteSwiftPackageReference "EmbeddedPropertyList" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/trilemma-dev/EmbeddedPropertyList.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.2;
+			};
+		};
+		D59D89772B505C430009270C /* XCRemoteSwiftPackageReference "SecureXPC" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/trilemma-dev/SecureXPC";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.8.0;
+			};
+		};
 		D5DEA9B42B49936B0029BB00 /* XCRemoteSwiftPackageReference "LaunchAtLogin-Modern" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sindresorhus/LaunchAtLogin-Modern";
@@ -959,6 +1071,26 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D50377F42B481B59008F9AA8 /* XCRemoteSwiftPackageReference "grpc-swift" */;
 			productName = GRPC;
+		};
+		D59D896D2B5055BB0009270C /* EmbeddedPropertyList */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D59D896B2B5054FE0009270C /* XCRemoteSwiftPackageReference "EmbeddedPropertyList" */;
+			productName = EmbeddedPropertyList;
+		};
+		D59D896F2B5055C00009270C /* EmbeddedPropertyList */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D59D896B2B5054FE0009270C /* XCRemoteSwiftPackageReference "EmbeddedPropertyList" */;
+			productName = EmbeddedPropertyList;
+		};
+		D59D89782B505C430009270C /* SecureXPC */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D59D89772B505C430009270C /* XCRemoteSwiftPackageReference "SecureXPC" */;
+			productName = SecureXPC;
+		};
+		D59D897A2B505C4B0009270C /* SecureXPC */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D59D89772B505C430009270C /* XCRemoteSwiftPackageReference "SecureXPC" */;
+			productName = SecureXPC;
 		};
 		D5DEA9B52B49936B0029BB00 /* LaunchAtLogin */ = {
 			isa = XCSwiftPackageProductDependency;
