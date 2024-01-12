@@ -6,24 +6,32 @@
 //
 
 import Foundation
+import SecureXPC
 
 class ClientManager: ObservableObject {
     static let shared = ClientManager()
     
     @Published var installed = false
-    private let clientUrl = Bundle.main.bundleURL.appendingPathComponent("Contents/Resources/bin/dotlocal")
     private let target = "/usr/local/bin/dotlocal"
     
     private init() {}
     
     func installCli() async {
-        _ = await Sudo.run(path: clientUrl.path(percentEncoded: false), arguments: ["install"])
-        checkInstalled()
+        do {
+            try await HelperManager.shared.xpcClient.send(to: SharedConstants.installClientRoute)
+            checkInstalled()
+        } catch {
+            print("error installing cli: \(error)")
+        }
     }
     
     func uninstallCli() async {
-        _ = await Sudo.run(path: clientUrl.path(percentEncoded: false), arguments: ["uninstall"])
-        checkInstalled()
+        do {
+            try await HelperManager.shared.xpcClient.send(to: SharedConstants.uninstallClientRoute)
+            checkInstalled()
+        } catch {
+            print("error uninstalling cli: \(error)")
+        }
     }
     
     func checkInstalled() {

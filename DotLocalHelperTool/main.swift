@@ -13,6 +13,8 @@ NSLog("version: \(try HelperToolInfoPropertyList.main.version.rawValue)")
 
 if getppid() == 1 {
     let server = try XPCServer.forMachService()
+    server.registerRoute(SharedConstants.installClientRoute, handler: ManageClient.install)
+    server.registerRoute(SharedConstants.uninstallClientRoute, handler: ManageClient.uninstall)
     server.registerRoute(SharedConstants.exitRoute, handler: {
         NSLog("exiting")
         exit(0)

@@ -47,7 +47,6 @@
 		D5DEA9BC2B4995BC0029BB00 /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = D5DEA9BB2B4995BC0029BB00 /* Defaults */; };
 		D5DEA9BE2B4995DD0029BB00 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DEA9BD2B4995DD0029BB00 /* SettingsView.swift */; };
 		D5DEA9C02B499C2F0029BB00 /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DEA9BF2B499C2F0029BB00 /* Defaults.swift */; };
-		D5DEA9C22B49A6B60029BB00 /* Sudo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DEA9C12B49A6B60029BB00 /* Sudo.swift */; };
 		D5DEA9C42B49C0200029BB00 /* ClientManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DEA9C32B49C0200029BB00 /* ClientManager.swift */; };
 		D5E8DD292B47E54800E083E0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E8DD282B47E54800E083E0 /* AppDelegate.swift */; };
 		D5E8DD312B47E83500E083E0 /* dotlocal-daemon in Copy Daemon */ = {isa = PBXBuildFile; fileRef = D5E8DD2D2B47E7B900E083E0 /* dotlocal-daemon */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -176,7 +175,6 @@
 		D5DEA9B22B4888310029BB00 /* AppMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMenu.swift; sourceTree = "<group>"; };
 		D5DEA9BD2B4995DD0029BB00 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		D5DEA9BF2B499C2F0029BB00 /* Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Defaults.swift; sourceTree = "<group>"; };
-		D5DEA9C12B49A6B60029BB00 /* Sudo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sudo.swift; sourceTree = "<group>"; };
 		D5DEA9C32B49C0200029BB00 /* ClientManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientManager.swift; sourceTree = "<group>"; };
 		D5E8DD282B47E54800E083E0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D5E8DD2B2B47E7AE00E083E0 /* dotlocal */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = dotlocal; path = go_out/dotlocal; sourceTree = "<group>"; };
@@ -290,7 +288,6 @@
 				D5DEA9C32B49C0200029BB00 /* ClientManager.swift */,
 				D5DEA9BD2B4995DD0029BB00 /* SettingsView.swift */,
 				D5DEA9BF2B499C2F0029BB00 /* Defaults.swift */,
-				D5DEA9C12B49A6B60029BB00 /* Sudo.swift */,
 			);
 			path = DotLocal;
 			sourceTree = "<group>";
@@ -640,7 +637,6 @@
 				D50378052B482578008F9AA8 /* dot-local.grpc.swift in Sources */,
 				D503780B2B48718D008F9AA8 /* MappingList.swift in Sources */,
 				D529B1AE2B47BF8C00DC288B /* DotLocalApp.swift in Sources */,
-				D5DEA9C22B49A6B60029BB00 /* Sudo.swift in Sources */,
 				D50378062B482578008F9AA8 /* preferences.pb.swift in Sources */,
 				D5DEA9C42B49C0200029BB00 /* ClientManager.swift in Sources */,
 			);
