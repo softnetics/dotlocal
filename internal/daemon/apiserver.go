@@ -39,6 +39,9 @@ func (s *APIServer) Start(ctx context.Context) error {
 
 	pid := os.Getpid()
 	err = os.WriteFile(util.GetPidPath(), []byte(strconv.Itoa(pid)), 0644)
+	if err != nil {
+		return err
+	}
 
 	socketPath := util.GetApiSocketPath()
 	lis, err := net.Listen("unix", socketPath)

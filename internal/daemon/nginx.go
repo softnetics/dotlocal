@@ -8,6 +8,8 @@ import (
 	"io"
 	"os"
 	"os/exec"
+	"path"
+	"strconv"
 	"strings"
 	"sync"
 	"syscall"
@@ -41,6 +43,11 @@ func NewNginx(logger *zap.Logger) (*Nginx, error) {
 }
 
 func (n *Nginx) Start(ctx context.Context) error {
+	err := n.killExistingProcess()
+	if err != nil {
+		return err
+	}
+
 	n.writeConfig()
 	n.logger.Debug("Starting nginx")
 
@@ -79,6 +86,7 @@ func (n *Nginx) Start(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
+
 	wg.Wait()
 	if !nginxStarted {
 		err := cmd.Wait()
@@ -233,5 +241,38 @@ func (n *Nginx) reloadConfig() error {
 		return err
 	}
 	n.logger.Info("Reloaded nginx config")
+	return nil
+}
+
+func (n *Nginx) killExistingProcess() error {
+	pidBytes, err := os.ReadFile(path.Join(util.GetDotlocalPath(), "nginx.pid"))
+	if err != nil {
+		if errors.Is(err, os.ErrNotExist) {
+			return nil
+		}
+		return err
+	}
+	pidString := strings.TrimSpace(strings.Split(string(pidBytes), "\n")[0])
+	pid, err := strconv.Atoi(pidString)
+	if err != nil {
+		return err
+	}
+	n.logger.Info("Killing existing process", zap.Int("pid", pid))
+
+	process, err := os.FindProcess(pid)
+	if err != nil {
+		return err
+	}
+	_ = process.Signal(syscall.SIGTERM)
+
+	err = os.Remove(util.GetPidPath())
+	if err != nil {
+		return err
+	}
+	err = os.Remove(util.GetApiSocketPath())
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
