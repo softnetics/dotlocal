@@ -32,7 +32,7 @@ func NewAPIServer(logger *zap.Logger, dotlocal *DotLocal) (*APIServer, error) {
 }
 
 func (s *APIServer) Start(ctx context.Context) error {
-	err := s.killExistingProcess()
+	err := s.killExistingProcessIfNeeded()
 	if err != nil {
 		return err
 	}
@@ -75,7 +75,7 @@ func (s *APIServer) Stop() error {
 	return nil
 }
 
-func (s *APIServer) killExistingProcess() error {
+func (s *APIServer) killExistingProcessIfNeeded() error {
 	_, err := os.Stat(util.GetApiSocketPath())
 	if err != nil {
 		if errors.Is(err, os.ErrNotExist) {
@@ -85,8 +85,17 @@ func (s *APIServer) killExistingProcess() error {
 	}
 	s.logger.Info("Killing existing process", zap.String("path", util.GetApiSocketPath()))
 
+	_ = killExistingProcess()
+
+	_ = os.Remove(util.GetPidPath())
+	_ = os.Remove(util.GetApiSocketPath())
+
+	return nil
+}
+
+func killExistingProcess() error {
 	pidBytes, err := os.ReadFile(util.GetPidPath())
-	if err != nil {
+	if err == nil {
 		return err
 	}
 	pid, err := strconv.Atoi(string(pidBytes))
@@ -98,17 +107,10 @@ func (s *APIServer) killExistingProcess() error {
 	if err != nil {
 		return err
 	}
-	_ = process.Kill()
-
-	err = os.Remove(util.GetPidPath())
+	err = process.Kill()
 	if err != nil {
 		return err
 	}
-	err = os.Remove(util.GetApiSocketPath())
-	if err != nil {
-		return err
-	}
-
 	return nil
 }
 
