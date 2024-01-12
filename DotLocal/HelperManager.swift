@@ -12,46 +12,45 @@ import SecureXPC
 class HelperManager: ObservableObject {
     static let shared = HelperManager()
     
-    private let service = SMAppService.daemon(plistName: "helper.plist")
-    @Published var status: SMAppService.Status?
-    private var ranRegistered = false
+    private let monitor = HelperToolMonitor(constants: SharedConstants.shared)
+    @Published var installationStatus: HelperToolMonitor.InstallationStatus
+    private var started = false
     
-    let xpcClient = XPCClient.forMachService(named: "dev.suphon.DotLocal.helper", withServerRequirement: try! .sameBundle)
+    let xpcClient = XPCClient.forMachService(named: SharedConstants.shared.machServiceName)
     
     private init() {
-        status = service.status
-        if status == .notFound || status == .notRegistered {
-            status = nil
+        installationStatus = monitor.determineStatus()
+        monitor.start { status in
+            DispatchQueue.main.async {
+                self.updateStatus(status: status)
+            }
         }
         Task {
-            print("sending exit to current helper")
-            do {
-                try await xpcClient.send(to: SharedConstants.exitRoute)
-            } catch {
-                print("error sending exit: \(error)")
+            if installationStatus.isReady {
+                try await updateHelper()
             }
-            do {
-                print("registering service")
-                try service.register()
-                print("registered service")
-            } catch {
-                print("error registering service: \(error)")
-            }
-            await checkStatus()
         }
     }
     
-    func onRegistered() async {
-        await DaemonManager.shared.start()
+    private func updateHelper() async throws {
+        do {
+            print("updating helper")
+            try await xpcClient.sendMessage(SharedConstants.shared.bundledLocation, to: SharedConstants.updateRoute)
+        } catch XPCError.connectionInterrupted {
+            print("update success")
+            return
+        } catch {
+            print("update error: \(error)")
+            throw error
+        }
     }
     
-    @MainActor
-    func checkStatus() {
-        status = service.status
-        if status == .enabled && !ranRegistered {
-            ranRegistered = true
+    private func updateStatus(status: HelperToolMonitor.InstallationStatus) {
+        installationStatus = status
+        if status.isReady, !started {
+            started = true
             Task {
-                await onRegistered()
+                await DaemonManager.shared.start()
             }
         }
     }

@@ -7,41 +7,41 @@
 
 import SwiftUI
 import ServiceManagement
+import Blessed
+import Authorized
+import SecureXPC
 
 struct ContentView: View {
     @StateObject var daemonManager = DaemonManager.shared
     @StateObject var helperManager = HelperManager.shared
     
     var body: some View {
-        let status = helperManager.status
-        switch status {
-        case .requiresApproval:
-            RequiresApprovalView()
-        case .enabled:
-            VStack {
-                switch daemonManager.state {
-                case .stopped:
-                    Text("DotLocal is not running")
-                case .starting, .unknown:
-                    ProgressView()
-                case .started:
-                    MappingList()
+        let status = helperManager.installationStatus
+        VStack {
+            if status.isReady {
+                VStack {
+                    switch daemonManager.state {
+                    case .stopped:
+                        Text("DotLocal is not running")
+                    case .starting, .unknown:
+                        ProgressView()
+                    case .started:
+                        MappingList()
+                    }
+                }.toolbar() {
+                    StartStopButton(state: daemonManager.state, onStart: {
+                        Task {
+                            await daemonManager.start()
+                        }
+                    }, onStop: {
+                        Task {
+                            await daemonManager.stop()
+                        }
+                    })
                 }
-            }.toolbar() {
-                StartStopButton(state: daemonManager.state, onStart: {
-                    Task {
-                        await daemonManager.start()
-                    }
-                }, onStop: {
-                    Task {
-                        await daemonManager.stop()
-                    }
-                })
+            } else {
+                RequiresHelperView()
             }
-        case nil:
-            ProgressView()
-        default:
-            Text("Unexpected state: \(status!.rawValue)")
         }
     }
 }
@@ -67,35 +67,41 @@ struct StartStopButton: View {
     }
 }
 
-struct RequiresApprovalView: View {
-    @State var openedSettings = false
+struct RequiresHelperView: View {
+    @State private var didError = false
+    @State private var errorMessage = ""
     
     var body: some View {
         VStack(spacing: 8) {
-            Text("Helper Not Enabled").font(.title).fontWeight(.bold)
-            Text("Please enable DotLocal in the \"Allow in the Background\" section")
+            Text("Helper Not Installed").font(.title).fontWeight(.bold)
+            Text("Please install the helper in order to use DotLocal")
             Button(action: {
-                HelperManager.shared.checkStatus()
-                print("user clicked continue, status: \(String(describing: HelperManager.shared.status))")
-                if HelperManager.shared.status == .requiresApproval {
-                    openedSettings = true
-                    SMAppService.openSystemSettingsLoginItems()
+                do {
+                    try PrivilegedHelperManager.shared
+                        .authorizeAndBless(message: nil)
+                } catch AuthorizationError.canceled {
+                    // No user feedback needed, user canceled
+                } catch {
+                    errorMessage = error.localizedDescription
+                    didError = true
                 }
             }, label: {
-                if openedSettings {
-                    Text("Continue")
-                } else {
-                    Text("Open System Settings")
-                }
+                Text("Install Helper")
             })
-        }.foregroundStyle(.secondary)
+        }
+        .foregroundStyle(.secondary)
+        .alert(
+            "Install failed",
+            isPresented: $didError,
+            presenting: errorMessage
+        ) { _ in
+            Button("OK") {}
+        } message: { message in
+            Text(message)
+        }
     }
 }
 
-//#Preview {
-//    ContentView()
-//}
-
 #Preview {
-    RequiresApprovalView()
+    ContentView()
 }

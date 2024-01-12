@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict/>
+<dict>
+	<key>CFBundleIdentifier</key>
+	<string>dev.suphon.DotLocal.helper</string>
+	<key>CFBundleVersion</key>
+	<string>0.0.0</string>
+	<key>SMAuthorizedClients</key>
+	<array>
+		<string>anchor apple generic and identifier "dev.suphon.DotLocal" and info[CFBundleVersion] &gt;= "0.0.1" and certificate leaf[subject.OU] = "2HCNNF2TB5"</string>
+	</array>
+</dict>
 </plist>

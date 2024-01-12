@@ -1,6 +1,24 @@
 {
   "pins" : [
     {
+      "identity" : "authorized",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/trilemma-dev/Authorized.git",
+      "state" : {
+        "revision" : "e490b9d3f4a0e8b17a8b39b5a9750b8e0be7548a",
+        "version" : "1.0.0"
+      }
+    },
+    {
+      "identity" : "blessed",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/trilemma-dev/Blessed",
+      "state" : {
+        "revision" : "e7c730ea4bcd2df7b61f022dbd38c5cdc2c875de",
+        "version" : "0.6.0"
+      }
+    },
+    {
       "identity" : "defaults",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/sindresorhus/Defaults",
@@ -34,6 +52,15 @@
       "state" : {
         "branch" : "main",
         "revision" : "a04ec1c363be3627734f6dad757d82f5d4fa8fcc"
+      }
+    },
+    {
+      "identity" : "required",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/trilemma-dev/Required.git",
+      "state" : {
+        "revision" : "82a4fbd388346ca40b1bbe815014dc45a75d503c",
+        "version" : "0.1.1"
       }
     },
     {

@@ -14,8 +14,6 @@ import SecureXPC
 class DaemonManager {
     static let shared = DaemonManager()
     
-    private let binUrl: URL
-    private let daemonUrl: URL
     private let runDirectory = URL.init(filePath: "/var/run/dotlocal")
     
     var internalState: DaemonStateInternal = .stopped
@@ -30,9 +28,6 @@ class DaemonManager {
     private var subscriptions = Set<AnyCancellable>()
     
     private init() {
-        let appUrl = try! parentAppURL()
-        binUrl = appUrl.appending(path: "Contents/Resources/bin")
-        daemonUrl = appUrl.appending(path: "Contents/Resources/dotlocal-daemon")
         _internalStates
             .flatMap { state in
                 Future<DaemonState, Never> { promise in
@@ -45,15 +40,26 @@ class DaemonManager {
             .store(in: &subscriptions)
     }
     
-    func start() {
+    func start(bundleURL: URL) async throws {
+        let binURL = bundleURL.appending(path: "Contents/Resources/bin")
+        let daemonURL = bundleURL.appending(path: "Contents/Resources/dotlocal-daemon")
+        
         NSLog("received start")
+        NSLog("daemonURL: \(daemonURL)")
+        
+        guard try CodeInfo.doesPublicKeyMatch(forExecutable: daemonURL) else {
+            NSLog("start daemon failed: security requirements not met")
+            return
+        }
+        
+        NSLog("security requirements passed")
         if internalState != .stopped {
             return
         }
         setState(.starting)
         
-        let binPath = binUrl.path(percentEncoded: false)
-        let launchPath = daemonUrl.path(percentEncoded: false)
+        let binPath = binURL.path(percentEncoded: false)
+        let launchPath = daemonURL.path(percentEncoded: false)
         
         try! FileManager.default.createDirectory(at: runDirectory, withIntermediateDirectories: true)
         

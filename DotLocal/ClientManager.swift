@@ -18,7 +18,7 @@ class ClientManager: ObservableObject {
     
     func installCli() async {
         do {
-            try await HelperManager.shared.xpcClient.send(to: SharedConstants.installClientRoute)
+            try await HelperManager.shared.xpcClient.sendMessage(Bundle.main.bundleURL, to: SharedConstants.installClientRoute)
             checkInstalled()
         } catch {
             print("error installing cli: \(error)")

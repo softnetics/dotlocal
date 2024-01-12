@@ -7,20 +7,21 @@
 
 import Foundation
 
-private func clientLocation() -> URL {
-    let appURL = try! parentAppURL()
-    return appURL.appendingPathComponent("Contents/Resources/bin/dotlocal")
-}
-
 private let installLocation = URL.init(filePath: "/usr/local/bin/dotlocal")
 
 enum ManageClient {
-    static func install() throws {
-        let source = clientLocation()
+    static func install(bundleURL: URL) throws {
+        let clientURL = bundleURL.appending(path: "Contents/Resources/bin/dotlocal")
         NSLog("installing client")
-        NSLog("symlink \(source) to \(installLocation)")
+        
+        guard try CodeInfo.doesPublicKeyMatch(forExecutable: clientURL) else {
+            NSLog("start daemon failed: security requirements not met")
+            return
+        }
+        
+        NSLog("symlink \(clientURL) to \(installLocation)")
         try FileManager.default.createDirectory(at: installLocation.deletingLastPathComponent(), withIntermediateDirectories: true)
-        try FileManager.default.createSymbolicLink(at: installLocation, withDestinationURL: source)
+        try FileManager.default.createSymbolicLink(at: installLocation, withDestinationURL: clientURL)
         NSLog("installed client")
     }
     

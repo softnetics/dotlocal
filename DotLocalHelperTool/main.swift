@@ -11,10 +11,24 @@ import Dispatch
 
 NSLog("starting helper tool. PID \(getpid()). PPID \(getppid()).")
 NSLog("version: \(try HelperToolInfoPropertyList.main.version.rawValue)")
-NSLog("bundle: \(String(describing: try? parentAppURL()))")
+NSLog("code location: \(String(describing: try? CodeInfo.currentCodeLocation()))")
 
-if getppid() == 1 {
-    let server = try XPCServer.forMachService(withCriteria: .forDaemon(withClientRequirement: try! .sameParentBundle))
+// Command line arguments were provided, so process them
+if CommandLine.arguments.count > 1 {
+    // Remove the first argument, which represents the name (typically the full path) of this helper tool
+    var arguments = CommandLine.arguments
+    _ = arguments.removeFirst()
+    NSLog("run with arguments: \(arguments)")
+    
+    if let firstArgument = arguments.first {
+        if firstArgument == Uninstaller.commandLineArgument {
+            try Uninstaller.uninstallFromCommandLine(withArguments: arguments)
+        } else {
+            NSLog("argument not recognized: \(firstArgument)")
+        }
+    }
+} else if getppid() == 1 { // Otherwise if started by launchd, start up server
+    let server = try XPCServer.forMachService()
     
     server.registerRoute(SharedConstants.startDaemonRoute, handler: DaemonManager.shared.start)
     server.registerRoute(SharedConstants.stopDaemonRoute, handler: DaemonManager.shared.stop)
@@ -24,6 +38,10 @@ if getppid() == 1 {
     server.registerRoute(SharedConstants.uninstallClientRoute, handler: ManageClient.uninstall)
     
     server.registerRoute(SharedConstants.exitRoute, handler: gracefulExit)
+    
+    server.registerRoute(SharedConstants.uninstallRoute, handler: Uninstaller.uninstallFromXPC)
+    server.registerRoute(SharedConstants.updateRoute, handler: Updater.updateHelperTool(atPath:))
+    
     server.setErrorHandler { error in
         if case .connectionInvalid = error {
             // Ignore invalidated connections as this happens whenever the client disconnects which is not a problem
@@ -43,8 +61,10 @@ if getppid() == 1 {
     sigtermSrc.resume()
     
     server.startAndBlock()
-} else {
-    print("not supported")
+} else { // Otherwise started via command line without arguments, print out help info
+    print("Usage: \(try CodeInfo.currentCodeLocation().lastPathComponent) <command>")
+    print("\nCommands:")
+    print("\t\(Uninstaller.commandLineArgument)\tUnloads and deletes from disk this helper tool and configuration.")
 }
 
 func gracefulExit() {

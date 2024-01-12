@@ -13,6 +13,13 @@
 // The directory containing the source code and property lists for the helper tool.
 TARGET_DIRECTORY = DotLocalHelperTool
 
+// Bundle identifier used both in the info property list and so the build script knows which target it is running for.
+// If you want to change the bundle identifier, change the value for HELPER_TOOL_BUNDLE_IDENTIFIER in Config.xcconfig.
+PRODUCT_BUNDLE_IDENTIFIER = $(HELPER_TOOL_BUNDLE_IDENTIFIER)
+
+// Name of the executable created by the build process. To satisfy SMJobBless this must match the bundle identifier.
+TARGET_NAME = $(HELPER_TOOL_BUNDLE_IDENTIFIER)
+
 // Property list locations
 INFOPLIST_FILE = $(TARGET_DIRECTORY)/Info.plist
 LAUNCHDPLIST_FILE = $(TARGET_DIRECTORY)/launchd.plist
@@ -22,5 +29,4 @@ LAUNCHDPLIST_FILE = $(TARGET_DIRECTORY)/launchd.plist
 // occurs immediately *before* any scripts are run, preventing the property list from being modified.
 OTHER_LDFLAGS = -sectcreate __TEXT __info_plist $(INFOPLIST_FILE) -sectcreate __TEXT __launchd_plist $(LAUNCHDPLIST_FILE)
 
-PRODUCT_BUNDLE_IDENTIFIER = $(HELPER_TOOL_BUNDLE_IDENTIFIER)
 SWIFT_ACTIVE_COMPILATION_CONDITIONS = HELPER_TOOL

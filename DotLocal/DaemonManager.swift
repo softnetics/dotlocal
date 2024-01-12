@@ -24,7 +24,7 @@ class DaemonManager: ObservableObject {
     func start() async {
         do {
             print("starting daemon")
-            try await HelperManager.shared.xpcClient.send(to: SharedConstants.startDaemonRoute)
+            try await HelperManager.shared.xpcClient.sendMessage(Bundle.main.bundleURL, to: SharedConstants.startDaemonRoute)
             print("successfully requested start")
             Task {
                 await subscribeDaemonState()
@@ -60,11 +60,6 @@ class DaemonManager: ObservableObject {
             }
         } catch {
             print("error during state subscription: \(error)")
-        }
-        if HelperManager.shared.status == .enabled {
-            Task {
-                await subscribeDaemonState()
-            }
         }
     }
 }
