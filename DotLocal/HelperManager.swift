@@ -13,12 +13,15 @@ class HelperManager: ObservableObject {
     static let shared = HelperManager()
     
     private let service = SMAppService.daemon(plistName: "helper.plist")
-    @Published var status: SMAppService.Status
+    @Published var status: SMAppService.Status?
     
     let xpcClient = XPCClient.forMachService(named: "dev.suphon.DotLocal.helper", withServerRequirement: try! .sameBundle)
     
     private init() {
-        status = .notRegistered
+        status = service.status
+        if status == .notFound || status == .notRegistered {
+            status = nil
+        }
         Task {
             print("sending exit to current helper")
             do {

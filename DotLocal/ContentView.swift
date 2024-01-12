@@ -13,7 +13,8 @@ struct ContentView: View {
     @StateObject var helperManager = HelperManager.shared
     
     var body: some View {
-        switch helperManager.status {
+        let status = helperManager.status
+        switch status {
         case .requiresApproval:
             RequiresApprovalView()
         case .enabled:
@@ -37,8 +38,10 @@ struct ContentView: View {
                     }
                 })
             }
+        case nil:
+            ProgressView()
         default:
-            Text("Unexpected state: \(helperManager.status.rawValue)")
+            Text("Unexpected state: \(status!.rawValue)")
         }
     }
 }
@@ -72,9 +75,8 @@ struct RequiresApprovalView: View {
             Text("Helper Not Enabled").font(.title).fontWeight(.bold)
             Text("Please enable DotLocal in the \"Allow in the Background\" section")
             Button(action: {
-                print("previous status: \(HelperManager.shared.status)")
                 HelperManager.shared.checkStatus()
-                print("status: \(HelperManager.shared.status)")
+                print("user clicked continue, status: \(String(describing: HelperManager.shared.status))")
                 if HelperManager.shared.status == .requiresApproval {
                     openedSettings = true
                     SMAppService.openSystemSettingsLoginItems()
