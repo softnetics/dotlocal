@@ -68,6 +68,9 @@ func (s *dnsService) Process(ctx context.Context) error {
 
 		result, err := unix.Select(int(fd.Fd())+1, &readSet, nil, nil, &unix.Timeval{Sec: 10})
 		if err != nil {
+			if err == unix.EINTR {
+				continue
+			}
 			if isContextDone(ctx) {
 				return nil
 			}
