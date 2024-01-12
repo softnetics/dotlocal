@@ -2,6 +2,7 @@ package daemon
 
 import (
 	"bufio"
+	"context"
 	"errors"
 	"fmt"
 	"io"
@@ -39,7 +40,7 @@ func NewNginx(logger *zap.Logger) (*Nginx, error) {
 	}, nil
 }
 
-func (n *Nginx) Start() error {
+func (n *Nginx) Start(ctx context.Context) error {
 	n.writeConfig()
 	n.logger.Debug("Starting nginx")
 
@@ -67,6 +68,11 @@ func (n *Nginx) Start() error {
 			}
 		}()
 		io.Copy(os.Stdout, stdout)
+	}()
+
+	go func() {
+		<-ctx.Done()
+		cmd.Process.Signal(syscall.SIGTERM)
 	}()
 
 	err = cmd.Start()

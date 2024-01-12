@@ -31,7 +31,7 @@ func NewAPIServer(logger *zap.Logger, dotlocal *DotLocal) (*APIServer, error) {
 	}, nil
 }
 
-func (s *APIServer) Start() error {
+func (s *APIServer) Start(ctx context.Context) error {
 	err := s.killExistingProcess()
 	if err != nil {
 		return err

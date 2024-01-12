@@ -25,7 +25,7 @@ func NewMDNSProxy(logger *zap.Logger) (dnsproxy.DNSProxy, error) {
 	}, nil
 }
 
-func (p *MDNSProxy) Start() error {
+func (p *MDNSProxy) Start(ctx context.Context) error {
 	p.logger.Debug("Connecting to dns service")
 	service, err := dnssd.NewConnection()
 	if err != nil {
@@ -34,7 +34,7 @@ func (p *MDNSProxy) Start() error {
 	p.dnsService = service
 	p.logger.Info("Ready")
 
-	ctx, cancel := context.WithCancel(context.Background())
+	ctx, cancel := context.WithCancel(ctx)
 	p.cancelProcess = cancel
 	go func() {
 		err := service.Process(ctx)

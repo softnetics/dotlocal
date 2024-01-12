@@ -48,8 +48,8 @@ func NewDotLocal(logger *zap.Logger) (*DotLocal, error) {
 	}, nil
 }
 
-func (d *DotLocal) Start() error {
-	ctx, cancel := context.WithCancel(context.Background())
+func (d *DotLocal) Start(ctx context.Context) error {
+	ctx, cancel := context.WithCancel(ctx)
 	d.ctx = ctx
 	d.cancel = cancel
 
@@ -75,10 +75,10 @@ func (d *DotLocal) Start() error {
 
 	var t tomb.Tomb
 	t.Go(func() error {
-		return d.nginx.Start()
+		return d.nginx.Start(ctx)
 	})
 	t.Go(func() error {
-		return d.dnsProxy.Start()
+		return d.dnsProxy.Start(ctx)
 	})
 
 	err = t.Wait()

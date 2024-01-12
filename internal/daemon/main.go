@@ -20,15 +20,15 @@ func Start(logger *zap.Logger) error {
 		return err
 	}
 
-	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
-	defer stop()
+	ctx, cancel := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
+	defer cancel()
 
 	var t tomb.Tomb
 	t.Go(func() error {
-		return dotlocal.Start()
+		return dotlocal.Start(ctx)
 	})
 	t.Go(func() error {
-		return apiServer.Start()
+		return apiServer.Start(ctx)
 	})
 	err = t.Wait()
 	if err != nil {
