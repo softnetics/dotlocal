@@ -457,7 +457,6 @@
 				D5E8DD2F2B47E82200E083E0 /* Copy Client */,
 				D59D89592B4FFDD30009270C /* Copy Helper */,
 				D59D895B2B4FFEFB0009270C /* Copy Helper Plist */,
-				D5803ED92B51962300332743 /* Cleanup Job Bless Requirements */,
 			);
 			buildRules = (
 			);
@@ -539,7 +538,6 @@
 				D59D89492B4FFC380009270C /* Sources */,
 				D59D894A2B4FFC380009270C /* Frameworks */,
 				D59D894B2B4FFC380009270C /* CopyFiles */,
-				D59D89732B505B260009270C /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -684,25 +682,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "$TARGET_BUILD_DIR/PropertyListModifier satisfy-job-bless-requirements\n";
-		};
-		D5803ED92B51962300332743 /* Cleanup Job Bless Requirements */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Cleanup Job Bless Requirements";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# $TARGET_BUILD_DIR/PropertyListModifier satisfy-job-bless-requirements\n";
+			shellScript = "$BUILT_PRODUCTS_DIR/PropertyListModifier satisfy-job-bless-requirements\n";
 		};
 		D59D89722B505A550009270C /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -719,24 +699,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "$TARGET_BUILD_DIR/PropertyListModifier satisfy-job-bless-requirements specify-mach-services\n";
-		};
-		D59D89732B505B260009270C /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# $TARGET_BUILD_DIR/PropertyListModifier cleanup-job-bless-requirements cleanup-mach-services\n";
+			shellScript = "$BUILT_PRODUCTS_DIR/PropertyListModifier satisfy-job-bless-requirements specify-mach-services\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
