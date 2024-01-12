@@ -42,9 +42,6 @@ class HelperManager: ObservableObject {
     }
     
     func onRegistered() async {
-        Task {
-            await DaemonManager.shared.subscribeDaemonState()
-        }
         await DaemonManager.shared.start()
     }
     

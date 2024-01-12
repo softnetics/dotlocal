@@ -9,21 +9,9 @@ import Foundation
 import SecureXPC
 import Dispatch
 
-func parentAppURL() throws -> URL {
-    let components = Bundle.main.bundleURL.pathComponents
-    guard let contentsIndex = components.lastIndex(of: "Contents"),
-          components[components.index(before: contentsIndex)].hasSuffix(".app") else {
-        throw MyError.runtimeError("""
-        Parent bundle could not be found.
-        Path:\(Bundle.main.bundleURL)
-        """)
-    }
-    
-    return URL(fileURLWithPath: "/" + components[1..<contentsIndex].joined(separator: "/"))
-}
-
 NSLog("starting helper tool. PID \(getpid()). PPID \(getppid()).")
 NSLog("version: \(try HelperToolInfoPropertyList.main.version.rawValue)")
+NSLog("bundle: \(String(describing: try? parentAppURL()))")
 
 if getppid() == 1 {
     let server = try XPCServer.forMachService(withCriteria: .forDaemon(withClientRequirement: try! .sameParentBundle))

@@ -16,6 +16,8 @@ class DaemonManager: ObservableObject {
     @Published var state: DaemonState = .unknown
     @Published var mappings: [Mapping] = []
     
+    private var subscribing = false
+    
     private init() {
     }
     
@@ -24,6 +26,9 @@ class DaemonManager: ObservableObject {
             print("starting daemon")
             try await HelperManager.shared.xpcClient.send(to: SharedConstants.startDaemonRoute)
             print("successfully requested start")
+            Task {
+                await subscribeDaemonState()
+            }
         } catch {
             print("error starting daemon: \(error)")
         }
@@ -39,7 +44,11 @@ class DaemonManager: ObservableObject {
         }
     }
     
-    func subscribeDaemonState() async {
+    private func subscribeDaemonState() async {
+        if subscribing {
+            return
+        }
+        subscribing = true
         do {
             for try await state in HelperManager.shared.xpcClient.send(to: SharedConstants.daemonStateRoute) {
                 DispatchQueue.main.async {

@@ -32,6 +32,8 @@
 		D5793C5E2B5103CF00979DC3 /* EmbeddedPropertyList in Frameworks */ = {isa = PBXBuildFile; productRef = D5793C5D2B5103CF00979DC3 /* EmbeddedPropertyList */; };
 		D5793C602B5103E300979DC3 /* DaemonState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5793C5F2B5103E300979DC3 /* DaemonState.swift */; };
 		D5793C612B5103E300979DC3 /* DaemonState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5793C5F2B5103E300979DC3 /* DaemonState.swift */; };
+		D5803EC72B518F2600332743 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5803EC62B518F2600332743 /* Utils.swift */; };
+		D5803EC82B518F2600332743 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5803EC62B518F2600332743 /* Utils.swift */; };
 		D582E9072B4C5BE20054343B /* nginx in Copy Binaries */ = {isa = PBXBuildFile; fileRef = D582E9052B4C5BC00054343B /* nginx */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D59D89502B4FFC380009270C /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59D894F2B4FFC380009270C /* main.swift */; };
 		D59D895A2B4FFDE20009270C /* DotLocalHelperTool in Copy Helper */ = {isa = PBXBuildFile; fileRef = D59D894D2B4FFC380009270C /* DotLocalHelperTool */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -174,6 +176,7 @@
 		D56116C52B517DC800FEB087 /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		D5793C482B50E8D400979DC3 /* HelperManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperManager.swift; sourceTree = "<group>"; };
 		D5793C5F2B5103E300979DC3 /* DaemonState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaemonState.swift; sourceTree = "<group>"; };
+		D5803EC62B518F2600332743 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		D582E9052B4C5BC00054343B /* nginx */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = nginx; sourceTree = "<group>"; };
 		D582E90A2B4E7BA90054343B /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		D582E90B2B4E7C750054343B /* Version.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Version.xcconfig; sourceTree = "<group>"; };
@@ -389,6 +392,7 @@
 				D59D897C2B505E4B0009270C /* CodeInfo.swift */,
 				D59D89822B5065CD0009270C /* MyError.swift */,
 				D5793C5F2B5103E300979DC3 /* DaemonState.swift */,
+				D5803EC62B518F2600332743 /* Utils.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -647,6 +651,7 @@
 				D5E8DD292B47E54800E083E0 /* AppDelegate.swift in Sources */,
 				D56116C32B51628E00FEB087 /* ProtoExtensions.swift in Sources */,
 				D5DEA9C02B499C2F0029BB00 /* Defaults.swift in Sources */,
+				D5803EC72B518F2600332743 /* Utils.swift in Sources */,
 				D59D89862B5067E60009270C /* HelperToolLaunchdPropertyList.swift in Sources */,
 				D5793C492B50E8D400979DC3 /* HelperManager.swift in Sources */,
 				D5E8DD332B47E97F00E083E0 /* DaemonManager.swift in Sources */,
@@ -690,6 +695,7 @@
 				D59D897E2B505E4B0009270C /* CodeInfo.swift in Sources */,
 				D59D89622B5048C40009270C /* SharedConstants.swift in Sources */,
 				D56116C12B51621500FEB087 /* dot-local.grpc.swift in Sources */,
+				D5803EC82B518F2600332743 /* Utils.swift in Sources */,
 				D56116BF2B51621500FEB087 /* preferences.pb.swift in Sources */,
 				D59D89812B505EFE0009270C /* ManageClient.swift in Sources */,
 				D59D89872B5067E60009270C /* HelperToolLaunchdPropertyList.swift in Sources */,
