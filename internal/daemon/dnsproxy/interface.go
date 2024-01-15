@@ -1,7 +1,9 @@
 package dnsproxy
 
+import "context"
+
 type DNSProxy interface {
-	Start(port int) error
+	Start(ctx context.Context) error
 	SetHosts(hosts map[string]struct{}) error
 	Stop() error
 }

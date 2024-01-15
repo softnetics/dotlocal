@@ -17,11 +17,11 @@ struct AppMenu: View {
         switch daemonManager.state {
         case .stopped:
             Button("DotLocal is not running") {}.disabled(true)
-        case .starting:
+        case .starting, .unknown:
             Button("DotLocal is starting") {}.disabled(true)
-        case .started:
+        case .started(let mappings):
             Section("Routes") {
-                MappingListMenu()
+                MappingListMenu(mappings: mappings)
             }
         }
         Divider()
@@ -39,14 +39,14 @@ struct AppMenu: View {
 }
 
 struct MappingListMenu: View {
-    @StateObject var vm = MappingListViewModel()
+    var mappings: [Mapping]
     @Environment(\.openURL) var openURL
     
     var body: some View {
-        if vm.mappings.isEmpty {
+        if mappings.isEmpty {
             Button("No Routes", action: {}).disabled(true)
         } else {
-            ForEach(vm.mappings) { mapping in
+            ForEach(mappings) { mapping in
                 let url = URL(string: "http://\(mapping.host)\(mapping.pathPrefix)")!
                 Button(action: { openURL(url) }, label: {
                     Text(getLabel(mapping: mapping))

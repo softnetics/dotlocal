@@ -1,13 +1,11 @@
 # dotlocal
 
-Local development domains, powered by OrbStack.
+Local development domains.
 
 ## Usage
 
-1. Start [OrbStack](https://orbstack.dev)
+1. Start the dotlocal daemon with root privilege: `dotlocal-daemon`
 
-2. Start the dotlocal daemon: `dotlocal-daemon`
+2. Start your app with `dotlocal` wrapper: `dotlocal --host testapp.local pnpm api:dev`
 
-3. Start your app with `dotlocal` wrapper: `dotlocal --host testapp.local pnpm api:dev`
-
-4. Visit your app at `http://testapp.local`.
+3. Visit your app at `http://testapp.local`.

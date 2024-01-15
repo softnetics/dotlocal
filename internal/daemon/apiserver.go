@@ -31,17 +31,24 @@ func NewAPIServer(logger *zap.Logger, dotlocal *DotLocal) (*APIServer, error) {
 	}, nil
 }
 
-func (s *APIServer) Start() error {
-	err := s.killExistingProcess()
+func (s *APIServer) Start(ctx context.Context) error {
+	err := s.killExistingProcessIfNeeded()
 	if err != nil {
 		return err
 	}
 
 	pid := os.Getpid()
 	err = os.WriteFile(util.GetPidPath(), []byte(strconv.Itoa(pid)), 0644)
+	if err != nil {
+		return err
+	}
 
 	socketPath := util.GetApiSocketPath()
 	lis, err := net.Listen("unix", socketPath)
+	if err != nil {
+		return err
+	}
+	err = os.Chmod(socketPath, 0666)
 	if err != nil {
 		return err
 	}
@@ -68,7 +75,7 @@ func (s *APIServer) Stop() error {
 	return nil
 }
 
-func (s *APIServer) killExistingProcess() error {
+func (s *APIServer) killExistingProcessIfNeeded() error {
 	_, err := os.Stat(util.GetApiSocketPath())
 	if err != nil {
 		if errors.Is(err, os.ErrNotExist) {
@@ -78,8 +85,17 @@ func (s *APIServer) killExistingProcess() error {
 	}
 	s.logger.Info("Killing existing process", zap.String("path", util.GetApiSocketPath()))
 
+	_ = killExistingProcess()
+
+	_ = os.Remove(util.GetPidPath())
+	_ = os.Remove(util.GetApiSocketPath())
+
+	return nil
+}
+
+func killExistingProcess() error {
 	pidBytes, err := os.ReadFile(util.GetPidPath())
-	if err != nil {
+	if err == nil {
 		return err
 	}
 	pid, err := strconv.Atoi(string(pidBytes))
@@ -91,17 +107,10 @@ func (s *APIServer) killExistingProcess() error {
 	if err != nil {
 		return err
 	}
-	_ = process.Kill()
-
-	err = os.Remove(util.GetPidPath())
+	err = process.Kill()
 	if err != nil {
 		return err
 	}
-	err = os.Remove(util.GetApiSocketPath())
-	if err != nil {
-		return err
-	}
-
 	return nil
 }
 
@@ -119,8 +128,8 @@ func newDotLocalServer(logger *zap.Logger, dotlocal *DotLocal) *dotLocalServer {
 	}
 }
 
-func (s *dotLocalServer) CreateMapping(ctx context.Context, req *api.CreateMappingRequest) (*emptypb.Empty, error) {
-	_, err := s.dotlocal.CreateMapping(internal.MappingOptions{
+func (s *dotLocalServer) CreateMapping(ctx context.Context, req *api.CreateMappingRequest) (*api.Mapping, error) {
+	mapping, err := s.dotlocal.CreateMapping(internal.MappingOptions{
 		Host:       *req.Host,
 		PathPrefix: *req.PathPrefix,
 		Target:     *req.Target,
@@ -128,7 +137,7 @@ func (s *dotLocalServer) CreateMapping(ctx context.Context, req *api.CreateMappi
 	if err != nil {
 		return nil, err
 	}
-	return &emptypb.Empty{}, nil
+	return mappingToApiMapping(mapping), nil
 }
 
 func (s *dotLocalServer) RemoveMapping(ctx context.Context, key *api.MappingKey) (*emptypb.Empty, error) {
@@ -145,16 +154,20 @@ func (s *dotLocalServer) RemoveMapping(ctx context.Context, key *api.MappingKey)
 func (s *dotLocalServer) ListMappings(ctx context.Context, _ *emptypb.Empty) (*api.ListMappingsResponse, error) {
 	res := &api.ListMappingsResponse{
 		Mappings: lo.Map(s.dotlocal.GetMappings(), func(mapping internal.Mapping, _ int) *api.Mapping {
-			return &api.Mapping{
-				Id:         &mapping.ID,
-				Host:       &mapping.Host,
-				PathPrefix: &mapping.PathPrefix,
-				Target:     &mapping.Target,
-				ExpiresAt: &timestamppb.Timestamp{
-					Seconds: mapping.ExpresAt.Unix(),
-				},
-			}
+			return mappingToApiMapping(mapping)
 		}),
 	}
 	return res, nil
+}
+
+func mappingToApiMapping(mapping internal.Mapping) *api.Mapping {
+	return &api.Mapping{
+		Id:         &mapping.ID,
+		Host:       &mapping.Host,
+		PathPrefix: &mapping.PathPrefix,
+		Target:     &mapping.Target,
+		ExpiresAt: &timestamppb.Timestamp{
+			Seconds: mapping.ExpresAt.Unix(),
+		},
+	}
 }

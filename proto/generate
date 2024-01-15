@@ -6,7 +6,7 @@ protoc proto/*.proto \
     --go-grpc_out=./internal/api --go-grpc_opt=paths=source_relative \
     --plugin=$HOMEBREW_PREFIX/bin/protoc-gen-swift \
     --swift_opt=Visibility=Public \
-    --swift_out=DotLocal/Model \
+    --swift_out=Shared/Model \
     --plugin=$HOMEBREW_PREFIX/bin/protoc-gen-grpc-swift \
     --grpc-swift_opt=Visibility=Public \
-    --grpc-swift_out=DotLocal/Model
+    --grpc-swift_out=Shared/Model

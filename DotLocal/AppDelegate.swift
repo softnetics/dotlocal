@@ -8,10 +8,11 @@
 import Foundation
 import AppKit
 import Defaults
+import SecureXPC
 
 class AppDelegate: NSObject, NSApplicationDelegate {
-    func applicationDidFinishLaunching(_ notification: Notification) {
-        DaemonManager.shared.start()
+    override init() {
+        _ = HelperManager.shared
         ClientManager.shared.checkInstalled()
     }
     
@@ -27,8 +28,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         return true
     }
     
-    func applicationWillTerminate(_ notification: Notification) {
-        DaemonManager.shared.stop()
-        DaemonManager.shared.wait()
+    func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
+        print("applicationShouldTerminate called, stopping daemon and helper")
+        if HelperManager.shared.installationStatus.isReady {
+            Task {
+                await DaemonManager.shared.stop()
+                try? await HelperManager.shared.xpcClient.send(to: SharedConstants.exitRoute)
+                NSApplication.shared.terminate(nil)
+            }
+            return .terminateLater
+        } else {
+            return .terminateNow
+        }
     }
 }

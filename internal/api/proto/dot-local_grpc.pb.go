@@ -23,7 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type DotLocalClient interface {
-	CreateMapping(ctx context.Context, in *CreateMappingRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	CreateMapping(ctx context.Context, in *CreateMappingRequest, opts ...grpc.CallOption) (*Mapping, error)
 	RemoveMapping(ctx context.Context, in *MappingKey, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	ListMappings(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ListMappingsResponse, error)
 }
@@ -36,8 +36,8 @@ func NewDotLocalClient(cc grpc.ClientConnInterface) DotLocalClient {
 	return &dotLocalClient{cc}
 }
 
-func (c *dotLocalClient) CreateMapping(ctx context.Context, in *CreateMappingRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	out := new(emptypb.Empty)
+func (c *dotLocalClient) CreateMapping(ctx context.Context, in *CreateMappingRequest, opts ...grpc.CallOption) (*Mapping, error) {
+	out := new(Mapping)
 	err := c.cc.Invoke(ctx, "/DotLocal/CreateMapping", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -67,7 +67,7 @@ func (c *dotLocalClient) ListMappings(ctx context.Context, in *emptypb.Empty, op
 // All implementations must embed UnimplementedDotLocalServer
 // for forward compatibility
 type DotLocalServer interface {
-	CreateMapping(context.Context, *CreateMappingRequest) (*emptypb.Empty, error)
+	CreateMapping(context.Context, *CreateMappingRequest) (*Mapping, error)
 	RemoveMapping(context.Context, *MappingKey) (*emptypb.Empty, error)
 	ListMappings(context.Context, *emptypb.Empty) (*ListMappingsResponse, error)
 	mustEmbedUnimplementedDotLocalServer()
@@ -77,7 +77,7 @@ type DotLocalServer interface {
 type UnimplementedDotLocalServer struct {
 }
 
-func (UnimplementedDotLocalServer) CreateMapping(context.Context, *CreateMappingRequest) (*emptypb.Empty, error) {
+func (UnimplementedDotLocalServer) CreateMapping(context.Context, *CreateMappingRequest) (*Mapping, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateMapping not implemented")
 }
 func (UnimplementedDotLocalServer) RemoveMapping(context.Context, *MappingKey) (*emptypb.Empty, error) {

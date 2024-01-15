@@ -13,106 +13,53 @@ import Combine
 class DaemonManager: ObservableObject {
     static let shared = DaemonManager()
     
-    private let binUrl = Bundle.main.bundleURL.appendingPathComponent("Contents/Resources/bin")
-    private let daemonUrl = Bundle.main.bundleURL.appendingPathComponent("Contents/Resources/dotlocal-daemon")
-    @Published var state: DaemonState = .stopped
-    private var task: Process? = nil
-    private(set) var apiClient: DotLocalAsyncClient? = nil
-    private var group: EventLoopGroup? = nil
-    private let _updates = PassthroughSubject<Void, Never>()
+    @Published var state: DaemonState = .unknown
+    @Published var mappings: [Mapping] = []
+    
+    private var subscribing = false
     
     private init() {
     }
     
-    func start() {
-        if state != .stopped {
+    func start() async {
+        do {
+            print("starting daemon")
+            try await HelperManager.shared.xpcClient.sendMessage(Bundle.main.bundleURL, to: SharedConstants.startDaemonRoute)
+            print("successfully requested start")
+            Task {
+                await subscribeDaemonState()
+            }
+        } catch {
+            print("error starting daemon: \(error)")
+        }
+    }
+    
+    func stop() async {
+        do {
+            print("stopping daemon")
+            try await HelperManager.shared.xpcClient.send(to: SharedConstants.stopDaemonRoute)
+            print("successfully requested stop")
+        } catch {
+            print("error stopping daemon: \(error)")
+        }
+    }
+    
+    private func subscribeDaemonState() async {
+        if subscribing {
             return
         }
-        state = .starting
-        
-        let binPath = binUrl.path(percentEncoded: false)
-        let launchPath = daemonUrl.path(percentEncoded: false)
-        
-        let task = Process()
-        var environment = ProcessInfo.processInfo.environment
-        environment["PATH"] = binPath
-        task.environment = environment
-        task.launchPath = launchPath
-        task.currentDirectoryURL = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(".dotlocal")
-        
-        let outputPipe = Pipe()
-        task.standardError = outputPipe
-        task.launch()
-        
-        let handle = outputPipe.fileHandleForReading
-        let token = NotificationCenter.default.addObserver(forName: .NSFileHandleDataAvailable, object: outputPipe.fileHandleForReading, queue: nil) { _ in
-            let chunk = String(decoding: handle.availableData, as: UTF8.self)
-            print(chunk, terminator: "")
-            if chunk.contains("API server listening") {
+        subscribing = true
+        do {
+            for try await state in HelperManager.shared.xpcClient.send(to: SharedConstants.daemonStateRoute) {
                 DispatchQueue.main.async {
-                    self.onStart()
+                    self.state = state
+                    if case .started(let mappings) = state {
+                        self.mappings = mappings
+                    }
                 }
-            } else if chunk.contains("Updated mappings") {
-                print("sending update")
-                self._updates.send()
             }
-            handle.waitForDataInBackgroundAndNotify()
+        } catch {
+            print("error during state subscription: \(error)")
         }
-        handle.waitForDataInBackgroundAndNotify()
-        
-        DispatchQueue.global().async {
-            task.waitUntilExit()
-            DispatchQueue.main.async {
-                NotificationCenter.default.removeObserver(token)
-                self.onStop()
-            }
-        }
-        self.task = task
     }
-    
-    private func onStart() {
-        let socketPath = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(".dotlocal/api.sock")
-        let group = PlatformSupport.makeEventLoopGroup(loopCount: 1)
-        self.group = group
-        // TODO: try catch
-        let channel = try! GRPCChannelPool.with(
-            target: .unixDomainSocket(socketPath.path(percentEncoded: false)),
-            transportSecurity: .plaintext,
-            eventLoopGroup: group
-        )
-        let apiClient = DotLocalAsyncClient(channel: channel)
-        self.apiClient = apiClient
-        
-        state = .started
-    }
-    
-    private func onStop() {
-        task = nil
-        apiClient = nil
-        state = .stopped
-    }
-    
-    func stop() {
-        guard let task = task else {
-            return
-        }
-        task.terminate()
-    }
-    
-    func wait() {
-        guard let task = task else {
-            return
-        }
-        task.waitUntilExit()
-    }
-    
-    func updates() -> AnyPublisher<Void, Never> {
-        return _updates.prepend(()).eraseToAnyPublisher()
-    }
-}
-
-enum DaemonState {
-    case stopped
-    case starting
-    case started
 }

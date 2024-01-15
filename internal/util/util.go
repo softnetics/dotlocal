@@ -19,8 +19,7 @@ var dotlocalPath *string
 
 func GetDotlocalPath() string {
 	if dotlocalPath == nil {
-		home := os.Getenv("HOME")
-		dir := path.Join(home, ".dotlocal")
+		dir := "/var/run/dotlocal"
 		dotlocalPath = &dir
 
 		err := os.MkdirAll(dir, 0755)

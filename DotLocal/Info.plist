@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>SMPrivilegedExecutables</key>
+	<dict>
+		<key>dev.suphon.DotLocal.helper</key>
+		<string>anchor apple generic and identifier "dev.suphon.DotLocal.helper" and certificate leaf[subject.OU] = "2HCNNF2TB5"</string>
+	</dict>
+</dict>
+</plist>

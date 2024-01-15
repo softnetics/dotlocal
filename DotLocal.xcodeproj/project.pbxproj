@@ -8,12 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		D50377F62B481B59008F9AA8 /* GRPC in Frameworks */ = {isa = PBXBuildFile; productRef = D50377F52B481B59008F9AA8 /* GRPC */; };
-		D50378042B482578008F9AA8 /* dot-local.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50378022B482578008F9AA8 /* dot-local.pb.swift */; };
-		D50378052B482578008F9AA8 /* dot-local.grpc.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50378012B482578008F9AA8 /* dot-local.grpc.swift */; };
-		D50378062B482578008F9AA8 /* preferences.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50378032B482578008F9AA8 /* preferences.pb.swift */; };
-		D50378092B48708C008F9AA8 /* MappingListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D50378082B48708C008F9AA8 /* MappingListViewModel.swift */; };
 		D503780B2B48718D008F9AA8 /* MappingList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D503780A2B48718D008F9AA8 /* MappingList.swift */; };
-		D503780D2B487250008F9AA8 /* ProtoExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D503780C2B487250008F9AA8 /* ProtoExtensions.swift */; };
 		D529B1AE2B47BF8C00DC288B /* DotLocalApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D529B1AD2B47BF8C00DC288B /* DotLocalApp.swift */; };
 		D529B1B02B47BF8C00DC288B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D529B1AF2B47BF8C00DC288B /* ContentView.swift */; };
 		D529B1B22B47BF8E00DC288B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D529B1B12B47BF8E00DC288B /* Assets.xcassets */; };
@@ -21,13 +16,48 @@
 		D529B1C02B47BF8E00DC288B /* DotLocalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D529B1BF2B47BF8E00DC288B /* DotLocalTests.swift */; };
 		D529B1CA2B47BF8E00DC288B /* DotLocalUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D529B1C92B47BF8E00DC288B /* DotLocalUITests.swift */; };
 		D529B1CC2B47BF8E00DC288B /* DotLocalUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D529B1CB2B47BF8E00DC288B /* DotLocalUITestsLaunchTests.swift */; };
-		D582E9072B4C5BE20054343B /* nginx in Copy Binaries */ = {isa = PBXBuildFile; fileRef = D582E9052B4C5BC00054343B /* nginx */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		D56116AA2B510CFD00FEB087 /* DaemonManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56116A92B510CFD00FEB087 /* DaemonManager.swift */; };
+		D56116BC2B51621500FEB087 /* dot-local.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56116B92B51621500FEB087 /* dot-local.pb.swift */; };
+		D56116BD2B51621500FEB087 /* dot-local.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56116B92B51621500FEB087 /* dot-local.pb.swift */; };
+		D56116BE2B51621500FEB087 /* preferences.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56116BA2B51621500FEB087 /* preferences.pb.swift */; };
+		D56116BF2B51621500FEB087 /* preferences.pb.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56116BA2B51621500FEB087 /* preferences.pb.swift */; };
+		D56116C02B51621500FEB087 /* dot-local.grpc.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56116BB2B51621500FEB087 /* dot-local.grpc.swift */; };
+		D56116C12B51621500FEB087 /* dot-local.grpc.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56116BB2B51621500FEB087 /* dot-local.grpc.swift */; };
+		D56116C32B51628E00FEB087 /* ProtoExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56116C22B51628E00FEB087 /* ProtoExtensions.swift */; };
+		D56116C42B51628E00FEB087 /* ProtoExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56116C22B51628E00FEB087 /* ProtoExtensions.swift */; };
+		D56116C62B517DC800FEB087 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56116C52B517DC800FEB087 /* ViewExtensions.swift */; };
+		D56116C72B517DC800FEB087 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56116C52B517DC800FEB087 /* ViewExtensions.swift */; };
+		D5793C492B50E8D400979DC3 /* HelperManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5793C482B50E8D400979DC3 /* HelperManager.swift */; };
+		D5793C5C2B5103CC00979DC3 /* GRPC in Frameworks */ = {isa = PBXBuildFile; productRef = D5793C5B2B5103CC00979DC3 /* GRPC */; };
+		D5793C5E2B5103CF00979DC3 /* EmbeddedPropertyList in Frameworks */ = {isa = PBXBuildFile; productRef = D5793C5D2B5103CF00979DC3 /* EmbeddedPropertyList */; };
+		D5793C602B5103E300979DC3 /* DaemonState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5793C5F2B5103E300979DC3 /* DaemonState.swift */; };
+		D5793C612B5103E300979DC3 /* DaemonState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5793C5F2B5103E300979DC3 /* DaemonState.swift */; };
+		D5803ED02B5194CF00332743 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5803ECF2B5194CF00332743 /* main.swift */; };
+		D5803EDD2B51990100332743 /* HelperToolMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5803EDC2B51990100332743 /* HelperToolMonitor.swift */; };
+		D5803EDE2B519ADA00332743 /* dev.suphon.DotLocal.helper in Copy Helper */ = {isa = PBXBuildFile; fileRef = D59D894D2B4FFC380009270C /* dev.suphon.DotLocal.helper */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		D5803EE22B519E3B00332743 /* Blessed in Frameworks */ = {isa = PBXBuildFile; productRef = D5803EE12B519E3B00332743 /* Blessed */; };
+		D5803EE42B519E4600332743 /* Blessed in Frameworks */ = {isa = PBXBuildFile; productRef = D5803EE32B519E4600332743 /* Blessed */; };
+		D5803EE72B51A19500332743 /* Uninstaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5803EE62B51A19500332743 /* Uninstaller.swift */; };
+		D5803EE92B51A1A200332743 /* Updater.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5803EE82B51A1A200332743 /* Updater.swift */; };
+		D582E9072B4C5BE20054343B /* nginx in Copy Nginx */ = {isa = PBXBuildFile; fileRef = D582E9052B4C5BC00054343B /* nginx */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		D59D89502B4FFC380009270C /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59D894F2B4FFC380009270C /* main.swift */; };
+		D59D89612B5048C40009270C /* SharedConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59D89602B5048C40009270C /* SharedConstants.swift */; };
+		D59D89622B5048C40009270C /* SharedConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59D89602B5048C40009270C /* SharedConstants.swift */; };
+		D59D89692B50548C0009270C /* HelperToolInfoPropertyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59D89682B50548C0009270C /* HelperToolInfoPropertyList.swift */; };
+		D59D896A2B50548C0009270C /* HelperToolInfoPropertyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59D89682B50548C0009270C /* HelperToolInfoPropertyList.swift */; };
+		D59D896E2B5055BB0009270C /* EmbeddedPropertyList in Frameworks */ = {isa = PBXBuildFile; productRef = D59D896D2B5055BB0009270C /* EmbeddedPropertyList */; };
+		D59D89792B505C430009270C /* SecureXPC in Frameworks */ = {isa = PBXBuildFile; productRef = D59D89782B505C430009270C /* SecureXPC */; };
+		D59D897B2B505C4B0009270C /* SecureXPC in Frameworks */ = {isa = PBXBuildFile; productRef = D59D897A2B505C4B0009270C /* SecureXPC */; };
+		D59D897D2B505E4B0009270C /* CodeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59D897C2B505E4B0009270C /* CodeInfo.swift */; };
+		D59D897E2B505E4B0009270C /* CodeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59D897C2B505E4B0009270C /* CodeInfo.swift */; };
+		D59D89812B505EFE0009270C /* ManageClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59D897F2B505EFE0009270C /* ManageClient.swift */; };
+		D59D89862B5067E60009270C /* HelperToolLaunchdPropertyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59D89852B5067E60009270C /* HelperToolLaunchdPropertyList.swift */; };
+		D59D89872B5067E60009270C /* HelperToolLaunchdPropertyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59D89852B5067E60009270C /* HelperToolLaunchdPropertyList.swift */; };
 		D5DEA9B32B4888310029BB00 /* AppMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DEA9B22B4888310029BB00 /* AppMenu.swift */; };
 		D5DEA9B62B49936B0029BB00 /* LaunchAtLogin in Frameworks */ = {isa = PBXBuildFile; productRef = D5DEA9B52B49936B0029BB00 /* LaunchAtLogin */; };
 		D5DEA9BC2B4995BC0029BB00 /* Defaults in Frameworks */ = {isa = PBXBuildFile; productRef = D5DEA9BB2B4995BC0029BB00 /* Defaults */; };
 		D5DEA9BE2B4995DD0029BB00 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DEA9BD2B4995DD0029BB00 /* SettingsView.swift */; };
 		D5DEA9C02B499C2F0029BB00 /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DEA9BF2B499C2F0029BB00 /* Defaults.swift */; };
-		D5DEA9C22B49A6B60029BB00 /* Sudo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DEA9C12B49A6B60029BB00 /* Sudo.swift */; };
 		D5DEA9C42B49C0200029BB00 /* ClientManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DEA9C32B49C0200029BB00 /* ClientManager.swift */; };
 		D5E8DD292B47E54800E083E0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5E8DD282B47E54800E083E0 /* AppDelegate.swift */; };
 		D5E8DD312B47E83500E083E0 /* dotlocal-daemon in Copy Daemon */ = {isa = PBXBuildFile; fileRef = D5E8DD2D2B47E7B900E083E0 /* dotlocal-daemon */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -50,9 +80,69 @@
 			remoteGlobalIDString = D529B1A92B47BF8C00DC288B;
 			remoteInfo = DotLocal;
 		};
+		D56116B02B51102F00FEB087 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D529B1A22B47BF8C00DC288B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D59D894C2B4FFC380009270C;
+			remoteInfo = DotLocalHelperTool;
+		};
+		D5803ED42B5194F100332743 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D529B1A22B47BF8C00DC288B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D5803ECC2B5194CF00332743;
+			remoteInfo = PropertyListModifier;
+		};
+		D5803ED62B5194FA00332743 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D529B1A22B47BF8C00DC288B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D5803ECC2B5194CF00332743;
+			remoteInfo = PropertyListModifier;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		D5803ECB2B5194CF00332743 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		D59D894B2B4FFC380009270C /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		D59D89592B4FFDD30009270C /* Copy Helper */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Contents/Library/LaunchServices;
+			dstSubfolderSpec = 1;
+			files = (
+				D5803EDE2B519ADA00332743 /* dev.suphon.DotLocal.helper in Copy Helper */,
+			);
+			name = "Copy Helper";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D59D895B2B4FFEFB0009270C /* Copy Helper Plist */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Contents/Library/LaunchDaemons;
+			dstSubfolderSpec = 1;
+			files = (
+			);
+			name = "Copy Helper Plist";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D5E8DD2A2B47E79700E083E0 /* Copy Daemon */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -75,26 +165,21 @@
 			name = "Copy Client";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D5E8DD412B47F57400E083E0 /* Copy Binaries */ = {
+		D5E8DD412B47F57400E083E0 /* Copy Nginx */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = bin;
 			dstSubfolderSpec = 7;
 			files = (
-				D582E9072B4C5BE20054343B /* nginx in Copy Binaries */,
+				D582E9072B4C5BE20054343B /* nginx in Copy Nginx */,
 			);
-			name = "Copy Binaries";
+			name = "Copy Nginx";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		D50378012B482578008F9AA8 /* dot-local.grpc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "dot-local.grpc.swift"; sourceTree = "<group>"; };
-		D50378022B482578008F9AA8 /* dot-local.pb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "dot-local.pb.swift"; sourceTree = "<group>"; };
-		D50378032B482578008F9AA8 /* preferences.pb.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = preferences.pb.swift; sourceTree = "<group>"; };
-		D50378082B48708C008F9AA8 /* MappingListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MappingListViewModel.swift; sourceTree = "<group>"; };
 		D503780A2B48718D008F9AA8 /* MappingList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MappingList.swift; sourceTree = "<group>"; };
-		D503780C2B487250008F9AA8 /* ProtoExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtoExtensions.swift; sourceTree = "<group>"; };
 		D529B1AA2B47BF8C00DC288B /* DotLocal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DotLocal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D529B1AD2B47BF8C00DC288B /* DotLocalApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotLocalApp.swift; sourceTree = "<group>"; };
 		D529B1AF2B47BF8C00DC288B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -106,13 +191,35 @@
 		D529B1C52B47BF8E00DC288B /* DotLocalUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DotLocalUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D529B1C92B47BF8E00DC288B /* DotLocalUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotLocalUITests.swift; sourceTree = "<group>"; };
 		D529B1CB2B47BF8E00DC288B /* DotLocalUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotLocalUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		D56116A92B510CFD00FEB087 /* DaemonManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DaemonManager.swift; sourceTree = "<group>"; };
+		D56116B92B51621500FEB087 /* dot-local.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "dot-local.pb.swift"; sourceTree = "<group>"; };
+		D56116BA2B51621500FEB087 /* preferences.pb.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = preferences.pb.swift; sourceTree = "<group>"; };
+		D56116BB2B51621500FEB087 /* dot-local.grpc.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "dot-local.grpc.swift"; sourceTree = "<group>"; };
+		D56116C22B51628E00FEB087 /* ProtoExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtoExtensions.swift; sourceTree = "<group>"; };
+		D56116C52B517DC800FEB087 /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
+		D5793C482B50E8D400979DC3 /* HelperManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperManager.swift; sourceTree = "<group>"; };
+		D5793C5F2B5103E300979DC3 /* DaemonState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaemonState.swift; sourceTree = "<group>"; };
+		D5803ECD2B5194CF00332743 /* PropertyListModifier */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = PropertyListModifier; sourceTree = BUILT_PRODUCTS_DIR; };
+		D5803ECF2B5194CF00332743 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		D5803EDC2B51990100332743 /* HelperToolMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperToolMonitor.swift; sourceTree = "<group>"; };
+		D5803EE62B51A19500332743 /* Uninstaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Uninstaller.swift; sourceTree = "<group>"; };
+		D5803EE82B51A1A200332743 /* Updater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Updater.swift; sourceTree = "<group>"; };
 		D582E9052B4C5BC00054343B /* nginx */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = nginx; sourceTree = "<group>"; };
 		D582E90A2B4E7BA90054343B /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		D582E90B2B4E7C750054343B /* Version.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Version.xcconfig; sourceTree = "<group>"; };
+		D59D894D2B4FFC380009270C /* dev.suphon.DotLocal.helper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = dev.suphon.DotLocal.helper; sourceTree = BUILT_PRODUCTS_DIR; };
+		D59D894F2B4FFC380009270C /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		D59D89602B5048C40009270C /* SharedConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedConstants.swift; sourceTree = "<group>"; };
+		D59D89632B50506D0009270C /* AppConfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = AppConfig.xcconfig; sourceTree = "<group>"; };
+		D59D89642B5050E60009270C /* HelperToolConfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = HelperToolConfig.xcconfig; sourceTree = "<group>"; };
+		D59D89682B50548C0009270C /* HelperToolInfoPropertyList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperToolInfoPropertyList.swift; sourceTree = "<group>"; };
+		D59D89712B50572A0009270C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D59D897C2B505E4B0009270C /* CodeInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeInfo.swift; sourceTree = "<group>"; };
+		D59D897F2B505EFE0009270C /* ManageClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageClient.swift; sourceTree = "<group>"; };
+		D59D89852B5067E60009270C /* HelperToolLaunchdPropertyList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperToolLaunchdPropertyList.swift; sourceTree = "<group>"; };
 		D5DEA9B22B4888310029BB00 /* AppMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppMenu.swift; sourceTree = "<group>"; };
 		D5DEA9BD2B4995DD0029BB00 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		D5DEA9BF2B499C2F0029BB00 /* Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Defaults.swift; sourceTree = "<group>"; };
-		D5DEA9C12B49A6B60029BB00 /* Sudo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sudo.swift; sourceTree = "<group>"; };
 		D5DEA9C32B49C0200029BB00 /* ClientManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientManager.swift; sourceTree = "<group>"; };
 		D5E8DD282B47E54800E083E0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D5E8DD2B2B47E7AE00E083E0 /* dotlocal */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = dotlocal; path = go_out/dotlocal; sourceTree = "<group>"; };
@@ -127,7 +234,10 @@
 			files = (
 				D5DEA9BC2B4995BC0029BB00 /* Defaults in Frameworks */,
 				D5DEA9B62B49936B0029BB00 /* LaunchAtLogin in Frameworks */,
+				D59D89792B505C430009270C /* SecureXPC in Frameworks */,
+				D5803EE22B519E3B00332743 /* Blessed in Frameworks */,
 				D50377F62B481B59008F9AA8 /* GRPC in Frameworks */,
+				D59D896E2B5055BB0009270C /* EmbeddedPropertyList in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -145,28 +255,27 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D5803ECA2B5194CF00332743 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D59D894A2B4FFC380009270C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D5793C5C2B5103CC00979DC3 /* GRPC in Frameworks */,
+				D5803EE42B519E4600332743 /* Blessed in Frameworks */,
+				D59D897B2B505C4B0009270C /* SecureXPC in Frameworks */,
+				D5793C5E2B5103CF00979DC3 /* EmbeddedPropertyList in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		D50377F72B481F69008F9AA8 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				D50378072B482588008F9AA8 /* proto */,
-				D503780C2B487250008F9AA8 /* ProtoExtensions.swift */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		D50378072B482588008F9AA8 /* proto */ = {
-			isa = PBXGroup;
-			children = (
-				D50378012B482578008F9AA8 /* dot-local.grpc.swift */,
-				D50378022B482578008F9AA8 /* dot-local.pb.swift */,
-				D50378032B482578008F9AA8 /* preferences.pb.swift */,
-			);
-			path = proto;
-			sourceTree = "<group>";
-		};
 		D529B1A12B47BF8C00DC288B = {
 			isa = PBXGroup;
 			children = (
@@ -174,9 +283,13 @@
 				D582E8FF2B4C5AEE0054343B /* bin */,
 				D5E8DD2D2B47E7B900E083E0 /* dotlocal-daemon */,
 				D5E8DD2B2B47E7AE00E083E0 /* dotlocal */,
+				D59D895D2B5048420009270C /* Shared */,
 				D529B1AC2B47BF8C00DC288B /* DotLocal */,
+				D59D894E2B4FFC380009270C /* DotLocalHelperTool */,
 				D529B1C82B47BF8E00DC288B /* DotLocalUITests */,
+				D5803ECE2B5194CF00332743 /* PropertyListModifier */,
 				D529B1AB2B47BF8C00DC288B /* Products */,
+				D59D896C2B5055BB0009270C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -186,6 +299,8 @@
 				D529B1AA2B47BF8C00DC288B /* DotLocal.app */,
 				D529B1BB2B47BF8E00DC288B /* DotLocalTests.xctest */,
 				D529B1C52B47BF8E00DC288B /* DotLocalUITests.xctest */,
+				D59D894D2B4FFC380009270C /* dev.suphon.DotLocal.helper */,
+				D5803ECD2B5194CF00332743 /* PropertyListModifier */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -193,22 +308,23 @@
 		D529B1AC2B47BF8C00DC288B /* DotLocal */ = {
 			isa = PBXGroup;
 			children = (
-				D50377F72B481F69008F9AA8 /* Model */,
+				D59D89632B50506D0009270C /* AppConfig.xcconfig */,
 				D529B1AD2B47BF8C00DC288B /* DotLocalApp.swift */,
 				D5E8DD282B47E54800E083E0 /* AppDelegate.swift */,
 				D5DEA9B22B4888310029BB00 /* AppMenu.swift */,
+				D5803EDC2B51990100332743 /* HelperToolMonitor.swift */,
 				D529B1AF2B47BF8C00DC288B /* ContentView.swift */,
-				D50378082B48708C008F9AA8 /* MappingListViewModel.swift */,
 				D503780A2B48718D008F9AA8 /* MappingList.swift */,
-				D529B1BE2B47BF8E00DC288B /* DotLocalTests */,
-				D529B1B12B47BF8E00DC288B /* Assets.xcassets */,
-				D529B1B62B47BF8E00DC288B /* DotLocal.entitlements */,
-				D529B1B32B47BF8E00DC288B /* Preview Content */,
+				D5793C482B50E8D400979DC3 /* HelperManager.swift */,
 				D5E8DD322B47E97F00E083E0 /* DaemonManager.swift */,
 				D5DEA9C32B49C0200029BB00 /* ClientManager.swift */,
 				D5DEA9BD2B4995DD0029BB00 /* SettingsView.swift */,
 				D5DEA9BF2B499C2F0029BB00 /* Defaults.swift */,
-				D5DEA9C12B49A6B60029BB00 /* Sudo.swift */,
+				D56116C52B517DC800FEB087 /* ViewExtensions.swift */,
+				D529B1BE2B47BF8E00DC288B /* DotLocalTests */,
+				D529B1B12B47BF8E00DC288B /* Assets.xcassets */,
+				D529B1B62B47BF8E00DC288B /* DotLocal.entitlements */,
+				D529B1B32B47BF8E00DC288B /* Preview Content */,
 			);
 			path = DotLocal;
 			sourceTree = "<group>";
@@ -238,6 +354,33 @@
 			path = DotLocalUITests;
 			sourceTree = "<group>";
 		};
+		D56116B62B51621500FEB087 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				D56116B72B51621500FEB087 /* proto */,
+				D56116C22B51628E00FEB087 /* ProtoExtensions.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		D56116B72B51621500FEB087 /* proto */ = {
+			isa = PBXGroup;
+			children = (
+				D56116B92B51621500FEB087 /* dot-local.pb.swift */,
+				D56116BA2B51621500FEB087 /* preferences.pb.swift */,
+				D56116BB2B51621500FEB087 /* dot-local.grpc.swift */,
+			);
+			path = proto;
+			sourceTree = "<group>";
+		};
+		D5803ECE2B5194CF00332743 /* PropertyListModifier */ = {
+			isa = PBXGroup;
+			children = (
+				D5803ECF2B5194CF00332743 /* main.swift */,
+			);
+			path = PropertyListModifier;
+			sourceTree = "<group>";
+		};
 		D582E8FF2B4C5AEE0054343B /* bin */ = {
 			isa = PBXGroup;
 			children = (
@@ -263,6 +406,40 @@
 			path = Config;
 			sourceTree = "<group>";
 		};
+		D59D894E2B4FFC380009270C /* DotLocalHelperTool */ = {
+			isa = PBXGroup;
+			children = (
+				D59D89642B5050E60009270C /* HelperToolConfig.xcconfig */,
+				D59D89712B50572A0009270C /* Info.plist */,
+				D59D894F2B4FFC380009270C /* main.swift */,
+				D59D897F2B505EFE0009270C /* ManageClient.swift */,
+				D56116A92B510CFD00FEB087 /* DaemonManager.swift */,
+				D5803EE62B51A19500332743 /* Uninstaller.swift */,
+				D5803EE82B51A1A200332743 /* Updater.swift */,
+			);
+			path = DotLocalHelperTool;
+			sourceTree = "<group>";
+		};
+		D59D895D2B5048420009270C /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				D56116B62B51621500FEB087 /* Model */,
+				D59D89602B5048C40009270C /* SharedConstants.swift */,
+				D59D89682B50548C0009270C /* HelperToolInfoPropertyList.swift */,
+				D59D89852B5067E60009270C /* HelperToolLaunchdPropertyList.swift */,
+				D59D897C2B505E4B0009270C /* CodeInfo.swift */,
+				D5793C5F2B5103E300979DC3 /* DaemonState.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		D59D896C2B5055BB0009270C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -270,23 +447,31 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D529B1CF2B47BF8E00DC288B /* Build configuration list for PBXNativeTarget "DotLocal" */;
 			buildPhases = (
+				D5803ED82B51960100332743 /* Satisfy Job Bless Requirements */,
 				D529B1A62B47BF8C00DC288B /* Sources */,
 				D529B1A72B47BF8C00DC288B /* Frameworks */,
 				D529B1A82B47BF8C00DC288B /* Resources */,
-				D5E8DD412B47F57400E083E0 /* Copy Binaries */,
+				D5E8DD412B47F57400E083E0 /* Copy Nginx */,
 				D529B1D82B47C06400DC288B /* Build golang binaries */,
 				D5E8DD2A2B47E79700E083E0 /* Copy Daemon */,
 				D5E8DD2F2B47E82200E083E0 /* Copy Client */,
+				D59D89592B4FFDD30009270C /* Copy Helper */,
+				D59D895B2B4FFEFB0009270C /* Copy Helper Plist */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				D5803ED72B5194FA00332743 /* PBXTargetDependency */,
+				D56116B12B51102F00FEB087 /* PBXTargetDependency */,
 			);
 			name = DotLocal;
 			packageProductDependencies = (
 				D50377F52B481B59008F9AA8 /* GRPC */,
 				D5DEA9B52B49936B0029BB00 /* LaunchAtLogin */,
 				D5DEA9BB2B4995BC0029BB00 /* Defaults */,
+				D59D896D2B5055BB0009270C /* EmbeddedPropertyList */,
+				D59D89782B505C430009270C /* SecureXPC */,
+				D5803EE12B519E3B00332743 /* Blessed */,
 			);
 			productName = DotLocal;
 			productReference = D529B1AA2B47BF8C00DC288B /* DotLocal.app */;
@@ -328,6 +513,48 @@
 			productReference = D529B1C52B47BF8E00DC288B /* DotLocalUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		D5803ECC2B5194CF00332743 /* PropertyListModifier */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D5803ED32B5194CF00332743 /* Build configuration list for PBXNativeTarget "PropertyListModifier" */;
+			buildPhases = (
+				D5803EC92B5194CF00332743 /* Sources */,
+				D5803ECA2B5194CF00332743 /* Frameworks */,
+				D5803ECB2B5194CF00332743 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PropertyListModifier;
+			productName = PropertyListModifier;
+			productReference = D5803ECD2B5194CF00332743 /* PropertyListModifier */;
+			productType = "com.apple.product-type.tool";
+		};
+		D59D894C2B4FFC380009270C /* DotLocalHelperTool */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D59D89532B4FFC380009270C /* Build configuration list for PBXNativeTarget "DotLocalHelperTool" */;
+			buildPhases = (
+				D59D89722B505A550009270C /* ShellScript */,
+				D59D89492B4FFC380009270C /* Sources */,
+				D59D894A2B4FFC380009270C /* Frameworks */,
+				D59D894B2B4FFC380009270C /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D5803ED52B5194F100332743 /* PBXTargetDependency */,
+			);
+			name = DotLocalHelperTool;
+			packageProductDependencies = (
+				D59D897A2B505C4B0009270C /* SecureXPC */,
+				D5793C5B2B5103CC00979DC3 /* GRPC */,
+				D5793C5D2B5103CF00979DC3 /* EmbeddedPropertyList */,
+				D5803EE32B519E4600332743 /* Blessed */,
+			);
+			productName = DotLocalHelperTool;
+			productReference = D59D894D2B4FFC380009270C /* dev.suphon.DotLocal.helper */;
+			productType = "com.apple.product-type.tool";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -349,6 +576,12 @@
 						CreatedOnToolsVersion = 15.1;
 						TestTargetID = D529B1A92B47BF8C00DC288B;
 					};
+					D5803ECC2B5194CF00332743 = {
+						CreatedOnToolsVersion = 15.1;
+					};
+					D59D894C2B4FFC380009270C = {
+						CreatedOnToolsVersion = 15.1;
+					};
 				};
 			};
 			buildConfigurationList = D529B1A52B47BF8C00DC288B /* Build configuration list for PBXProject "DotLocal" */;
@@ -364,14 +597,20 @@
 				D50377F42B481B59008F9AA8 /* XCRemoteSwiftPackageReference "grpc-swift" */,
 				D5DEA9B42B49936B0029BB00 /* XCRemoteSwiftPackageReference "LaunchAtLogin-Modern" */,
 				D5DEA9BA2B4995BC0029BB00 /* XCRemoteSwiftPackageReference "Defaults" */,
+				D59D896B2B5054FE0009270C /* XCRemoteSwiftPackageReference "EmbeddedPropertyList" */,
+				D59D89772B505C430009270C /* XCRemoteSwiftPackageReference "SecureXPC" */,
+				D5803EE02B519E3B00332743 /* XCRemoteSwiftPackageReference "Blessed" */,
+				D5803EE52B519E5100332743 /* XCRemoteSwiftPackageReference "Authorized" */,
 			);
 			productRefGroup = D529B1AB2B47BF8C00DC288B /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				D529B1A92B47BF8C00DC288B /* DotLocal */,
-				D529B1BA2B47BF8E00DC288B /* DotLocalTests */,
+				D59D894C2B4FFC380009270C /* DotLocalHelperTool */,
 				D529B1C42B47BF8E00DC288B /* DotLocalUITests */,
+				D529B1BA2B47BF8E00DC288B /* DotLocalTests */,
+				D5803ECC2B5194CF00332743 /* PropertyListModifier */,
 			);
 		};
 /* End PBXProject section */
@@ -425,7 +664,42 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e\n\nmkdir -p ./go_out\n\nSRC_CHECKSUM=$(find . -type f -name \"*.go\" -or -name \"go.mod\" -or -name \"go.sum\" | xargs cksum)\nEXISTING_CHECKSUM=\"\"\nif [[ -f \"./go_out/src_checksum\" ]]; then\n    EXISTING_CHECKSUM=$(cat ./go_out/src_checksum)\nfi\nif [ \"$SRC_CHECKSUM\" == \"$EXISTING_CHECKSUM\" ]; then\n    echo \"source hasn't changed. skipping\"\n    exit 0\nfi\necho \"$SRC_CHECKSUM\" > ./go_out/src_checksum\n\nif [[ -f \"./.xcode.env\" ]]; then\n  source \"./.xcode.env\"\nfi\nif [[ -f \"./.xcode.env.local\" ]]; then\n  source \"./.xcode.env.local\"\nfi\n\nGOOS=darwin GOARCH=arm64 $GO_BINARY build -ldflags=\"-w\" -o ./go_out/arm64/dotlocal ./cmd/dotlocal/main.go\nGOOS=darwin GOARCH=arm64 $GO_BINARY build -ldflags=\"-w\" -o ./go_out/arm64/dotlocal-daemon ./cmd/dotlocal-daemon/main.go\nGOOS=darwin GOARCH=amd64 $GO_BINARY build -ldflags=\"-w\" -o ./go_out/amd64/dotlocal ./cmd/dotlocal/main.go\nGOOS=darwin GOARCH=amd64 $GO_BINARY build -ldflags=\"-w\" -o ./go_out/amd64/dotlocal-daemon ./cmd/dotlocal-daemon/main.go\nlipo -create -output ./go_out/dotlocal ./go_out/arm64/dotlocal ./go_out/amd64/dotlocal\nlipo -create -output ./go_out/dotlocal-daemon ./go_out/arm64/dotlocal-daemon ./go_out/amd64/dotlocal-daemon\n";
+			shellScript = "set -e\n\nmkdir -p ./go_out\n\nSRC_CHECKSUM=$(find . -type f -name \"*.go\" -or -name \"go.mod\" -or -name \"go.sum\" | xargs cksum)\nSRC_CHECKSUM=\"$SRC_CHECKSUM\\n$(cat $0 | cksum)\"\nEXISTING_CHECKSUM=\"\"\nif [[ -f \"./go_out/src_checksum\" ]]; then\n    EXISTING_CHECKSUM=$(cat ./go_out/src_checksum)\nfi\nif [ \"$SRC_CHECKSUM\" == \"$EXISTING_CHECKSUM\" ]; then\n    echo \"source hasn't changed. skipping\"\n    exit 0\nfi\n\nif [[ -f \"./.xcode.env\" ]]; then\n  source \"./.xcode.env\"\nfi\nif [[ -f \"./.xcode.env.local\" ]]; then\n  source \"./.xcode.env.local\"\nfi\n\nfunction build_go_target {\n    CGO_ENABLED=1 GOOS=darwin GOARCH=$2 $GO_BINARY build -ldflags=\"-w\" -o \"./go_out/$2/$1\" \"./cmd/$1/main.go\"\n}\n\nbuild_go_target dotlocal arm64\nbuild_go_target dotlocal-daemon arm64\nbuild_go_target dotlocal amd64\nbuild_go_target dotlocal-daemon amd64\nlipo -create -output ./go_out/dotlocal ./go_out/arm64/dotlocal ./go_out/amd64/dotlocal\nlipo -create -output ./go_out/dotlocal-daemon ./go_out/arm64/dotlocal-daemon ./go_out/amd64/dotlocal-daemon\n\necho \"$SRC_CHECKSUM\" > ./go_out/src_checksum\n";
+		};
+		D5803ED82B51960100332743 /* Satisfy Job Bless Requirements */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Satisfy Job Bless Requirements";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "$BUILT_PRODUCTS_DIR/PropertyListModifier satisfy-job-bless-requirements\n";
+		};
+		D59D89722B505A550009270C /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "$BUILT_PRODUCTS_DIR/PropertyListModifier satisfy-job-bless-requirements specify-mach-services\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -434,20 +708,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5793C602B5103E300979DC3 /* DaemonState.swift in Sources */,
+				D56116C62B517DC800FEB087 /* ViewExtensions.swift in Sources */,
+				D56116BE2B51621500FEB087 /* preferences.pb.swift in Sources */,
+				D59D897D2B505E4B0009270C /* CodeInfo.swift in Sources */,
 				D5E8DD292B47E54800E083E0 /* AppDelegate.swift in Sources */,
+				D56116C32B51628E00FEB087 /* ProtoExtensions.swift in Sources */,
 				D5DEA9C02B499C2F0029BB00 /* Defaults.swift in Sources */,
-				D50378092B48708C008F9AA8 /* MappingListViewModel.swift in Sources */,
+				D59D89862B5067E60009270C /* HelperToolLaunchdPropertyList.swift in Sources */,
+				D5793C492B50E8D400979DC3 /* HelperManager.swift in Sources */,
+				D5803EDD2B51990100332743 /* HelperToolMonitor.swift in Sources */,
 				D5E8DD332B47E97F00E083E0 /* DaemonManager.swift in Sources */,
+				D59D89612B5048C40009270C /* SharedConstants.swift in Sources */,
 				D5DEA9B32B4888310029BB00 /* AppMenu.swift in Sources */,
+				D56116C02B51621500FEB087 /* dot-local.grpc.swift in Sources */,
 				D529B1B02B47BF8C00DC288B /* ContentView.swift in Sources */,
-				D503780D2B487250008F9AA8 /* ProtoExtensions.swift in Sources */,
+				D59D89692B50548C0009270C /* HelperToolInfoPropertyList.swift in Sources */,
 				D5DEA9BE2B4995DD0029BB00 /* SettingsView.swift in Sources */,
-				D50378042B482578008F9AA8 /* dot-local.pb.swift in Sources */,
-				D50378052B482578008F9AA8 /* dot-local.grpc.swift in Sources */,
 				D503780B2B48718D008F9AA8 /* MappingList.swift in Sources */,
 				D529B1AE2B47BF8C00DC288B /* DotLocalApp.swift in Sources */,
-				D5DEA9C22B49A6B60029BB00 /* Sudo.swift in Sources */,
-				D50378062B482578008F9AA8 /* preferences.pb.swift in Sources */,
+				D56116BC2B51621500FEB087 /* dot-local.pb.swift in Sources */,
 				D5DEA9C42B49C0200029BB00 /* ClientManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -469,6 +749,36 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D5803EC92B5194CF00332743 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D5803ED02B5194CF00332743 /* main.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D59D89492B4FFC380009270C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D5793C612B5103E300979DC3 /* DaemonState.swift in Sources */,
+				D59D897E2B505E4B0009270C /* CodeInfo.swift in Sources */,
+				D59D89622B5048C40009270C /* SharedConstants.swift in Sources */,
+				D56116C12B51621500FEB087 /* dot-local.grpc.swift in Sources */,
+				D56116BF2B51621500FEB087 /* preferences.pb.swift in Sources */,
+				D59D89812B505EFE0009270C /* ManageClient.swift in Sources */,
+				D59D89872B5067E60009270C /* HelperToolLaunchdPropertyList.swift in Sources */,
+				D56116C72B517DC800FEB087 /* ViewExtensions.swift in Sources */,
+				D56116C42B51628E00FEB087 /* ProtoExtensions.swift in Sources */,
+				D56116AA2B510CFD00FEB087 /* DaemonManager.swift in Sources */,
+				D59D896A2B50548C0009270C /* HelperToolInfoPropertyList.swift in Sources */,
+				D5803EE72B51A19500332743 /* Uninstaller.swift in Sources */,
+				D56116BD2B51621500FEB087 /* dot-local.pb.swift in Sources */,
+				D59D89502B4FFC380009270C /* main.swift in Sources */,
+				D5803EE92B51A1A200332743 /* Updater.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -482,12 +792,26 @@
 			target = D529B1A92B47BF8C00DC288B /* DotLocal */;
 			targetProxy = D529B1C62B47BF8E00DC288B /* PBXContainerItemProxy */;
 		};
+		D56116B12B51102F00FEB087 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D59D894C2B4FFC380009270C /* DotLocalHelperTool */;
+			targetProxy = D56116B02B51102F00FEB087 /* PBXContainerItemProxy */;
+		};
+		D5803ED52B5194F100332743 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D5803ECC2B5194CF00332743 /* PropertyListModifier */;
+			targetProxy = D5803ED42B5194F100332743 /* PBXContainerItemProxy */;
+		};
+		D5803ED72B5194FA00332743 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D5803ECC2B5194CF00332743 /* PropertyListModifier */;
+			targetProxy = D5803ED62B5194FA00332743 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		D529B1CD2B47BF8E00DC288B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D582E90A2B4E7BA90054343B /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -551,7 +875,6 @@
 		};
 		D529B1CE2B47BF8E00DC288B /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D582E90A2B4E7BA90054343B /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -607,6 +930,7 @@
 		};
 		D529B1D02B47BF8E00DC288B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D59D89632B50506D0009270C /* AppConfig.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -627,7 +951,6 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = "$(MARKETING_VERSION)";
-				PRODUCT_BUNDLE_IDENTIFIER = dev.suphon.DotLocal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -636,6 +959,7 @@
 		};
 		D529B1D12B47BF8E00DC288B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D59D89632B50506D0009270C /* AppConfig.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -656,7 +980,6 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = "$(MARKETING_VERSION)";
-				PRODUCT_BUNDLE_IDENTIFIER = dev.suphon.DotLocal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -735,6 +1058,60 @@
 			};
 			name = Release;
 		};
+		D5803ED12B5194CF00332743 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		D5803ED22B5194CF00332743 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		D59D89512B4FFC380009270C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D59D89642B5050E60009270C /* HelperToolConfig.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2HCNNF2TB5;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				INFOPLIST_FILE = "$(SRCROOT)/DotLocalHelperTool/Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = "$(MARKETING_VERSION)";
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_NAME = "$(HELPER_TOOL_BUNDLE_IDENTIFIER)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		D59D89522B4FFC380009270C /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D59D89642B5050E60009270C /* HelperToolConfig.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 2HCNNF2TB5;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				INFOPLIST_FILE = "$(SRCROOT)/DotLocalHelperTool/Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = "$(MARKETING_VERSION)";
+				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_NAME = "$(HELPER_TOOL_BUNDLE_IDENTIFIER)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -774,6 +1151,24 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		D5803ED32B5194CF00332743 /* Build configuration list for PBXNativeTarget "PropertyListModifier" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D5803ED12B5194CF00332743 /* Debug */,
+				D5803ED22B5194CF00332743 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D59D89532B4FFC380009270C /* Build configuration list for PBXNativeTarget "DotLocalHelperTool" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D59D89512B4FFC380009270C /* Debug */,
+				D59D89522B4FFC380009270C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
@@ -783,6 +1178,38 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 1.21.0;
+			};
+		};
+		D5803EE02B519E3B00332743 /* XCRemoteSwiftPackageReference "Blessed" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/trilemma-dev/Blessed";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.6.0;
+			};
+		};
+		D5803EE52B519E5100332743 /* XCRemoteSwiftPackageReference "Authorized" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/trilemma-dev/Authorized";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+		D59D896B2B5054FE0009270C /* XCRemoteSwiftPackageReference "EmbeddedPropertyList" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/trilemma-dev/EmbeddedPropertyList.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.2;
+			};
+		};
+		D59D89772B505C430009270C /* XCRemoteSwiftPackageReference "SecureXPC" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/trilemma-dev/SecureXPC";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.8.0;
 			};
 		};
 		D5DEA9B42B49936B0029BB00 /* XCRemoteSwiftPackageReference "LaunchAtLogin-Modern" */ = {
@@ -808,6 +1235,41 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D50377F42B481B59008F9AA8 /* XCRemoteSwiftPackageReference "grpc-swift" */;
 			productName = GRPC;
+		};
+		D5793C5B2B5103CC00979DC3 /* GRPC */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D50377F42B481B59008F9AA8 /* XCRemoteSwiftPackageReference "grpc-swift" */;
+			productName = GRPC;
+		};
+		D5793C5D2B5103CF00979DC3 /* EmbeddedPropertyList */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D59D896B2B5054FE0009270C /* XCRemoteSwiftPackageReference "EmbeddedPropertyList" */;
+			productName = EmbeddedPropertyList;
+		};
+		D5803EE12B519E3B00332743 /* Blessed */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D5803EE02B519E3B00332743 /* XCRemoteSwiftPackageReference "Blessed" */;
+			productName = Blessed;
+		};
+		D5803EE32B519E4600332743 /* Blessed */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D5803EE02B519E3B00332743 /* XCRemoteSwiftPackageReference "Blessed" */;
+			productName = Blessed;
+		};
+		D59D896D2B5055BB0009270C /* EmbeddedPropertyList */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D59D896B2B5054FE0009270C /* XCRemoteSwiftPackageReference "EmbeddedPropertyList" */;
+			productName = EmbeddedPropertyList;
+		};
+		D59D89782B505C430009270C /* SecureXPC */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D59D89772B505C430009270C /* XCRemoteSwiftPackageReference "SecureXPC" */;
+			productName = SecureXPC;
+		};
+		D59D897A2B505C4B0009270C /* SecureXPC */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D59D89772B505C430009270C /* XCRemoteSwiftPackageReference "SecureXPC" */;
+			productName = SecureXPC;
 		};
 		D5DEA9B52B49936B0029BB00 /* LaunchAtLogin */ = {
 			isa = XCSwiftPackageProductDependency;

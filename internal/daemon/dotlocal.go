@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/dchest/uniuri"
@@ -11,7 +12,7 @@ import (
 	"github.com/softnetics/dotlocal/internal"
 	api "github.com/softnetics/dotlocal/internal/api/proto"
 	"github.com/softnetics/dotlocal/internal/daemon/dnsproxy"
-	"github.com/softnetics/dotlocal/internal/daemon/orbdnsproxy"
+	"github.com/softnetics/dotlocal/internal/daemon/mdnsproxy"
 	"github.com/softnetics/dotlocal/internal/util"
 	"go.uber.org/zap"
 	"google.golang.org/protobuf/encoding/protojson"
@@ -34,7 +35,7 @@ func NewDotLocal(logger *zap.Logger) (*DotLocal, error) {
 		return nil, err
 	}
 
-	dnsProxy, err := orbdnsproxy.NewOrbstackDNSProxy(logger.Named("orbdnsproxy"))
+	dnsProxy, err := mdnsproxy.NewMDNSProxy(logger.Named("dnsproxy"))
 	if err != nil {
 		return nil, err
 	}
@@ -47,8 +48,8 @@ func NewDotLocal(logger *zap.Logger) (*DotLocal, error) {
 	}, nil
 }
 
-func (d *DotLocal) Start() error {
-	ctx, cancel := context.WithCancel(context.Background())
+func (d *DotLocal) Start(ctx context.Context) error {
+	ctx, cancel := context.WithCancel(ctx)
 	d.ctx = ctx
 	d.cancel = cancel
 
@@ -74,10 +75,10 @@ func (d *DotLocal) Start() error {
 
 	var t tomb.Tomb
 	t.Go(func() error {
-		return d.nginx.Start()
+		return d.nginx.Start(ctx)
 	})
 	t.Go(func() error {
-		return d.dnsProxy.Start(d.nginx.Port())
+		return d.dnsProxy.Start(ctx)
 	})
 
 	err = t.Wait()
@@ -178,8 +179,14 @@ func (d *DotLocal) GetMappings() []internal.Mapping {
 }
 
 func (d *DotLocal) CreateMapping(opts internal.MappingOptions) (internal.Mapping, error) {
+	if !strings.HasSuffix(opts.Host, ".local") {
+		opts.Host += ".local"
+	}
 	if opts.PathPrefix == "" {
 		opts.PathPrefix = "/"
+	}
+	if !strings.HasPrefix(opts.Target, "http://") && !strings.HasPrefix(opts.Target, "https://") {
+		opts.Target = "http://" + opts.Target
 	}
 	key := internal.MappingKey{
 		Host:       opts.Host,
