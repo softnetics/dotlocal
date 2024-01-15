@@ -214,7 +214,7 @@ func (n *Nginx) writeConfig() error {
 			Directives: []gonginx.IDirective{
 				&gonginx.Directive{
 					Name:       "listen",
-					Parameters: []string{"127.0.0.1"},
+					Parameters: []string{"127.0.0.1", "default_server"},
 				},
 				&gonginx.Directive{
 					Name:       "return",
