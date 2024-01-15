@@ -185,6 +185,9 @@ func (d *DotLocal) CreateMapping(opts internal.MappingOptions) (internal.Mapping
 	if opts.PathPrefix == "" {
 		opts.PathPrefix = "/"
 	}
+	if !strings.HasPrefix(opts.Target, "http://") && !strings.HasPrefix(opts.Target, "https://") {
+		opts.Target = "http://" + opts.Target
+	}
 	key := internal.MappingKey{
 		Host:       opts.Host,
 		PathPrefix: opts.PathPrefix,
