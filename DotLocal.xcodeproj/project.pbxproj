@@ -39,7 +39,6 @@
 		D5803EE42B519E4600332743 /* Blessed in Frameworks */ = {isa = PBXBuildFile; productRef = D5803EE32B519E4600332743 /* Blessed */; };
 		D5803EE72B51A19500332743 /* Uninstaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5803EE62B51A19500332743 /* Uninstaller.swift */; };
 		D5803EE92B51A1A200332743 /* Updater.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5803EE82B51A1A200332743 /* Updater.swift */; };
-		D582E9072B4C5BE20054343B /* nginx in Copy Nginx */ = {isa = PBXBuildFile; fileRef = D582E9052B4C5BC00054343B /* nginx */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D59D89502B4FFC380009270C /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59D894F2B4FFC380009270C /* main.swift */; };
 		D59D89612B5048C40009270C /* SharedConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59D89602B5048C40009270C /* SharedConstants.swift */; };
 		D59D89622B5048C40009270C /* SharedConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59D89602B5048C40009270C /* SharedConstants.swift */; };
@@ -163,17 +162,6 @@
 				D5E8DD402B47F56900E083E0 /* dotlocal in Copy Client */,
 			);
 			name = "Copy Client";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		D5E8DD412B47F57400E083E0 /* Copy Nginx */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = bin;
-			dstSubfolderSpec = 7;
-			files = (
-				D582E9072B4C5BE20054343B /* nginx in Copy Nginx */,
-			);
-			name = "Copy Nginx";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -451,7 +439,6 @@
 				D529B1A62B47BF8C00DC288B /* Sources */,
 				D529B1A72B47BF8C00DC288B /* Frameworks */,
 				D529B1A82B47BF8C00DC288B /* Resources */,
-				D5E8DD412B47F57400E083E0 /* Copy Nginx */,
 				D529B1D82B47C06400DC288B /* Build golang binaries */,
 				D5E8DD2A2B47E79700E083E0 /* Copy Daemon */,
 				D5E8DD2F2B47E82200E083E0 /* Copy Client */,

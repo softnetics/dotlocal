@@ -3,6 +3,7 @@ package daemon
 import (
 	"context"
 	"errors"
+	"net/url"
 	"os"
 	"strings"
 	"time"
@@ -22,7 +23,7 @@ import (
 
 type DotLocal struct {
 	logger   *zap.Logger
-	nginx    *Nginx
+	caddy    *Caddy
 	dnsProxy dnsproxy.DNSProxy
 	mappings map[internal.MappingKey]*internal.MappingState
 	ctx      context.Context
@@ -30,7 +31,7 @@ type DotLocal struct {
 }
 
 func NewDotLocal(logger *zap.Logger) (*DotLocal, error) {
-	nginx, err := NewNginx(logger.Named("nginx"))
+	caddy, err := NewCaddy(logger.Named("caddy"))
 	if err != nil {
 		return nil, err
 	}
@@ -42,7 +43,7 @@ func NewDotLocal(logger *zap.Logger) (*DotLocal, error) {
 
 	return &DotLocal{
 		logger:   logger,
-		nginx:    nginx,
+		caddy:    caddy,
 		dnsProxy: dnsProxy,
 		mappings: make(map[internal.MappingKey]*internal.MappingState),
 	}, nil
@@ -75,7 +76,7 @@ func (d *DotLocal) Start(ctx context.Context) error {
 
 	var t tomb.Tomb
 	t.Go(func() error {
-		return d.nginx.Start(ctx)
+		return d.caddy.Start()
 	})
 	t.Go(func() error {
 		return d.dnsProxy.Start(ctx)
@@ -112,14 +113,7 @@ func (d *DotLocal) Start(ctx context.Context) error {
 }
 
 func (d *DotLocal) Stop() error {
-	var t tomb.Tomb
-	t.Go(func() error {
-		return d.nginx.Stop()
-	})
-	t.Go(func() error {
-		return d.dnsProxy.Stop()
-	})
-	err := t.Wait()
+	err := d.dnsProxy.Stop()
 	if err != nil {
 		return err
 	}
@@ -185,9 +179,17 @@ func (d *DotLocal) CreateMapping(opts internal.MappingOptions) (internal.Mapping
 	if opts.PathPrefix == "" {
 		opts.PathPrefix = "/"
 	}
-	if !strings.HasPrefix(opts.Target, "http://") && !strings.HasPrefix(opts.Target, "https://") {
-		opts.Target = "http://" + opts.Target
+	targetUrl, err := url.Parse(opts.Target)
+	if err != nil {
+		return internal.Mapping{}, err
 	}
+	if targetUrl.Scheme == "" {
+		targetUrl.Scheme = "http"
+	}
+	if targetUrl.Scheme != "http" && targetUrl.Scheme != "https" {
+		return internal.Mapping{}, errors.New("target must be http or https")
+	}
+	opts.Target = targetUrl.String()
 	key := internal.MappingKey{
 		Host:       opts.Host,
 		PathPrefix: opts.PathPrefix,
@@ -226,7 +228,7 @@ func (d *DotLocal) RemoveMapping(keys ...internal.MappingKey) error {
 
 func (d *DotLocal) UpdateMappings() error {
 	mappings := d.GetMappings()
-	err := d.nginx.SetMappings(mappings)
+	err := d.caddy.SetMappings(mappings)
 	if err != nil {
 		return err
 	}
