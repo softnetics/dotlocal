@@ -219,6 +219,47 @@ public struct ListMappingsResponse {
   public init() {}
 }
 
+public struct GetRootCertificateResponse {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  public var certificate: Data {
+    get {return _certificate ?? Data()}
+    set {_certificate = newValue}
+  }
+  /// Returns true if `certificate` has been explicitly set.
+  public var hasCertificate: Bool {return self._certificate != nil}
+  /// Clears the value of `certificate`. Subsequent reads from it will return its default value.
+  public mutating func clearCertificate() {self._certificate = nil}
+
+  public var notBefore: SwiftProtobuf.Google_Protobuf_Timestamp {
+    get {return _notBefore ?? SwiftProtobuf.Google_Protobuf_Timestamp()}
+    set {_notBefore = newValue}
+  }
+  /// Returns true if `notBefore` has been explicitly set.
+  public var hasNotBefore: Bool {return self._notBefore != nil}
+  /// Clears the value of `notBefore`. Subsequent reads from it will return its default value.
+  public mutating func clearNotBefore() {self._notBefore = nil}
+
+  public var notAfter: SwiftProtobuf.Google_Protobuf_Timestamp {
+    get {return _notAfter ?? SwiftProtobuf.Google_Protobuf_Timestamp()}
+    set {_notAfter = newValue}
+  }
+  /// Returns true if `notAfter` has been explicitly set.
+  public var hasNotAfter: Bool {return self._notAfter != nil}
+  /// Clears the value of `notAfter`. Subsequent reads from it will return its default value.
+  public mutating func clearNotAfter() {self._notAfter = nil}
+
+  public var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  public init() {}
+
+  fileprivate var _certificate: Data? = nil
+  fileprivate var _notBefore: SwiftProtobuf.Google_Protobuf_Timestamp? = nil
+  fileprivate var _notAfter: SwiftProtobuf.Google_Protobuf_Timestamp? = nil
+}
+
 #if swift(>=5.5) && canImport(_Concurrency)
 extension Preferences: @unchecked Sendable {}
 extension SavedState: @unchecked Sendable {}
@@ -226,6 +267,7 @@ extension CreateMappingRequest: @unchecked Sendable {}
 extension MappingKey: @unchecked Sendable {}
 extension Mapping: @unchecked Sendable {}
 extension ListMappingsResponse: @unchecked Sendable {}
+extension GetRootCertificateResponse: @unchecked Sendable {}
 #endif  // swift(>=5.5) && canImport(_Concurrency)
 
 // MARK: - Code below here is support for the SwiftProtobuf runtime.
@@ -531,6 +573,61 @@ extension ListMappingsResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImp
 
   public static func ==(lhs: ListMappingsResponse, rhs: ListMappingsResponse) -> Bool {
     if lhs.mappings != rhs.mappings {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension GetRootCertificateResponse: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  public static let protoMessageName: String = "GetRootCertificateResponse"
+  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "certificate"),
+    2: .standard(proto: "not_before"),
+    3: .standard(proto: "not_after"),
+  ]
+
+  public var isInitialized: Bool {
+    if self._certificate == nil {return false}
+    if self._notBefore == nil {return false}
+    if self._notAfter == nil {return false}
+    return true
+  }
+
+  public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularBytesField(value: &self._certificate) }()
+      case 2: try { try decoder.decodeSingularMessageField(value: &self._notBefore) }()
+      case 3: try { try decoder.decodeSingularMessageField(value: &self._notAfter) }()
+      default: break
+      }
+    }
+  }
+
+  public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    // The use of inline closures is to circumvent an issue where the compiler
+    // allocates stack space for every if/case branch local when no optimizations
+    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+    // https://github.com/apple/swift-protobuf/issues/1182
+    try { if let v = self._certificate {
+      try visitor.visitSingularBytesField(value: v, fieldNumber: 1)
+    } }()
+    try { if let v = self._notBefore {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 2)
+    } }()
+    try { if let v = self._notAfter {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 3)
+    } }()
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  public static func ==(lhs: GetRootCertificateResponse, rhs: GetRootCertificateResponse) -> Bool {
+    if lhs._certificate != rhs._certificate {return false}
+    if lhs._notBefore != rhs._notBefore {return false}
+    if lhs._notAfter != rhs._notAfter {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }

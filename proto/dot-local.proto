@@ -19,6 +19,7 @@ service DotLocal {
   rpc ListMappings (google.protobuf.Empty) returns (ListMappingsResponse) {}
   rpc GetSavedState (google.protobuf.Empty) returns (SavedState) {}
   rpc SetPreferences (Preferences) returns (google.protobuf.Empty) {}
+  rpc GetRootCertificate (google.protobuf.Empty) returns (GetRootCertificateResponse) {}
 }
 
 message CreateMappingRequest {
@@ -42,4 +43,10 @@ message Mapping {
 
 message ListMappingsResponse {
   repeated Mapping mappings = 1;
+}
+
+message GetRootCertificateResponse {
+  required bytes certificate = 1;
+  required google.protobuf.Timestamp not_before = 2;
+  required google.protobuf.Timestamp not_after = 3;
 }

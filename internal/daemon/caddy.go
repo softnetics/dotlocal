@@ -1,7 +1,9 @@
 package daemon
 
 import (
+	"crypto/x509"
 	"encoding/json"
+	"errors"
 	"net"
 	"net/url"
 	"path"
@@ -57,6 +59,23 @@ func (c *Caddy) SetMappings(mappings []internal.Mapping) error {
 	c.mappings = mappings
 	c.logger.Debug("Setting mappings", zap.Any("mappings", mappings))
 	return c.reload()
+}
+
+func (c *Caddy) getRootCertificate() (*x509.Certificate, error) {
+	caddyCtx := caddy.ActiveContext()
+	pki, ok := caddyCtx.AppIfConfigured("pki").(*caddypki.PKI)
+	if !ok {
+		return nil, errors.New("pki module not found")
+	}
+	localCA := pki.CAs["local"]
+	if localCA == nil {
+		return nil, errors.New("local CA not found")
+	}
+	rootCert := localCA.RootCertificate()
+	if rootCert == nil {
+		return nil, errors.New("root certificate not found")
+	}
+	return rootCert, nil
 }
 
 func (c *Caddy) config() *caddy.Config {

@@ -178,6 +178,18 @@ func (s *dotLocalServer) SetPreferences(ctx context.Context, preferences *api.Pr
 	return &emptypb.Empty{}, nil
 }
 
+func (s *dotLocalServer) GetRootCertificate(ctx context.Context, _ *emptypb.Empty) (*api.GetRootCertificateResponse, error) {
+	cert, err := s.dotlocal.caddy.getRootCertificate()
+	if err != nil {
+		return nil, err
+	}
+	return &api.GetRootCertificateResponse{
+		Certificate: cert.Raw,
+		NotBefore:   timestamppb.New(cert.NotBefore),
+		NotAfter:    timestamppb.New(cert.NotAfter),
+	}, nil
+}
+
 func mappingToApiMapping(mapping internal.Mapping) *api.Mapping {
 	return &api.Mapping{
 		Id:         &mapping.ID,

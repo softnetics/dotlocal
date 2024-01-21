@@ -39,6 +39,7 @@
 		D5803EE92B51A1A200332743 /* Updater.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5803EE82B51A1A200332743 /* Updater.swift */; };
 		D5803EEB2B5C53BF00332743 /* ApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5803EEA2B5C53BF00332743 /* ApiClient.swift */; };
 		D5803EEC2B5C53BF00332743 /* ApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5803EEA2B5C53BF00332743 /* ApiClient.swift */; };
+		D5803EEE2B5CD0A700332743 /* CertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5803EED2B5CD0A700332743 /* CertHelper.swift */; };
 		D59D89502B4FFC380009270C /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59D894F2B4FFC380009270C /* main.swift */; };
 		D59D89612B5048C40009270C /* SharedConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59D89602B5048C40009270C /* SharedConstants.swift */; };
 		D59D89622B5048C40009270C /* SharedConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59D89602B5048C40009270C /* SharedConstants.swift */; };
@@ -192,6 +193,7 @@
 		D5803EE62B51A19500332743 /* Uninstaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Uninstaller.swift; sourceTree = "<group>"; };
 		D5803EE82B51A1A200332743 /* Updater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Updater.swift; sourceTree = "<group>"; };
 		D5803EEA2B5C53BF00332743 /* ApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiClient.swift; sourceTree = "<group>"; };
+		D5803EED2B5CD0A700332743 /* CertHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertHelper.swift; sourceTree = "<group>"; };
 		D582E9052B4C5BC00054343B /* nginx */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = nginx; sourceTree = "<group>"; };
 		D582E90A2B4E7BA90054343B /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		D582E90B2B4E7C750054343B /* Version.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Version.xcconfig; sourceTree = "<group>"; };
@@ -309,6 +311,7 @@
 				D5DEA9BD2B4995DD0029BB00 /* SettingsView.swift */,
 				D5DEA9BF2B499C2F0029BB00 /* Defaults.swift */,
 				D56116C52B517DC800FEB087 /* ViewExtensions.swift */,
+				D5803EED2B5CD0A700332743 /* CertHelper.swift */,
 				D529B1BE2B47BF8E00DC288B /* DotLocalTests */,
 				D529B1B12B47BF8E00DC288B /* Assets.xcassets */,
 				D529B1B62B47BF8E00DC288B /* DotLocal.entitlements */,
@@ -712,6 +715,7 @@
 				D5803EEB2B5C53BF00332743 /* ApiClient.swift in Sources */,
 				D59D89692B50548C0009270C /* HelperToolInfoPropertyList.swift in Sources */,
 				D5DEA9BE2B4995DD0029BB00 /* SettingsView.swift in Sources */,
+				D5803EEE2B5CD0A700332743 /* CertHelper.swift in Sources */,
 				D503780B2B48718D008F9AA8 /* MappingList.swift in Sources */,
 				D529B1AE2B47BF8C00DC288B /* DotLocalApp.swift in Sources */,
 				D56116BC2B51621500FEB087 /* dot-local.pb.swift in Sources */,

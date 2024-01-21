@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SecurityInterface
 import LaunchAtLogin
 import Defaults
 import Foundation
@@ -44,12 +45,16 @@ struct GeneralSettingsView: View {
             CliView().padding(.top, 8)
         }
         .padding(20)
-        .frame(minWidth: 350, maxWidth: 350)
+        .frame(minWidth: 400, maxWidth: 400)
     }
 }
 
 struct HttpsView: View {
     @Binding var prefs: Preferences
+    @State var rootCertificate: CertHelper.Certificate?
+    @State private var window: NSWindow?
+    
+    @Environment(\.controlActiveState) var controlActiveState
     
     var body: some View {
         LabeledContent(content: {
@@ -60,6 +65,109 @@ struct HttpsView: View {
         }, label: {
             Text("HTTPS:")
         })
+        .background(WindowAccessor(window: $window))
+        .onAppear {
+            Task {
+                await loadCertificate()
+            }
+        }
+        .onChange(of: controlActiveState) { activeState in
+            Task {
+                if activeState == .key {
+                    await loadCertificate()
+                }
+            }
+        }
+        if let rootCertificate = rootCertificate, let window = window {
+            CertificateView(certificate: rootCertificate, window: window, reload: {
+                Task {
+                    await loadCertificate()
+                }
+            })
+        }
+    }
+    
+    private func loadCertificate() async {
+        do {
+            rootCertificate = try await CertHelper.getRootCertificate()
+        } catch {
+            print("failed to load certificate: \(error)")
+        }
+    }
+}
+
+struct CertificateView: View {
+    @State private var didError = false
+    @State private var errorTitle = ""
+    @State private var errorMessage = ""
+    
+    var certificate: CertHelper.Certificate
+    var window: NSWindow
+    var reload: () -> Void
+    
+    var body: some View {
+        LabeledContent(content: {
+            VStack(alignment: .leading) {
+                Text(certificate.commonName)
+                Text("Expires: \(certificate.notAfter.formatted(date: .abbreviated, time: .shortened))")
+                    .foregroundStyle(.secondary)
+                    .font(.system(size: 12))
+                if certificate.trusted {
+                    (Text(Image(systemName: "checkmark.seal.fill"))+Text(" Trusted"))
+                        .foregroundStyle(.green)
+                        .font(.system(size: 12))
+                } else {
+                    (Text(Image(systemName: "xmark.circle.fill"))+Text(" Not trusted"))
+                        .foregroundStyle(.red)
+                        .font(.system(size: 12))
+                }
+                HStack {
+                    Button(action: {
+                        SFCertificatePanel.shared().beginSheet(for: window, modalDelegate: nil, didEnd: nil, contextInfo: nil, certificates: [certificate.secCertificate], showGroup: false)
+                    }, label: {
+                        Text("Details")
+                    })
+                    if !certificate.trusted {
+                        Button(action: {
+                            var status = SecItemAdd([
+                                kSecClass as String: kSecClassCertificate,
+                                kSecValueRef as String: certificate.secCertificate
+                            ] as CFDictionary, nil)
+                            guard status == errSecSuccess || status == errSecDuplicateItem else {
+                                errorTitle = "Failed to add certificate to Keychain"
+                                errorMessage = "\(status): " + (SecCopyErrorMessageString(status, nil)! as String)
+                                didError = true
+                                return
+                            }
+                            status = SecTrustSettingsSetTrustSettings(certificate.secCertificate, .user, [
+                                [kSecTrustSettingsPolicy: SecPolicyCreateBasicX509()],
+                                [kSecTrustSettingsPolicy: SecPolicyCreateSSL(true, nil)],
+                            ] as CFTypeRef)
+                            guard status == errSecSuccess || status == errAuthorizationCanceled else {
+                                errorTitle = "Failed to set trust settings for certificate"
+                                errorMessage = "\(status): " + (SecCopyErrorMessageString(status, nil)! as String)
+                                didError = true
+                                return
+                            }
+                            reload()
+                        }, label: {
+                            Text("Trust")
+                        })
+                    }
+                }
+            }
+        }, label: {
+            Text("Root Certificate:")
+        })
+        .alert(
+            errorTitle,
+            isPresented: $didError,
+            presenting: errorMessage
+        ) { _ in
+            Button("OK") {}
+        } message: { message in
+            Text(message)
+        }
     }
 }
 
@@ -97,6 +205,20 @@ struct SettingsView: View {
     var body: some View {
         GeneralSettingsView()
     }
+}
+
+struct WindowAccessor: NSViewRepresentable {
+    @Binding var window: NSWindow?
+    
+    func makeNSView(context: Context) -> NSView {
+        let view = NSView()
+        DispatchQueue.main.async {
+            self.window = view.window
+        }
+        return view
+    }
+    
+    func updateNSView(_ nsView: NSView, context: Context) {}
 }
 
 prefix func ! (value: Binding<Bool>) -> Binding<Bool> {

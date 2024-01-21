@@ -28,6 +28,7 @@ type DotLocalClient interface {
 	ListMappings(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ListMappingsResponse, error)
 	GetSavedState(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*SavedState, error)
 	SetPreferences(ctx context.Context, in *Preferences, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	GetRootCertificate(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetRootCertificateResponse, error)
 }
 
 type dotLocalClient struct {
@@ -83,6 +84,15 @@ func (c *dotLocalClient) SetPreferences(ctx context.Context, in *Preferences, op
 	return out, nil
 }
 
+func (c *dotLocalClient) GetRootCertificate(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetRootCertificateResponse, error) {
+	out := new(GetRootCertificateResponse)
+	err := c.cc.Invoke(ctx, "/DotLocal/GetRootCertificate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // DotLocalServer is the server API for DotLocal service.
 // All implementations must embed UnimplementedDotLocalServer
 // for forward compatibility
@@ -92,6 +102,7 @@ type DotLocalServer interface {
 	ListMappings(context.Context, *emptypb.Empty) (*ListMappingsResponse, error)
 	GetSavedState(context.Context, *emptypb.Empty) (*SavedState, error)
 	SetPreferences(context.Context, *Preferences) (*emptypb.Empty, error)
+	GetRootCertificate(context.Context, *emptypb.Empty) (*GetRootCertificateResponse, error)
 	mustEmbedUnimplementedDotLocalServer()
 }
 
@@ -113,6 +124,9 @@ func (UnimplementedDotLocalServer) GetSavedState(context.Context, *emptypb.Empty
 }
 func (UnimplementedDotLocalServer) SetPreferences(context.Context, *Preferences) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetPreferences not implemented")
+}
+func (UnimplementedDotLocalServer) GetRootCertificate(context.Context, *emptypb.Empty) (*GetRootCertificateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetRootCertificate not implemented")
 }
 func (UnimplementedDotLocalServer) mustEmbedUnimplementedDotLocalServer() {}
 
@@ -217,6 +231,24 @@ func _DotLocal_SetPreferences_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _DotLocal_GetRootCertificate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DotLocalServer).GetRootCertificate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/DotLocal/GetRootCertificate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DotLocalServer).GetRootCertificate(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // DotLocal_ServiceDesc is the grpc.ServiceDesc for DotLocal service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -243,6 +275,10 @@ var DotLocal_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SetPreferences",
 			Handler:    _DotLocal_SetPreferences_Handler,
+		},
+		{
+			MethodName: "GetRootCertificate",
+			Handler:    _DotLocal_GetRootCertificate_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
