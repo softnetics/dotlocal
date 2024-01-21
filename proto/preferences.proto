@@ -1,7 +1,0 @@
-import "proto/dot-local.proto";
-
-option go_package = "github.com/softnetics/dotlocal/api";
-
-message Preferences {
-  repeated Mapping mappings = 1;
-}

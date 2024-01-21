@@ -20,6 +20,60 @@ fileprivate struct _GeneratedWithProtocGenSwiftVersion: SwiftProtobuf.ProtobufAP
   typealias Version = _2
 }
 
+public struct Preferences {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  public var disableHTTPS: Bool {
+    get {return _disableHTTPS ?? false}
+    set {_disableHTTPS = newValue}
+  }
+  /// Returns true if `disableHTTPS` has been explicitly set.
+  public var hasDisableHTTPS: Bool {return self._disableHTTPS != nil}
+  /// Clears the value of `disableHTTPS`. Subsequent reads from it will return its default value.
+  public mutating func clearDisableHTTPS() {self._disableHTTPS = nil}
+
+  public var redirectHTTPS: Bool {
+    get {return _redirectHTTPS ?? false}
+    set {_redirectHTTPS = newValue}
+  }
+  /// Returns true if `redirectHTTPS` has been explicitly set.
+  public var hasRedirectHTTPS: Bool {return self._redirectHTTPS != nil}
+  /// Clears the value of `redirectHTTPS`. Subsequent reads from it will return its default value.
+  public mutating func clearRedirectHTTPS() {self._redirectHTTPS = nil}
+
+  public var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  public init() {}
+
+  fileprivate var _disableHTTPS: Bool? = nil
+  fileprivate var _redirectHTTPS: Bool? = nil
+}
+
+public struct SavedState {
+  // SwiftProtobuf.Message conformance is added in an extension below. See the
+  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
+  // methods supported on all messages.
+
+  public var mappings: [Mapping] = []
+
+  public var preferences: Preferences {
+    get {return _preferences ?? Preferences()}
+    set {_preferences = newValue}
+  }
+  /// Returns true if `preferences` has been explicitly set.
+  public var hasPreferences: Bool {return self._preferences != nil}
+  /// Clears the value of `preferences`. Subsequent reads from it will return its default value.
+  public mutating func clearPreferences() {self._preferences = nil}
+
+  public var unknownFields = SwiftProtobuf.UnknownStorage()
+
+  public init() {}
+
+  fileprivate var _preferences: Preferences? = nil
+}
+
 public struct CreateMappingRequest {
   // SwiftProtobuf.Message conformance is added in an extension below. See the
   // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
@@ -166,6 +220,8 @@ public struct ListMappingsResponse {
 }
 
 #if swift(>=5.5) && canImport(_Concurrency)
+extension Preferences: @unchecked Sendable {}
+extension SavedState: @unchecked Sendable {}
 extension CreateMappingRequest: @unchecked Sendable {}
 extension MappingKey: @unchecked Sendable {}
 extension Mapping: @unchecked Sendable {}
@@ -173,6 +229,103 @@ extension ListMappingsResponse: @unchecked Sendable {}
 #endif  // swift(>=5.5) && canImport(_Concurrency)
 
 // MARK: - Code below here is support for the SwiftProtobuf runtime.
+
+extension Preferences: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  public static let protoMessageName: String = "Preferences"
+  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .standard(proto: "disable_https"),
+    2: .standard(proto: "redirect_https"),
+  ]
+
+  public var isInitialized: Bool {
+    if self._disableHTTPS == nil {return false}
+    if self._redirectHTTPS == nil {return false}
+    return true
+  }
+
+  public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeSingularBoolField(value: &self._disableHTTPS) }()
+      case 2: try { try decoder.decodeSingularBoolField(value: &self._redirectHTTPS) }()
+      default: break
+      }
+    }
+  }
+
+  public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    // The use of inline closures is to circumvent an issue where the compiler
+    // allocates stack space for every if/case branch local when no optimizations
+    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+    // https://github.com/apple/swift-protobuf/issues/1182
+    try { if let v = self._disableHTTPS {
+      try visitor.visitSingularBoolField(value: v, fieldNumber: 1)
+    } }()
+    try { if let v = self._redirectHTTPS {
+      try visitor.visitSingularBoolField(value: v, fieldNumber: 2)
+    } }()
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  public static func ==(lhs: Preferences, rhs: Preferences) -> Bool {
+    if lhs._disableHTTPS != rhs._disableHTTPS {return false}
+    if lhs._redirectHTTPS != rhs._redirectHTTPS {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
+
+extension SavedState: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
+  public static let protoMessageName: String = "SavedState"
+  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    1: .same(proto: "mappings"),
+    2: .same(proto: "preferences"),
+  ]
+
+  public var isInitialized: Bool {
+    if self._preferences == nil {return false}
+    if !SwiftProtobuf.Internal.areAllInitialized(self.mappings) {return false}
+    if let v = self._preferences, !v.isInitialized {return false}
+    return true
+  }
+
+  public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
+    while let fieldNumber = try decoder.nextFieldNumber() {
+      // The use of inline closures is to circumvent an issue where the compiler
+      // allocates stack space for every case branch when no optimizations are
+      // enabled. https://github.com/apple/swift-protobuf/issues/1034
+      switch fieldNumber {
+      case 1: try { try decoder.decodeRepeatedMessageField(value: &self.mappings) }()
+      case 2: try { try decoder.decodeSingularMessageField(value: &self._preferences) }()
+      default: break
+      }
+    }
+  }
+
+  public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
+    // The use of inline closures is to circumvent an issue where the compiler
+    // allocates stack space for every if/case branch local when no optimizations
+    // are enabled. https://github.com/apple/swift-protobuf/issues/1034 and
+    // https://github.com/apple/swift-protobuf/issues/1182
+    if !self.mappings.isEmpty {
+      try visitor.visitRepeatedMessageField(value: self.mappings, fieldNumber: 1)
+    }
+    try { if let v = self._preferences {
+      try visitor.visitSingularMessageField(value: v, fieldNumber: 2)
+    } }()
+    try unknownFields.traverse(visitor: &visitor)
+  }
+
+  public static func ==(lhs: SavedState, rhs: SavedState) -> Bool {
+    if lhs.mappings != rhs.mappings {return false}
+    if lhs._preferences != rhs._preferences {return false}
+    if lhs.unknownFields != rhs.unknownFields {return false}
+    return true
+  }
+}
 
 extension CreateMappingRequest: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
   public static let protoMessageName: String = "CreateMappingRequest"

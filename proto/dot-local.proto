@@ -3,10 +3,22 @@ import "google/protobuf/timestamp.proto";
 
 option go_package = "github.com/softnetics/dotlocal/api";
 
+message Preferences {
+  required bool disable_https = 1;
+  required bool redirect_https = 2;
+}
+
+message SavedState {
+  repeated Mapping mappings = 1;
+  required Preferences preferences = 2;
+}
+
 service DotLocal {
   rpc CreateMapping (CreateMappingRequest) returns (Mapping) {}
   rpc RemoveMapping (MappingKey) returns (google.protobuf.Empty) {}
   rpc ListMappings (google.protobuf.Empty) returns (ListMappingsResponse) {}
+  rpc GetSavedState (google.protobuf.Empty) returns (SavedState) {}
+  rpc SetPreferences (Preferences) returns (google.protobuf.Empty) {}
 }
 
 message CreateMappingRequest {

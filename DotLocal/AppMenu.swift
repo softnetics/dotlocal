@@ -19,9 +19,9 @@ struct AppMenu: View {
             Button("DotLocal is not running") {}.disabled(true)
         case .starting, .unknown:
             Button("DotLocal is starting") {}.disabled(true)
-        case .started(let mappings):
+        case .started(let savedState):
             Section("Routes") {
-                MappingListMenu(mappings: mappings)
+                MappingListMenu(mappings: savedState.mappings)
             }
         }
         Divider()

@@ -6,26 +6,37 @@
 //
 
 import Foundation
+import SwiftProtobuf
 
-extension Mapping: Identifiable {}
-
-extension Mapping: Decodable {
-    public init(from decoder: Decoder) throws {
+protocol ProtoCodable {
+    init(
+        serializedData data: Data,
+        extensions: ExtensionMap?,
+        partial: Bool,
+        options: BinaryDecodingOptions
+    ) throws
+    func serializedData(partial: Bool) throws -> Data
+}
+extension ProtoCodable {
+    public init(from decoder: Swift.Decoder) throws {
         do {
             let container = try decoder.singleValueContainer()
-            self = try Mapping(serializedData: try container.decode(Data.self))
+            self = try Self(
+                serializedData: try container.decode(Data.self),
+                extensions: nil,
+                partial: true,
+                options: BinaryDecodingOptions()
+            )
         } catch {
             print("error decoding: \(error)")
             throw error
         }
     }
-}
-
-extension Mapping: Encodable {
+    
     public func encode(to encoder: Encoder) throws {
         do {
             var container = encoder.singleValueContainer()
-            try container.encode(try serializedData())
+            try container.encode(try serializedData(partial: true))
         } catch {
             NSLog("error encoding: \(error)")
             throw error
@@ -33,6 +44,11 @@ extension Mapping: Encodable {
     }
 }
 
+extension SavedState: ProtoCodable, Codable {}
+extension Mapping: ProtoCodable, Codable {}
+extension Preferences: ProtoCodable, Codable {}
+
+extension Mapping: Identifiable {}
 extension Mapping: Comparable {
     public static func < (lhs: Mapping, rhs: Mapping) -> Bool {
         let lhsTitle = "\(lhs.host)\(lhs.pathPrefix)"

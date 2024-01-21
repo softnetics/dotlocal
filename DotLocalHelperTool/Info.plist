@@ -8,7 +8,7 @@
 	<string>0.0.0</string>
 	<key>SMAuthorizedClients</key>
 	<array>
-		<string>anchor apple generic and identifier "dev.suphon.DotLocal" and info[CFBundleVersion] &gt;= "0.0.1" and certificate leaf[subject.OU] = "2HCNNF2TB5"</string>
+		<string>anchor apple generic and identifier "dev.suphon.DotLocal" and info[CFBundleVersion] &gt;= "0.1.0" and certificate leaf[subject.OU] = "2HCNNF2TB5"</string>
 	</array>
 </dict>
 </plist>

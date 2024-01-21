@@ -18,17 +18,20 @@ import (
 	"github.com/softnetics/dotlocal/internal"
 	"github.com/softnetics/dotlocal/internal/util"
 	"go.uber.org/zap"
+	"golang.org/x/exp/slices"
 )
 
 type Caddy struct {
 	logger   *zap.Logger
 	mappings []internal.Mapping
+	prefs    *preferences
 }
 
-func NewCaddy(logger *zap.Logger) (*Caddy, error) {
+func NewCaddy(logger *zap.Logger, prefs *preferences) (*Caddy, error) {
 	return &Caddy{
 		logger:   logger,
 		mappings: nil,
+		prefs:    prefs,
 	}, nil
 }
 
@@ -41,20 +44,42 @@ func (c *Caddy) Start() error {
 	return nil
 }
 
-func (c *Caddy) SetMappings(mappings []internal.Mapping) error {
-	c.mappings = mappings
-	c.logger.Debug("Setting mappings", zap.Any("mappings", mappings))
+func (c *Caddy) reload() error {
 	cfgJSON := encodeJson(c.config())
-	err := caddy.Load(cfgJSON, true)
+	err := caddy.Load(cfgJSON, false)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
+func (c *Caddy) SetMappings(mappings []internal.Mapping) error {
+	c.mappings = mappings
+	c.logger.Debug("Setting mappings", zap.Any("mappings", mappings))
+	return c.reload()
+}
+
 func (c *Caddy) config() *caddy.Config {
 	boolFalse := false
 	routes := c.routes()
+
+	servers := make(map[string]*caddyhttp.Server)
+	if !c.prefs.disableHTTPS {
+		servers["https"] = &caddyhttp.Server{
+			Listen: []string{"127.0.0.1:443"},
+			Routes: routes,
+			AutoHTTPS: &caddyhttp.AutoHTTPSConfig{
+				DisableRedir: !c.prefs.redirectHTTPS,
+			},
+		}
+	}
+	if c.prefs.disableHTTPS || !c.prefs.redirectHTTPS {
+		servers["http"] = &caddyhttp.Server{
+			Listen: []string{"127.0.0.1:80"},
+			Routes: routes,
+		}
+	}
+
 	return &caddy.Config{
 		Admin: &caddy.AdminConfig{
 			Disabled: true,
@@ -103,19 +128,7 @@ func (c *Caddy) config() *caddy.Config {
 			"http": encodeJson(&caddyhttp.App{
 				HTTPPort:  80,
 				HTTPSPort: 443,
-				Servers: map[string]*caddyhttp.Server{
-					"srv0": {
-						Listen: []string{"127.0.0.1:443"},
-						Routes: routes,
-						AutoHTTPS: &caddyhttp.AutoHTTPSConfig{
-							DisableRedir: true,
-						},
-					},
-					"srv1": {
-						Listen: []string{"127.0.0.1:80"},
-						Routes: routes,
-					},
-				},
+				Servers:   servers,
 			}),
 		},
 	}
