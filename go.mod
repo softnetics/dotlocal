@@ -7,8 +7,8 @@ require (
 	github.com/dchest/uniuri v1.2.0
 	github.com/samber/lo v1.39.0
 	github.com/spf13/cobra v1.8.0
-	github.com/tufanbarisyildirim/gonginx v0.0.0-20231222202608-ba16e88a9436
 	go.uber.org/zap v1.26.0
+	golang.org/x/exp v0.0.0-20230310171629-522b1b587ee0
 	golang.org/x/sys v0.14.0
 	google.golang.org/grpc v1.60.1
 	google.golang.org/protobuf v1.32.0
@@ -101,7 +101,6 @@ require (
 	go.uber.org/mock v0.3.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/crypto v0.14.0 // indirect
-	golang.org/x/exp v0.0.0-20230310171629-522b1b587ee0 // indirect
 	golang.org/x/mod v0.11.0 // indirect
 	golang.org/x/net v0.17.0 // indirect
 	golang.org/x/term v0.13.0 // indirect
@@ -111,6 +110,5 @@ require (
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20231016165738-49dd2c1f3d0b // indirect
 	gopkg.in/square/go-jose.v2 v2.6.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	gotest.tools/v3 v3.5.1 // indirect
 	howett.net/plist v1.0.0 // indirect
 )
