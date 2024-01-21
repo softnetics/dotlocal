@@ -116,5 +116,6 @@ jobs:
         with:
           workflow: bump-cask.yaml
           repo: softnetics/homebrew-tap
+          token: ${{ secrets.TAP_PAT }}
           ref: main
           inputs: '{ "cask": "dotlocal", "version": "${{ env.VERSION }}" }'
