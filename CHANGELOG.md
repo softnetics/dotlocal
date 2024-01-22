@@ -1,5 +1,11 @@
 # @softnetics/dotlocal
 
+## 0.2.0
+
+### Minor Changes
+
+- 152b992: HTTPS support
+
 ## 0.1.0
 
 ### Minor Changes
