@@ -30,6 +30,21 @@ public protocol DotLocalClientProtocol: GRPCClient {
     _ request: SwiftProtobuf.Google_Protobuf_Empty,
     callOptions: CallOptions?
   ) -> UnaryCall<SwiftProtobuf.Google_Protobuf_Empty, ListMappingsResponse>
+
+  func getSavedState(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions?
+  ) -> UnaryCall<SwiftProtobuf.Google_Protobuf_Empty, SavedState>
+
+  func setPreferences(
+    _ request: Preferences,
+    callOptions: CallOptions?
+  ) -> UnaryCall<Preferences, SwiftProtobuf.Google_Protobuf_Empty>
+
+  func getRootCertificate(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions?
+  ) -> UnaryCall<SwiftProtobuf.Google_Protobuf_Empty, GetRootCertificateResponse>
 }
 
 extension DotLocalClientProtocol {
@@ -88,6 +103,60 @@ extension DotLocalClientProtocol {
       request: request,
       callOptions: callOptions ?? self.defaultCallOptions,
       interceptors: self.interceptors?.makeListMappingsInterceptors() ?? []
+    )
+  }
+
+  /// Unary call to GetSavedState
+  ///
+  /// - Parameters:
+  ///   - request: Request to send to GetSavedState.
+  ///   - callOptions: Call options.
+  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+  public func getSavedState(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions? = nil
+  ) -> UnaryCall<SwiftProtobuf.Google_Protobuf_Empty, SavedState> {
+    return self.makeUnaryCall(
+      path: DotLocalClientMetadata.Methods.getSavedState.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeGetSavedStateInterceptors() ?? []
+    )
+  }
+
+  /// Unary call to SetPreferences
+  ///
+  /// - Parameters:
+  ///   - request: Request to send to SetPreferences.
+  ///   - callOptions: Call options.
+  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+  public func setPreferences(
+    _ request: Preferences,
+    callOptions: CallOptions? = nil
+  ) -> UnaryCall<Preferences, SwiftProtobuf.Google_Protobuf_Empty> {
+    return self.makeUnaryCall(
+      path: DotLocalClientMetadata.Methods.setPreferences.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeSetPreferencesInterceptors() ?? []
+    )
+  }
+
+  /// Unary call to GetRootCertificate
+  ///
+  /// - Parameters:
+  ///   - request: Request to send to GetRootCertificate.
+  ///   - callOptions: Call options.
+  /// - Returns: A `UnaryCall` with futures for the metadata, status and response.
+  public func getRootCertificate(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions? = nil
+  ) -> UnaryCall<SwiftProtobuf.Google_Protobuf_Empty, GetRootCertificateResponse> {
+    return self.makeUnaryCall(
+      path: DotLocalClientMetadata.Methods.getRootCertificate.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeGetRootCertificateInterceptors() ?? []
     )
   }
 }
@@ -168,6 +237,21 @@ public protocol DotLocalAsyncClientProtocol: GRPCClient {
     _ request: SwiftProtobuf.Google_Protobuf_Empty,
     callOptions: CallOptions?
   ) -> GRPCAsyncUnaryCall<SwiftProtobuf.Google_Protobuf_Empty, ListMappingsResponse>
+
+  func makeGetSavedStateCall(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions?
+  ) -> GRPCAsyncUnaryCall<SwiftProtobuf.Google_Protobuf_Empty, SavedState>
+
+  func makeSetPreferencesCall(
+    _ request: Preferences,
+    callOptions: CallOptions?
+  ) -> GRPCAsyncUnaryCall<Preferences, SwiftProtobuf.Google_Protobuf_Empty>
+
+  func makeGetRootCertificateCall(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions?
+  ) -> GRPCAsyncUnaryCall<SwiftProtobuf.Google_Protobuf_Empty, GetRootCertificateResponse>
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
@@ -215,6 +299,42 @@ extension DotLocalAsyncClientProtocol {
       interceptors: self.interceptors?.makeListMappingsInterceptors() ?? []
     )
   }
+
+  public func makeGetSavedStateCall(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions? = nil
+  ) -> GRPCAsyncUnaryCall<SwiftProtobuf.Google_Protobuf_Empty, SavedState> {
+    return self.makeAsyncUnaryCall(
+      path: DotLocalClientMetadata.Methods.getSavedState.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeGetSavedStateInterceptors() ?? []
+    )
+  }
+
+  public func makeSetPreferencesCall(
+    _ request: Preferences,
+    callOptions: CallOptions? = nil
+  ) -> GRPCAsyncUnaryCall<Preferences, SwiftProtobuf.Google_Protobuf_Empty> {
+    return self.makeAsyncUnaryCall(
+      path: DotLocalClientMetadata.Methods.setPreferences.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeSetPreferencesInterceptors() ?? []
+    )
+  }
+
+  public func makeGetRootCertificateCall(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions? = nil
+  ) -> GRPCAsyncUnaryCall<SwiftProtobuf.Google_Protobuf_Empty, GetRootCertificateResponse> {
+    return self.makeAsyncUnaryCall(
+      path: DotLocalClientMetadata.Methods.getRootCertificate.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeGetRootCertificateInterceptors() ?? []
+    )
+  }
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
@@ -254,6 +374,42 @@ extension DotLocalAsyncClientProtocol {
       interceptors: self.interceptors?.makeListMappingsInterceptors() ?? []
     )
   }
+
+  public func getSavedState(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions? = nil
+  ) async throws -> SavedState {
+    return try await self.performAsyncUnaryCall(
+      path: DotLocalClientMetadata.Methods.getSavedState.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeGetSavedStateInterceptors() ?? []
+    )
+  }
+
+  public func setPreferences(
+    _ request: Preferences,
+    callOptions: CallOptions? = nil
+  ) async throws -> SwiftProtobuf.Google_Protobuf_Empty {
+    return try await self.performAsyncUnaryCall(
+      path: DotLocalClientMetadata.Methods.setPreferences.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeSetPreferencesInterceptors() ?? []
+    )
+  }
+
+  public func getRootCertificate(
+    _ request: SwiftProtobuf.Google_Protobuf_Empty,
+    callOptions: CallOptions? = nil
+  ) async throws -> GetRootCertificateResponse {
+    return try await self.performAsyncUnaryCall(
+      path: DotLocalClientMetadata.Methods.getRootCertificate.path,
+      request: request,
+      callOptions: callOptions ?? self.defaultCallOptions,
+      interceptors: self.interceptors?.makeGetRootCertificateInterceptors() ?? []
+    )
+  }
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
@@ -283,6 +439,15 @@ public protocol DotLocalClientInterceptorFactoryProtocol: Sendable {
 
   /// - Returns: Interceptors to use when invoking 'listMappings'.
   func makeListMappingsInterceptors() -> [ClientInterceptor<SwiftProtobuf.Google_Protobuf_Empty, ListMappingsResponse>]
+
+  /// - Returns: Interceptors to use when invoking 'getSavedState'.
+  func makeGetSavedStateInterceptors() -> [ClientInterceptor<SwiftProtobuf.Google_Protobuf_Empty, SavedState>]
+
+  /// - Returns: Interceptors to use when invoking 'setPreferences'.
+  func makeSetPreferencesInterceptors() -> [ClientInterceptor<Preferences, SwiftProtobuf.Google_Protobuf_Empty>]
+
+  /// - Returns: Interceptors to use when invoking 'getRootCertificate'.
+  func makeGetRootCertificateInterceptors() -> [ClientInterceptor<SwiftProtobuf.Google_Protobuf_Empty, GetRootCertificateResponse>]
 }
 
 public enum DotLocalClientMetadata {
@@ -293,6 +458,9 @@ public enum DotLocalClientMetadata {
       DotLocalClientMetadata.Methods.createMapping,
       DotLocalClientMetadata.Methods.removeMapping,
       DotLocalClientMetadata.Methods.listMappings,
+      DotLocalClientMetadata.Methods.getSavedState,
+      DotLocalClientMetadata.Methods.setPreferences,
+      DotLocalClientMetadata.Methods.getRootCertificate,
     ]
   )
 
@@ -314,6 +482,24 @@ public enum DotLocalClientMetadata {
       path: "/DotLocal/ListMappings",
       type: GRPCCallType.unary
     )
+
+    public static let getSavedState = GRPCMethodDescriptor(
+      name: "GetSavedState",
+      path: "/DotLocal/GetSavedState",
+      type: GRPCCallType.unary
+    )
+
+    public static let setPreferences = GRPCMethodDescriptor(
+      name: "SetPreferences",
+      path: "/DotLocal/SetPreferences",
+      type: GRPCCallType.unary
+    )
+
+    public static let getRootCertificate = GRPCMethodDescriptor(
+      name: "GetRootCertificate",
+      path: "/DotLocal/GetRootCertificate",
+      type: GRPCCallType.unary
+    )
   }
 }
 
@@ -326,6 +512,12 @@ public protocol DotLocalProvider: CallHandlerProvider {
   func removeMapping(request: MappingKey, context: StatusOnlyCallContext) -> EventLoopFuture<SwiftProtobuf.Google_Protobuf_Empty>
 
   func listMappings(request: SwiftProtobuf.Google_Protobuf_Empty, context: StatusOnlyCallContext) -> EventLoopFuture<ListMappingsResponse>
+
+  func getSavedState(request: SwiftProtobuf.Google_Protobuf_Empty, context: StatusOnlyCallContext) -> EventLoopFuture<SavedState>
+
+  func setPreferences(request: Preferences, context: StatusOnlyCallContext) -> EventLoopFuture<SwiftProtobuf.Google_Protobuf_Empty>
+
+  func getRootCertificate(request: SwiftProtobuf.Google_Protobuf_Empty, context: StatusOnlyCallContext) -> EventLoopFuture<GetRootCertificateResponse>
 }
 
 extension DotLocalProvider {
@@ -367,6 +559,33 @@ extension DotLocalProvider {
         userFunction: self.listMappings(request:context:)
       )
 
+    case "GetSavedState":
+      return UnaryServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<SwiftProtobuf.Google_Protobuf_Empty>(),
+        responseSerializer: ProtobufSerializer<SavedState>(),
+        interceptors: self.interceptors?.makeGetSavedStateInterceptors() ?? [],
+        userFunction: self.getSavedState(request:context:)
+      )
+
+    case "SetPreferences":
+      return UnaryServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<Preferences>(),
+        responseSerializer: ProtobufSerializer<SwiftProtobuf.Google_Protobuf_Empty>(),
+        interceptors: self.interceptors?.makeSetPreferencesInterceptors() ?? [],
+        userFunction: self.setPreferences(request:context:)
+      )
+
+    case "GetRootCertificate":
+      return UnaryServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<SwiftProtobuf.Google_Protobuf_Empty>(),
+        responseSerializer: ProtobufSerializer<GetRootCertificateResponse>(),
+        interceptors: self.interceptors?.makeGetRootCertificateInterceptors() ?? [],
+        userFunction: self.getRootCertificate(request:context:)
+      )
+
     default:
       return nil
     }
@@ -393,6 +612,21 @@ public protocol DotLocalAsyncProvider: CallHandlerProvider, Sendable {
     request: SwiftProtobuf.Google_Protobuf_Empty,
     context: GRPCAsyncServerCallContext
   ) async throws -> ListMappingsResponse
+
+  func getSavedState(
+    request: SwiftProtobuf.Google_Protobuf_Empty,
+    context: GRPCAsyncServerCallContext
+  ) async throws -> SavedState
+
+  func setPreferences(
+    request: Preferences,
+    context: GRPCAsyncServerCallContext
+  ) async throws -> SwiftProtobuf.Google_Protobuf_Empty
+
+  func getRootCertificate(
+    request: SwiftProtobuf.Google_Protobuf_Empty,
+    context: GRPCAsyncServerCallContext
+  ) async throws -> GetRootCertificateResponse
 }
 
 @available(macOS 10.15, iOS 13, tvOS 13, watchOS 6, *)
@@ -441,6 +675,33 @@ extension DotLocalAsyncProvider {
         wrapping: { try await self.listMappings(request: $0, context: $1) }
       )
 
+    case "GetSavedState":
+      return GRPCAsyncServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<SwiftProtobuf.Google_Protobuf_Empty>(),
+        responseSerializer: ProtobufSerializer<SavedState>(),
+        interceptors: self.interceptors?.makeGetSavedStateInterceptors() ?? [],
+        wrapping: { try await self.getSavedState(request: $0, context: $1) }
+      )
+
+    case "SetPreferences":
+      return GRPCAsyncServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<Preferences>(),
+        responseSerializer: ProtobufSerializer<SwiftProtobuf.Google_Protobuf_Empty>(),
+        interceptors: self.interceptors?.makeSetPreferencesInterceptors() ?? [],
+        wrapping: { try await self.setPreferences(request: $0, context: $1) }
+      )
+
+    case "GetRootCertificate":
+      return GRPCAsyncServerHandler(
+        context: context,
+        requestDeserializer: ProtobufDeserializer<SwiftProtobuf.Google_Protobuf_Empty>(),
+        responseSerializer: ProtobufSerializer<GetRootCertificateResponse>(),
+        interceptors: self.interceptors?.makeGetRootCertificateInterceptors() ?? [],
+        wrapping: { try await self.getRootCertificate(request: $0, context: $1) }
+      )
+
     default:
       return nil
     }
@@ -460,6 +721,18 @@ public protocol DotLocalServerInterceptorFactoryProtocol: Sendable {
   /// - Returns: Interceptors to use when handling 'listMappings'.
   ///   Defaults to calling `self.makeInterceptors()`.
   func makeListMappingsInterceptors() -> [ServerInterceptor<SwiftProtobuf.Google_Protobuf_Empty, ListMappingsResponse>]
+
+  /// - Returns: Interceptors to use when handling 'getSavedState'.
+  ///   Defaults to calling `self.makeInterceptors()`.
+  func makeGetSavedStateInterceptors() -> [ServerInterceptor<SwiftProtobuf.Google_Protobuf_Empty, SavedState>]
+
+  /// - Returns: Interceptors to use when handling 'setPreferences'.
+  ///   Defaults to calling `self.makeInterceptors()`.
+  func makeSetPreferencesInterceptors() -> [ServerInterceptor<Preferences, SwiftProtobuf.Google_Protobuf_Empty>]
+
+  /// - Returns: Interceptors to use when handling 'getRootCertificate'.
+  ///   Defaults to calling `self.makeInterceptors()`.
+  func makeGetRootCertificateInterceptors() -> [ServerInterceptor<SwiftProtobuf.Google_Protobuf_Empty, GetRootCertificateResponse>]
 }
 
 public enum DotLocalServerMetadata {
@@ -470,6 +743,9 @@ public enum DotLocalServerMetadata {
       DotLocalServerMetadata.Methods.createMapping,
       DotLocalServerMetadata.Methods.removeMapping,
       DotLocalServerMetadata.Methods.listMappings,
+      DotLocalServerMetadata.Methods.getSavedState,
+      DotLocalServerMetadata.Methods.setPreferences,
+      DotLocalServerMetadata.Methods.getRootCertificate,
     ]
   )
 
@@ -489,6 +765,24 @@ public enum DotLocalServerMetadata {
     public static let listMappings = GRPCMethodDescriptor(
       name: "ListMappings",
       path: "/DotLocal/ListMappings",
+      type: GRPCCallType.unary
+    )
+
+    public static let getSavedState = GRPCMethodDescriptor(
+      name: "GetSavedState",
+      path: "/DotLocal/GetSavedState",
+      type: GRPCCallType.unary
+    )
+
+    public static let setPreferences = GRPCMethodDescriptor(
+      name: "SetPreferences",
+      path: "/DotLocal/SetPreferences",
+      type: GRPCCallType.unary
+    )
+
+    public static let getRootCertificate = GRPCMethodDescriptor(
+      name: "GetRootCertificate",
+      path: "/DotLocal/GetRootCertificate",
       type: GRPCCallType.unary
     )
   }

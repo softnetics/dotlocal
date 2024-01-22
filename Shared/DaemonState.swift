@@ -11,5 +11,5 @@ enum DaemonState: Codable {
     case unknown
     case stopped
     case starting
-    case started(mappings: [Mapping])
+    case started(savedState: SavedState)
 }

@@ -11,14 +11,18 @@ import NIO
 import Combine
 
 class DaemonManager: ObservableObject {
+    private let group = PlatformSupport.makeEventLoopGroup(loopCount: 1)
+    let apiClient: DotLocalAsyncClient
+    
     static let shared = DaemonManager()
     
     @Published var state: DaemonState = .unknown
-    @Published var mappings: [Mapping] = []
+    @Published var savedState: SavedState = SavedState()
     
     private var subscribing = false
     
     private init() {
+        apiClient = try! createApiClient(group: group)
     }
     
     func start() async {
@@ -53,8 +57,8 @@ class DaemonManager: ObservableObject {
             for try await state in HelperManager.shared.xpcClient.send(to: SharedConstants.daemonStateRoute) {
                 DispatchQueue.main.async {
                     self.state = state
-                    if case .started(let mappings) = state {
-                        self.mappings = mappings
+                    if case .started(let savedState) = state {
+                        self.savedState = savedState
                     }
                 }
             }

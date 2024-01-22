@@ -19,7 +19,7 @@ class DaemonManager {
     var internalState: DaemonStateInternal = .stopped
     private var task: Process? = nil
     private(set) var apiClient: DotLocalAsyncClient? = nil
-    private var group: EventLoopGroup? = nil
+    private let group = PlatformSupport.makeEventLoopGroup(loopCount: 1)
     private let _updates = PassthroughSubject<Void, Never>()
     
     private let _internalStates = PassthroughSubject<DaemonStateInternal, Never>()
@@ -80,7 +80,7 @@ class DaemonManager {
                 DispatchQueue.main.async {
                     self.onStart()
                 }
-            } else if chunk.contains("Updated mappings") {
+            } else if chunk.contains("Updated state") {
                 NSLog("sending update")
                 self.setState(.started)
             }
@@ -97,17 +97,8 @@ class DaemonManager {
     }
     
     private func onStart() {
-        let socketPath = runDirectory.appending(path: "api.sock")
-        let group = PlatformSupport.makeEventLoopGroup(loopCount: 1)
-        self.group = group
         // TODO: try catch
-        let channel = try! GRPCChannelPool.with(
-            target: .unixDomainSocket(socketPath.path(percentEncoded: false)),
-            transportSecurity: .plaintext,
-            eventLoopGroup: group
-        )
-        let apiClient = DotLocalAsyncClient(channel: channel)
-        self.apiClient = apiClient
+        apiClient = try! createApiClient(group: group)
         
         setState(.started)
     }
@@ -146,10 +137,11 @@ class DaemonManager {
             return .starting
         case .started:
             guard let apiClient = DaemonManager.shared.apiClient else {
-                return .started(mappings: [])
+                return .started(savedState: SavedState())
             }
-            let res = try? await apiClient.listMappings(.with({_ in}))
-            return .started(mappings: (res?.mappings)?.sorted() ?? [])
+            var res = (try? await apiClient.getSavedState(.with{_ in})) ?? SavedState()
+            res.mappings.sort()
+            return .started(savedState: res)
         }
     }
     

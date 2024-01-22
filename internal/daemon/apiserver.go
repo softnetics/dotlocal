@@ -160,6 +160,36 @@ func (s *dotLocalServer) ListMappings(ctx context.Context, _ *emptypb.Empty) (*a
 	return res, nil
 }
 
+func (s *dotLocalServer) GetSavedState(ctx context.Context, _ *emptypb.Empty) (*api.SavedState, error) {
+	mappings := lo.Map(s.dotlocal.GetMappings(), func(mapping internal.Mapping, _ int) *api.Mapping {
+		return mappingToApiMapping(mapping)
+	})
+	return &api.SavedState{
+		Mappings:    mappings,
+		Preferences: s.dotlocal.GetPreferences(),
+	}, nil
+}
+
+func (s *dotLocalServer) SetPreferences(ctx context.Context, preferences *api.Preferences) (*emptypb.Empty, error) {
+	err := s.dotlocal.SetPreferences(preferences)
+	if err != nil {
+		return nil, err
+	}
+	return &emptypb.Empty{}, nil
+}
+
+func (s *dotLocalServer) GetRootCertificate(ctx context.Context, _ *emptypb.Empty) (*api.GetRootCertificateResponse, error) {
+	cert, err := s.dotlocal.caddy.getRootCertificate()
+	if err != nil {
+		return nil, err
+	}
+	return &api.GetRootCertificateResponse{
+		Certificate: cert.Raw,
+		NotBefore:   timestamppb.New(cert.NotBefore),
+		NotAfter:    timestamppb.New(cert.NotAfter),
+	}, nil
+}
+
 func mappingToApiMapping(mapping internal.Mapping) *api.Mapping {
 	return &api.Mapping{
 		Id:         &mapping.ID,

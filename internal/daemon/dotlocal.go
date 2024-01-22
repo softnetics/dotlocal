@@ -3,6 +3,7 @@ package daemon
 import (
 	"context"
 	"errors"
+	"net/url"
 	"os"
 	"strings"
 	"time"
@@ -22,15 +23,23 @@ import (
 
 type DotLocal struct {
 	logger   *zap.Logger
-	nginx    *Nginx
+	caddy    *Caddy
 	dnsProxy dnsproxy.DNSProxy
+	prefs    *preferences
 	mappings map[internal.MappingKey]*internal.MappingState
 	ctx      context.Context
 	cancel   context.CancelFunc
 }
 
+type preferences struct {
+	disableHTTPS  bool
+	redirectHTTPS bool
+}
+
 func NewDotLocal(logger *zap.Logger) (*DotLocal, error) {
-	nginx, err := NewNginx(logger.Named("nginx"))
+	prefs := &preferences{}
+
+	caddy, err := NewCaddy(logger.Named("caddy"), prefs)
 	if err != nil {
 		return nil, err
 	}
@@ -42,9 +51,10 @@ func NewDotLocal(logger *zap.Logger) (*DotLocal, error) {
 
 	return &DotLocal{
 		logger:   logger,
-		nginx:    nginx,
+		caddy:    caddy,
 		dnsProxy: dnsProxy,
 		mappings: make(map[internal.MappingKey]*internal.MappingState),
+		prefs:    prefs,
 	}, nil
 }
 
@@ -53,11 +63,15 @@ func (d *DotLocal) Start(ctx context.Context) error {
 	d.ctx = ctx
 	d.cancel = cancel
 
-	preferences, err := d.loadPreferences()
+	savedState, err := d.loadSavedState()
 	if err != nil {
 		return err
 	}
-	for _, mapping := range preferences.Mappings {
+	if savedState.Preferences != nil {
+		d.prefs.disableHTTPS = *savedState.Preferences.DisableHttps
+		d.prefs.redirectHTTPS = *savedState.Preferences.RedirectHttps
+	}
+	for _, mapping := range savedState.Mappings {
 		key := internal.MappingKey{
 			Host:       *mapping.Host,
 			PathPrefix: *mapping.PathPrefix,
@@ -75,7 +89,7 @@ func (d *DotLocal) Start(ctx context.Context) error {
 
 	var t tomb.Tomb
 	t.Go(func() error {
-		return d.nginx.Start(ctx)
+		return d.caddy.Start()
 	})
 	t.Go(func() error {
 		return d.dnsProxy.Start(ctx)
@@ -86,7 +100,7 @@ func (d *DotLocal) Start(ctx context.Context) error {
 		return err
 	}
 
-	err = d.UpdateMappings()
+	err = d.updateMappings()
 	if err != nil {
 		return err
 	}
@@ -112,42 +126,35 @@ func (d *DotLocal) Start(ctx context.Context) error {
 }
 
 func (d *DotLocal) Stop() error {
-	var t tomb.Tomb
-	t.Go(func() error {
-		return d.nginx.Stop()
-	})
-	t.Go(func() error {
-		return d.dnsProxy.Stop()
-	})
-	err := t.Wait()
+	err := d.dnsProxy.Stop()
 	if err != nil {
 		return err
 	}
 	d.logger.Info("Stopped")
-	err = d.savePreferences()
+	err = d.saveState()
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (d *DotLocal) loadPreferences() (*api.Preferences, error) {
+func (d *DotLocal) loadSavedState() (*api.SavedState, error) {
+	savedState := &api.SavedState{}
 	json, err := os.ReadFile(util.GetPreferencesPath())
 	if err != nil {
 		if errors.Is(err, os.ErrNotExist) {
-			return &api.Preferences{}, nil
+			return savedState, nil
 		}
 		return nil, err
 	}
-	preference := &api.Preferences{}
-	err = protojson.Unmarshal(json, preference)
+	err = protojson.Unmarshal(json, savedState)
 	if err != nil {
-		return &api.Preferences{}, nil
+		return savedState, nil
 	}
-	return preference, nil
+	return savedState, nil
 }
 
-func (d *DotLocal) savePreferences() error {
+func (d *DotLocal) saveState() error {
 	mappings := lo.Map(d.GetMappings(), func(mapping internal.Mapping, _ int) *api.Mapping {
 		return &api.Mapping{
 			Id:         &mapping.ID,
@@ -157,10 +164,11 @@ func (d *DotLocal) savePreferences() error {
 			ExpiresAt:  &timestamppb.Timestamp{Seconds: mapping.ExpresAt.Unix()},
 		}
 	})
-	preference := &api.Preferences{
-		Mappings: mappings,
+	savedState := &api.SavedState{
+		Mappings:    mappings,
+		Preferences: d.GetPreferences(),
 	}
-	json, err := protojson.Marshal(preference)
+	json, err := protojson.Marshal(savedState)
 	if err != nil {
 		return err
 	}
@@ -168,7 +176,7 @@ func (d *DotLocal) savePreferences() error {
 	if err != nil {
 		return err
 	}
-	d.logger.Info("Saved preferences", zap.String("path", util.GetPreferencesPath()))
+	d.logger.Info("Saved state", zap.String("path", util.GetPreferencesPath()))
 	return nil
 }
 
@@ -178,6 +186,23 @@ func (d *DotLocal) GetMappings() []internal.Mapping {
 	})
 }
 
+func (d *DotLocal) GetPreferences() *api.Preferences {
+	return &api.Preferences{
+		DisableHttps:  &d.prefs.disableHTTPS,
+		RedirectHttps: &d.prefs.redirectHTTPS,
+	}
+}
+
+func (d *DotLocal) SetPreferences(preferences *api.Preferences) error {
+	d.prefs.disableHTTPS = *preferences.DisableHttps
+	d.prefs.redirectHTTPS = *preferences.RedirectHttps
+	err := d.updatePreferences()
+	if err != nil {
+		return err
+	}
+	return d.saveState()
+}
+
 func (d *DotLocal) CreateMapping(opts internal.MappingOptions) (internal.Mapping, error) {
 	if !strings.HasSuffix(opts.Host, ".local") {
 		opts.Host += ".local"
@@ -185,9 +210,17 @@ func (d *DotLocal) CreateMapping(opts internal.MappingOptions) (internal.Mapping
 	if opts.PathPrefix == "" {
 		opts.PathPrefix = "/"
 	}
-	if !strings.HasPrefix(opts.Target, "http://") && !strings.HasPrefix(opts.Target, "https://") {
-		opts.Target = "http://" + opts.Target
+	targetUrl, err := url.Parse(opts.Target)
+	if err != nil {
+		return internal.Mapping{}, err
 	}
+	if targetUrl.Scheme == "" {
+		targetUrl.Scheme = "http"
+	}
+	if targetUrl.Scheme != "http" && targetUrl.Scheme != "https" {
+		return internal.Mapping{}, errors.New("target must be http or https")
+	}
+	opts.Target = targetUrl.String()
 	key := internal.MappingKey{
 		Host:       opts.Host,
 		PathPrefix: opts.PathPrefix,
@@ -214,19 +247,19 @@ func (d *DotLocal) CreateMapping(opts internal.MappingOptions) (internal.Mapping
 		return mapping, nil
 	}
 	d.logger.Info("Created mapping", zap.Any("mapping", mapping))
-	return mapping, d.UpdateMappings()
+	return mapping, d.updateMappings()
 }
 
 func (d *DotLocal) RemoveMapping(keys ...internal.MappingKey) error {
 	for _, key := range keys {
 		delete(d.mappings, key)
 	}
-	return d.UpdateMappings()
+	return d.updateMappings()
 }
 
-func (d *DotLocal) UpdateMappings() error {
+func (d *DotLocal) updateMappings() error {
 	mappings := d.GetMappings()
-	err := d.nginx.SetMappings(mappings)
+	err := d.caddy.SetMappings(mappings)
 	if err != nil {
 		return err
 	}
@@ -236,7 +269,16 @@ func (d *DotLocal) UpdateMappings() error {
 	if err != nil {
 		return err
 	}
-	d.logger.Info("Updated mappings", zap.Any("mappings", mappings))
+	d.logger.Info("Updated state", zap.Any("mappings", mappings))
+	return nil
+}
+
+func (d *DotLocal) updatePreferences() error {
+	err := d.caddy.reload()
+	if err != nil {
+		return err
+	}
+	d.logger.Info("Updated state", zap.Any("pref", d.prefs))
 	return nil
 }
 

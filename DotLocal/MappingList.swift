@@ -12,7 +12,7 @@ struct MappingList: View {
     @StateObject var daemonManager = DaemonManager.shared
     
     var body: some View {
-        let mappings = daemonManager.mappings
+        let mappings = daemonManager.savedState.mappings
         List(mappings) { mapping in
             HStack(spacing: 12) {
                 VStack(alignment: .leading, spacing: 4) {
@@ -56,8 +56,8 @@ struct MappingList: View {
     }
     
     private func getMappings(state: DaemonState) -> [Mapping] {
-        if case .started(let mappings) = state {
-            return mappings
+        if case .started(let savedState) = state {
+            return savedState.mappings
         }
         return []
     }
